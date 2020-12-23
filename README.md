@@ -6,10 +6,12 @@
 -HTML
 <br>-CSS
 <br>-Javascript
-<br>-PHP
 <br>-Bootstrap
 <br>-Leaflet.js
 <br>PostgreSQL 
+<br>
+<br>-Frontend: VUE
+<br>-Backend: NodeJS (Express)
 <h2>Tipos de usuários e funcionalidades:</h2>
 -Default (Super Usuário)
 <br>-Administrador
@@ -19,14 +21,12 @@
 
 <h2>Instalação</h2>
 
-<h3>install dependencies</h3>
+<h3>Dependências</h3>
 <p>npm install</p>
 
-<h3>serve with hot reload at localhost:8080</h3>
+<h3>Executar aplicação no localhost:8080</h3>
 <p>npm run dev</p>
 
-<h3>build for production with minification</h3>
-<p>npm run build</p>
 `
 
 
