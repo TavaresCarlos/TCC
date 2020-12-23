@@ -1,4 +1,4 @@
-<h1>Framework para Sistemas de Informação Geográfica Voluntária (VGI)</h1>
+<h1>Framework para Sistemas VGI</h1>
 <h2>Trabalho de conclusão de curso (TCC)</h2>
 <p>Framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas SIG que utilizam VGI.</p> 
 <p>O ClickOnOSM permite o compartilhamento de informações referentes a pontos, linhas e polígonos traçados no mapa, além da criação de categorias e subcategorias associadas a contribuição, e a exportação dos dados no formato GeoJSON.</p>
