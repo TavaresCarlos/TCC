@@ -1,18 +1,32 @@
-# my-vue-app
+<h1>ClickOnOSM</h1>
+<h2>Trabalho de conclusão de curso (TCC)</h2>
+<p>Framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas SIG que utilizam VGI.</p> 
+<p>O ClickOnOSM permite o compartilhamento de informações referentes a pontos, linhas e polígonos traçados no mapa, além da criação de categorias e subcategorias associadas a contribuição, e a exportação dos dados no formato GeoJSON.</p>
+<h2>Tecnologias:</h2>
+-HTML
+<br>-CSS
+<br>-Javascript
+<br>-PHP
+<br>-Bootstrap
+<br>-Leaflet.js
+<br>PostgreSQL 
+<h2>Tipos de usuários e funcionalidades:</h2>
+-Default (Super Usuário)
+<br>-Administrador
+<br>-Anônimo
+<br>-Colaborador
+<h2>Como usar:</h2>
 
-> A Vue.js project
+<h2>Instalação</h2>
 
-## Build Setup
+<h3>install dependencies</h3>
+<p>npm install</p>
 
-``` bash
-# install dependencies
-npm install
+<h3>serve with hot reload at localhost:8080</h3>
+<p>npm run dev</p>
 
-# serve with hot reload at localhost:8080
-npm run dev
+<h3>build for production with minification</h3>
+<p>npm run build</p>
+`
 
-# build for production with minification
-npm run build
-```
 
-For more information see the [docs for vueify](https://github.com/vuejs/vueify).
