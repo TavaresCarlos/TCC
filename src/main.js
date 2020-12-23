@@ -5,13 +5,25 @@ import Axios from 'axios'
 
 Vue.prototype.$http = Axios;
 
+import Home from './componentes/Home.vue'
+import Colaborar from './componentes/Colaborar.vue'
+import Contato from './componentes/Contato.vue'
+import Cadastro from './componentes/Cadastro.vue'
+import Colaboracoes from './componentes/Colaboracoes.vue'
+import Exportar from './componentes/Exportar.vue'
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
 	history: true,
-	routes: [{
-
-	}]
+	routes: [
+		{ path: '/home', component: Home },
+		{ path: '/colaborar', component: Colaborar },
+		{ path: '/contato', component: Contato },
+		{ path: '/cadastro', component: Cadastro },
+		{ path: '/colaboracoes', component: Colaboracoes },
+		{ path: '/exportar', component: Exportar }
+	]
 })
 
 new Vue({

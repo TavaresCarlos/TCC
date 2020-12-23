@@ -1,7 +1,5 @@
 <template>
-	<div>
-		<router-view></router-view>
-	</div>
+	<h4>Colaborar</h4>
 </template>
 
 <script>
