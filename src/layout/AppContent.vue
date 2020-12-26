@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<section class="container-fluid" id="menu-principal">
 		<router-view></router-view>
-	</div>
+	</section>
 </template>
 
 <script>

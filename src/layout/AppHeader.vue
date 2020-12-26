@@ -19,13 +19,13 @@
 		        	<button type="button" class="btn btn-primary" id="colaborar" @click="colaborar">Colaborar</button>
 		      	</li>
 		      	<li class="nav-item active">
-		        	<button type="button" class="btn btn-primary" id="contato" @click="contato">Contato</button>
-		      	</li>
-		      	<li class="nav-item active">
 		        	<button type="button" class="btn btn-primary" id="cadastro" @click="cadastro">Cadastro</button>
 		      	</li>
 		      	<li class="nav-item active">
 		        	<button type="button" class="btn btn-primary" id="colaboracoes" @click="colaboracoes">Colaborações</button>
+		      	</li>
+		      	<li class="nav-item active">
+		        	<button type="button" class="btn btn-primary" id="contato" @click="contato">Contato</button>
 		      	</li>
 		      	<li class="nav-item active">
 		        	<button type="button" class="btn btn-primary" id="exportar" @click="exportar">Exportar</button>
