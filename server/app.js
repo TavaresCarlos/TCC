@@ -2,7 +2,7 @@ const http = require('http');
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-const postgresql = require('pg')
+const Pool = require('pg').Pool;
 
 const app = express();
 const port = 3000;
@@ -11,28 +11,29 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-function executaSQLquery(query, res){
-	var host = '';
-	var port =  '';
-	var user = '';
-	var password = '';
-	var database = '';
-	
-	var connection = `postgres://${username}:${password}@${host}/${database}`;
+const pool = new Pool({
+	user: 'postgres',
+	host: 'localhost',
+	database: 'tcc',
+	password: 'admin',
+	port: 5432,
+});
 
-	pg.connect(connection, (error, results, fields) => {
+function teste(sql, res) {
+	pool.query(sql, (error, results) => {
 		if(error){
 			res.json(error);
 		}
 		else{
-			res.json(results);
+			res.json(results.rows);
 		}
 	})
 }
 
 //Rotas
 app.get('/', (req, res) => {
-	res.json({ message: 'Funcionando' })
+	//res.json({ message: 'Funcionando' })
+	teste('SELECT * FROM usuario', res);
 });
 
 //Rodando o servidor
