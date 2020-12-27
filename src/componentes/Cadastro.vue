@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-xl-4 col-sm-2"></div>
             <div class="col-xl-4 col-sm-8">
-                <form action="" method="POST" id="formulario-cadastro">
+                <div>
                     <div id="texto-cadastro"><h3>CADASTRO</h3></div>
                     <label for="input">Nome:</label>
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome" required>
+                        <input type="text" class="form-control" id="nome" name="nome" v-model="nome" placeholder="Nome" required>
                     <label for="input">Apelido:</label>
-                        <input type="text" class="form-control" id="apelido" name="apelido" placeholder="Apelido" required>
+                        <input type="text" class="form-control" id="apelido" name="apelido" v-model="apelido" placeholder="Apelido" required>
                     <label for="input">Faixa etária:</label>
-                      	<select class="form-control form-control-sm" id="faixaEtaria" name="faixaEtaria">
+                      	<select class="form-control form-control-sm" id="faixaEtaria" name="faixaEtaria" v-model="faixaEtaria">
             		        <option value="null">----</option>
             		        <option value="10-14">10 a 14</option>
             		        <option value="15-19">15 a 19</option>
@@ -28,20 +28,44 @@
             		        <option value="80-mais">80 anos ou mais</option>
             		    </select>
                     <label for="input">Email:</label>
-                        <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                        <input type="text" class="form-control" id="email" name="email" v-model="email" placeholder="Email" required>
                     <label for="input">Senha:</label>
-                        <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+                        <input type="password" class="form-control" id="senha" name="senha" v-model="senha" placeholder="Senha" required>
                     <br>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">CADASTRAR</button>
-                </form>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" @click="cadastroNovoUsuario()">CADASTRAR</button>
+                </div>
             </div>
         <div class="col-xl-4 col-sm-2"></div>
     </div>
 </template>
 
 <script>
-	export default{
+    import axios from 'axios';
 
+	export default{
+        data(){
+            return{
+                nome: '',
+                apelido: '',
+                faixaEtaria: '',
+                email: '',
+                senha: ''
+            }
+        },
+        methods:{
+            cadastroNovoUsuario(){
+                axios.post('http://localhost:3000/cadastroNovoUsuario', { nome: this.nome, apelido: this.apelido, faixaEtaria: this.faixaEtaria, email: this.email, senha: this.senha }).then((response) => {
+                    console.log(response);
+                    if(response.statusText == 'OK'){
+                        this.$router.push('/home');
+                        alert("Novo usuário cadastrado com sucesso");
+                    }
+                    else{
+                        alert("Erro no cadastro de novo usuário");
+                    }
+                })
+            }
+        }
 	}
 </script>
 

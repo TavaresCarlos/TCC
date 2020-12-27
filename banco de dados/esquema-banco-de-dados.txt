@@ -1,0 +1,64 @@
+CREATE TABLE usuario(
+idUsuario SERIAL NOT NULL,
+nome varchar(50),
+apelido varchar(50),
+email varchar(50),
+senha varchar(200),
+faixaEtaria varchar(50),
+tipo varchar(50),
+PRIMARY KEY (idUsuario)
+);
+
+CREATE TABLE contato(
+idContato SERIAL NOT NULL,
+nome varchar(50),
+assunto varchar(50),
+email varchar(50),
+data date,
+mensagem varchar(500),
+PRIMARY KEY (idContato)
+);
+
+CREATE TABLE categorias(
+idCategorias SERIAL NOT NULL,
+nome varchar(200),
+PRIMARY KEY (idCategorias)
+);
+
+CREATE TABLE subcategorias(
+idSubcategorias SERIAL NOT NULL,
+nome varchar(200),
+idCategorias int,
+CONSTRAINT fk_subCategoriasCategorias FOREIGN KEY (idCategorias) REFERENCES categorias (idCategorias),
+PRIMARY KEY (idSubcategorias)
+);
+
+CREATE TABLE contribuicao(
+idContribuicao SERIAL NOT NULL,
+titulo varchar(200),
+data date,
+distanciaArea float,
+descricao varchar(200),
+tipoGeometria varchar (50),
+formatoExibicao varchar (10000),
+publicado varchar(3),
+idCategorias int,
+idSubcategorias int,
+idUsuario int,
+CONSTRAINT fk_usuarioContribuicao FOREIGN KEY (idUsuario) REFERENCES usuario (idUsuario),
+CONSTRAINT fk_contribuicaoCategorias FOREIGN KEY (idCategorias) REFERENCES categorias (idCategorias),
+CONSTRAINT fk_contribuicaoSubcategorias FOREIGN KEY (idSubcategorias) REFERENCES subcategorias (idSubcategorias),
+PRIMARY KEY (idContribuicao)
+);
+
+INSERT INTO usuario VALUES ('1', 'admin', 'admin', 'admin@admin', 'admin', '', 'root');
+INSERT INTO usuario VALUES ('2', 'anonimo', 'anonimo', 'anonimo@anonimo', '', '', 'anonimo');
+
+
+
+
+
+
+
+
+
