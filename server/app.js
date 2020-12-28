@@ -37,7 +37,7 @@ function executaSql(sql, res) {
 //Rotas
 app.get('/', (req, res) => {
 	//res.json({ message: 'Funcionando' })
-	executaSql('SELECT * FROM usuario', res);
+	executaSql('SELECT * FROM contato', res);
 });
 
 app.post('/cadastroNovoUsuario', (req, res) => {
@@ -55,6 +55,23 @@ app.post('/cadastroNovoUsuario', (req, res) => {
 
 	console.log(query);
 });
+
+app.post('/novoContato', (req, res) => {
+	console.log("Rota chamada");
+
+	var date = new Date;
+
+	const nome = req.body.nome;
+	const email = req.body.email;
+	const assunto = req.body.assunto;
+	const mensagem = req.body.mensagem;
+	const data = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+
+	var query = `INSERT INTO contato (nome, email, assunto, mensagem, data) VALUES ('${nome}', '${email}', '${assunto}', '${mensagem}', '${data}')`;
+	executaSql(query, res);
+
+	console.log(query);
+})
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {

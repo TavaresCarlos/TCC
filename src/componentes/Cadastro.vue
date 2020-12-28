@@ -55,7 +55,6 @@
         methods:{
             cadastroNovoUsuario(){
                 axios.post('http://localhost:3000/cadastroNovoUsuario', { nome: this.nome, apelido: this.apelido, faixaEtaria: this.faixaEtaria, email: this.email, senha: this.senha }).then((response) => {
-                    console.log(response);
                     if(response.statusText == 'OK'){
                         this.$router.push('/home');
                         alert("Novo usuário cadastrado com sucesso");
