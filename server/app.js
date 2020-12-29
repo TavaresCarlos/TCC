@@ -37,7 +37,7 @@ function executaSql(sql, res) {
 //Rotas
 app.get('/', (req, res) => {
 	//res.json({ message: 'Funcionando' })
-	executaSql('SELECT * FROM contato', res);
+	executaSql('SELECT * FROM usuario', res);
 });
 
 app.post('/cadastroNovoUsuario', (req, res) => {
@@ -72,6 +72,41 @@ app.post('/novoContato', (req, res) => {
 
 	console.log(query);
 })
+
+//Rota para autenticação do usuário e login
+app.post('/login', (req, res) => {
+	console.log("Rota chamada");
+
+	const usuario = req.body.usuario;
+	const senha = req.body.senha;
+	
+	var query = `SELECT nome,senha FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+	
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			if(results.rows.length == 0){
+				res.json("Usuário inválido. Tente novamente.");
+			}
+			else{
+				if(bcrypt.compareSync(senha, results.rows[0].senha)){
+					//Iniciando a sessão do usuário no sistema
+					req.session.loggedin = true;
+					req.session.username = usuario;
+					res.json(results.rows);
+				}
+				else{
+					res.json("Senha inválida. Tente novamente.");
+				}
+			}
+		}
+	})
+
+	console.log(query);
+})
+
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {

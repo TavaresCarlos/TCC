@@ -11,6 +11,7 @@ import Contato from './componentes/Contato.vue'
 import Cadastro from './componentes/Cadastro.vue'
 import Colaboracoes from './componentes/Colaboracoes.vue'
 import Exportar from './componentes/Exportar.vue'
+import PainelUsuario from './componentes/PainelUsuario.vue'
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,8 @@ const router = new VueRouter({
 		{ path: '/contato', component: Contato },
 		{ path: '/cadastro', component: Cadastro },
 		{ path: '/colaboracoes', component: Colaboracoes },
-		{ path: '/exportar', component: Exportar }
+		{ path: '/exportar', component: Exportar },
+		{ path: '/painel', component: PainelUsuario }
 	]
 })
 

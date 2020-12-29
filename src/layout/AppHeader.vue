@@ -31,17 +31,25 @@
 		        	<button type="button" class="btn btn-primary" id="exportar" @click="exportar">Exportar</button>
 		      	</li>
 		    </ul>
-		    <form  class="form-inline my-2 my-lg-0" action="" method="POST">
-		      	<input class="form-control mr-sm-2" type="text" placeholder="Email ou apelido" aria-label="Login" id="usuario" name="usuario" required>
-		      	<input class="form-control mr-sm-2" type="password" placeholder="Senha" aria-label="Senha" id="senha" name="senha" required>
-		      	<button class="btn btn-success my-2 my-sm-0" type="submit" id="enviar"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
-		    </form>
+		    <div class="form-inline my-2 my-lg-0">
+		      	<input class="form-control mr-sm-2" type="text" placeholder="Email ou apelido" aria-label="Login" id="usuario" name="usuario" v-model="usuario">
+		      	<input class="form-control mr-sm-2" type="password" placeholder="Senha" aria-label="Senha" id="senha" name="senha" v-model="senha" required>
+		      	<button class="btn btn-success my-2 my-sm-0" type="submit" id="enviar" @click="login()"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</button>
+		    </div>
 		</div>
 	</nav>
 </template>
 
 <script>
+	import axios from 'axios';
+
 	export default{
+		data(){
+			return{
+				usuario: '',
+				senha: ''
+			}
+		},
 		methods:{
 			home: function(){
 				this.$router.push('/home')
@@ -60,6 +68,18 @@
 			},
 			exportar: function(){
 				this.$router.push('/exportar')
+			},
+
+			login(){
+				axios.post('http://localhost:3000/login', { usuario: this.usuario, senha: this.senha }).then((response) => {
+                    if(typeof(response.data) == 'string'){
+                    	alert(response.data);
+                    }
+                    else if(response.data.length != 0){
+                    	console.log(response);
+                    	this.$router.push('/painel');
+                    }
+                })
 			}
 		}
 	}
