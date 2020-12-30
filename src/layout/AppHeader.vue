@@ -77,7 +77,20 @@
                     }
                     else if(response.data.length != 0){
                     	console.log(response);
-                    	this.$router.push('/painel');
+                    	if(response.data[0].tipo == 'colaborador'){
+                    		this.$router.push('/painel');
+                    	}
+                    	/*
+                    	else if(response.data[0].tipo == 'administrador'){
+                    		this.$router.push('/painel');
+                    	}
+                    	else if(response.data[0].tipo == 'anonimo'){
+                    		this.$router.push('/painel');
+                    	}
+                    	else if(response.data[0].tipo == 'default'){
+                    		this.$router.push('/painel');
+                    	}
+                    	*/
                     }
                 })
 			}

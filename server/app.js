@@ -80,7 +80,7 @@ app.post('/login', (req, res) => {
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
 	
-	var query = `SELECT nome,senha FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+	var query = `SELECT nome,senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
 	pool.query(query, (error, results) => {
 		if(error){
