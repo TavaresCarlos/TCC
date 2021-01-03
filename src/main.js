@@ -14,6 +14,7 @@ import Exportar from './componentes/Exportar.vue'
 import PainelUsuario from './componentes/PainelUsuario.vue'
 
 Vue.use(VueRouter)
+Vue.use(Vuex)
 
 const router = new VueRouter({
 	history: true,
