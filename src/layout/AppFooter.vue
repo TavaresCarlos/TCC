@@ -1,6 +1,6 @@
 <template>
 	<footer>
-		<h4>Footer</h4>
+		<p>Departamento de Informática - Universidade Federal de Viçosa (UFV)</p>
 	</footer>
 </template>
 
@@ -15,5 +15,7 @@
 		position: fixed;
 		bottom: 0;
 		width: 100%;
+		color: #FFFFFF;
+		font-size: 13px;
 	}
 </style>

@@ -18,7 +18,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
 	history: true,
 	routes: [
-		{ path: '/home', component: Home },
+		{ path: '/', component: Home },
 		{ path: '/colaborar', component: Colaborar },
 		{ path: '/contato', component: Contato },
 		{ path: '/cadastro', component: Cadastro },

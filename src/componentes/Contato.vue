@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-xl-4 col-sm-2"></div>
             <div class="col-xl-4 col-sm-8">
-                <div>
-                    <div id="texto-contato"><h2>CONTATO</h2></div>
+                <div id="contato">
+                    <div id="texto-contato"><center><h2>CONTATO</h2></center></div>
                     <label for="input">Nome:</label>
                         <input type="text" class="form-control" id="nome" name="nome" v-model="nome" placeholder="Nome" required>
                     <label for="input">Email:</label>
@@ -13,7 +13,7 @@
                     <label for="input">Mensagem:</label>
                         <textarea class="form-control" id="mensagem" name="mensagem" rows="3" v-model="mensagem" placeholder="Mensagem" required></textarea>
                       <br>
-                      <button type="submit" class="btn btn-primary btn-lg btn-block" id="enviar" @click="novoContato()">ENVIAR</button>
+                      <button type="submit" class="btn btn-success btn-lg btn-block" id="enviar" @click="novoContato()">ENVIAR</button>
                 </div>
             </div>
         </div>
@@ -48,3 +48,9 @@
 	}
 </script>
 
+<style>
+    #contato{
+        color: #FFFFFF;
+        margin-top: 18%;
+    }
+</style>

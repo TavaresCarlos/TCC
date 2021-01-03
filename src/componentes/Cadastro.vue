@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-xl-4 col-sm-2"></div>
             <div class="col-xl-4 col-sm-8">
-                <div>
-                    <div id="texto-cadastro"><h3>CADASTRO</h3></div>
+                <div id="cadastro">
+                    <div id="texto-cadastro"><center><h3>CADASTRO</h3></center></div>
                     <label for="input">Nome:</label>
                         <input type="text" class="form-control" id="nome" name="nome" v-model="nome" placeholder="Nome" required>
                     <label for="input">Apelido:</label>
@@ -32,7 +32,7 @@
                     <label for="input">Senha:</label>
                         <input type="password" class="form-control" id="senha" name="senha" v-model="senha" placeholder="Senha" required>
                     <br>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" @click="cadastroNovoUsuario()">CADASTRAR</button>
+                    <button type="submit" class="btn btn-success btn-lg btn-block" @click="cadastroNovoUsuario()">CADASTRAR</button>
                 </div>
             </div>
         <div class="col-xl-4 col-sm-2"></div>
@@ -68,3 +68,9 @@
 	}
 </script>
 
+<style>
+    #cadastro{
+        color: #FFFFFF;
+        margin-top: 18%;
+    }
+</style>

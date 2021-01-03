@@ -15,18 +15,69 @@
 		      		<center>Esqueceu a senha ? Clique aqui</center>
 				</div>
 				<div id="menu">
-					<button class="btn btn-success my-2 my-sm-0" type="submit" id="cadastro" @click=""><i class="fa fa-sign-in" aria-hidden="true"></i> Cadastro</button>
-					<button class="btn btn-success my-2 my-sm-0" type="submit" id="contato" @click=""><i class="fa fa-sign-in" aria-hidden="true"></i> Contato</button>
-					<button class="btn btn-success my-2 my-sm-0" type="submit" id="colaboracoes" @click=""><i class="fa fa-sign-in" aria-hidden="true"></i> Colaborações</button>
-					<button class="btn btn-success my-2 my-sm-0" type="submit" id="exportar" @click=""><i class="fa fa-sign-in" aria-hidden="true"></i> Exportar</button>
+					<center>
+						<button class="btn btn-success my-2 my-sm-0" type="submit" id="cadastro" @click="cadastro"><i class="fa fa-sign-in" aria-hidden="true"></i> Cadastro</button>
+						<button class="btn btn-success my-2 my-sm-0" type="submit" id="contato" @click="contato"><i class="fa fa-sign-in" aria-hidden="true"></i> Contato</button>
+						<button class="btn btn-success my-2 my-sm-0" type="submit" id="colaboracoes" @click="colaboracoes"><i class="fa fa-sign-in" aria-hidden="true"></i> Colaborações</button>
+						<button class="btn btn-success my-2 my-sm-0" type="submit" id="exportar" @click="exportar"><i class="fa fa-sign-in" aria-hidden="true"></i> Exportar</button>
+					</center>	
 				</div>
 			</div>
 	</div>
 </template>
 
 <script>
-	export default{
+	import axios from 'axios';
 
+	export default{
+		data(){
+			return{
+				usuario: '',
+				senha: ''
+			}
+		},
+		methods:{
+			colaborar: function(){
+				this.$router.push('/colaborar')
+			},
+			contato: function(){
+				this.$router.push('/contato')
+			},
+			cadastro: function(){
+				this.$router.push('/cadastro')
+			},
+			colaboracoes: function(){
+				this.$router.push('/colaboracoes')
+			},
+			exportar: function(){
+				this.$router.push('/exportar')
+			},
+
+			login(){
+				axios.post('http://localhost:3000/login', { usuario: this.usuario, senha: this.senha }).then((response) => {
+                    if(typeof(response.data) == 'string'){
+                    	alert(response.data);
+                    }
+                    else if(response.data.length != 0){
+                    	console.log(response);
+                    	if(response.data[0].tipo == 'colaborador'){
+                    		this.$router.push('/painel');
+                    	}
+                    	/*
+                    	else if(response.data[0].tipo == 'administrador'){
+                    		this.$router.push('/painel');
+                    	}
+                    	else if(response.data[0].tipo == 'anonimo'){
+                    		this.$router.push('/painel');
+                    	}
+                    	else if(response.data[0].tipo == 'default'){
+                    		this.$router.push('/painel');
+                    	}
+                    	*/
+                    }
+                })
+			}
+		}
 	}
 </script>
 
@@ -38,7 +89,6 @@
 	color: #FFFFFF;
 }
 #menu{
-	margin-left: 2%;
 	margin-top: 2%;
 }
 body{
