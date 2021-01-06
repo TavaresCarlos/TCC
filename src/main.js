@@ -11,7 +11,11 @@ import Contato from './componentes/Contato.vue'
 import Cadastro from './componentes/Cadastro.vue'
 import Colaboracoes from './componentes/Colaboracoes.vue'
 import Exportar from './componentes/Exportar.vue'
-import PainelUsuario from './componentes/PainelUsuario.vue'
+
+import Colaborador from './componentes/painel/Colaborador.vue'
+import Perfil from './componentes/painel/Perfil.vue'
+import TrocarSenha from './componentes/painel/TrocarSenha.vue'
+import Colaboracao from './componentes/painel/Colaboracao.vue'
 
 Vue.use(VueRouter)
 
@@ -24,7 +28,11 @@ const router = new VueRouter({
 		{ path: '/cadastro', component: Cadastro },
 		{ path: '/colaboracoes', component: Colaboracoes },
 		{ path: '/exportar', component: Exportar },
-		{ path: '/painel', component: PainelUsuario }
+		{ path: '/colaborador', component: Colaborador, children: [
+			{ path: '/colaborador/perfil', component: Perfil },
+			{ path: '/colaborador/trocarSenha', component: TrocarSenha },
+			{ path: '/colaborador/colaboracao', component: Colaboracao}
+		]}
 	]
 })
 

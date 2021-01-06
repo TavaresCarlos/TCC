@@ -61,17 +61,17 @@
                     else if(response.data.length != 0){
                     	console.log(response);
                     	if(response.data[0].tipo == 'colaborador'){
-                    		this.$router.push('/painel');
+                    		this.$router.push('/colaborador');
                     	}
                     	/*
                     	else if(response.data[0].tipo == 'administrador'){
-                    		this.$router.push('/painel');
+                    		this.$router.push('/administrador');
                     	}
                     	else if(response.data[0].tipo == 'anonimo'){
-                    		this.$router.push('/painel');
+                    		this.$router.push('/anonimo');
                     	}
                     	else if(response.data[0].tipo == 'default'){
-                    		this.$router.push('/painel');
+                    		this.$router.push('/default');
                     	}
                     	*/
                     }

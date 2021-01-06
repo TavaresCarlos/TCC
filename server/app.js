@@ -10,10 +10,10 @@ const Pool = require('pg').Pool;
 const app = express();
 const port = 3000;
 
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: false, cookie: {maxAge: 3600000} }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }))
 
 const pool = new Pool({
 	user: 'postgres',
@@ -95,6 +95,7 @@ app.post('/login', (req, res) => {
 					//Iniciando a sessão do usuário no sistema
 					req.session.loggedin = true;
 					req.session.username = usuario;
+
 					res.json(results.rows);
 				}
 				else{
@@ -107,6 +108,42 @@ app.post('/login', (req, res) => {
 	console.log(query);
 })
 
+app.post('/perfil', (req, res) => {
+	//if(req.session.loggedin){
+		const usuario = req.session.username;
+		var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+		
+		console.log(query);
+
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	//}
+})
+
+app.post('/trocarSenha', (req, res) => {
+	//if(req.session.loggedin){
+		const usuario = req.session.username;
+		var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+		
+		console.log(query);
+
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	//}
+})
+	
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {
