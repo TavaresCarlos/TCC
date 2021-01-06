@@ -82,12 +82,12 @@
 		    this.mapa.addControl(drawControl);
 
 			//Texto mostrado quando o usuário clica na geometria desenhada
-            this.mapa.on('draw:created', function(e){ 
+            this.mapa.on('draw:created', (e) => { 
                 var type = e.layerType;
                 var layer = e.layer;
 
                 if(type == 'polyline'){
-                    var tipo = "LineString";
+                    const tipo = "LineString";
                     var latLng = "";
                                     
                     //Definindo o formato da entrada tipo linestring                
@@ -103,7 +103,7 @@
                     var distanciaTeste = 0;
                         
                     //Calculando na mão o tamanho em 'm' da polyline com base no algoritmo de geodésia (https://www.mapanet.eu/PT/resources/Script-Distance.htm)
-                    var tamanho = e.layer._latlngs.length;
+                    const tamanho = e.layer._latlngs.length;
                     for(var i=0; i<tamanho; i++){
                         if((i+1) < tamanho){
 	                        var lat1 = e.layer._latlngs[i].lat;
@@ -221,9 +221,9 @@
                 }
 
                 if(type == 'polygon'){
-                    var tipo = "Polygon";
+                    const tipo = "Polygon";
                     //Determina a quantidade de pontos que o usuário entrou
-                    var quant_pontos = e.layer._latlngs[0].length;   
+                    const quant_pontos = e.layer._latlngs[0].length;   
 
                     var latLng = "";
                     var primeiro_ponto = "";
@@ -251,7 +251,7 @@
                     var formato_consulta = "[[" + latLng + "]]"    
 
                     //Obtendo a area em m2
-                    var area = L.GeometryUtil.geodesicArea(e.layer.getLatLngs()[0]);
+                    const area = L.GeometryUtil.geodesicArea(e.layer.getLatLngs()[0]);
 
                     var formulario = `<div id="formulario">
                                          	<form action="" method="POST">
