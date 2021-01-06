@@ -140,7 +140,7 @@
                                             <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
                                             <br>
                                             <br>
-                                            <button onclick="selectCategoria();">Categoria:</button>
+                                            <button onclick="selectCategoria();" id="botao-categoria">Categoria:</button>
                                             <select id="categoria" name="categoria" onchange="selectSubcategoria()">
                                             </select>
                                             <br>
@@ -166,7 +166,7 @@
                                             <br>
                                             <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
                                             <br>
-                                            <button type="submit">Enviar</button>
+                                            <button type="submit" id="enviar">Enviar</button>
                                             </form>
                                           </div>
                                     `;
@@ -182,14 +182,14 @@
                     var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";
                                     
                     var informacoesConsulta = `<div id="informacoes">
-                                                    form action="" method="POST">
+                                                    <form action="" method="POST">
                                                         <div id="formulario">
                                                          	Titulo da colaboração:
                                                             <br> 
                                                             <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
                                                             <br>
                                                             <br>
-                                                            <button onclick="selectCategoria();">Categoria:</button>
+                                                            <button onclick="selectCategoria();" id="botao-categoria">Categoria:</button>
                                                             <select id="categoria" name="categoria" onchange="selectSubcategoria()"></select>
                                                             <br>
                                                             Subcategoria
@@ -211,7 +211,7 @@
                                                             <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
                                                             <br>
                                                             <input type=hidden id="distanciaArea" name="distanciaArea" value="0.0">
-                                                            <button type="submit">Enviar</button>
+                                                            <button type="submit" id="enviar">Enviar</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -260,7 +260,7 @@
                                                 <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
                                                 <br>
                                                 <br>
-                                                <button onclick="selectCategoria();">Categoria:</button>
+                                                <button onclick="selectCategoria();" id="botao-categoria">Categoria:</button>
                                                 <select id="categoria" name="categoria" onchange="selectSubcategoria()"></select>
                                                 <br>
                                                 Subcategoria:
@@ -285,7 +285,7 @@
                                                 <br>
                                                 <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
                                                 <br>
-                                                <button type="submit">Enviar</button>
+                                                <button type="submit" id="enviar">Enviar</button>
                                             </form>
                                         </div>
                                     `;
@@ -308,5 +308,13 @@
 		width: 87%;
 	   	height: 90vh;
 	   	margin-top: 0.5%;
+	}
+	#formulario{
+		/*border: 1px solid black;*/
+		color: #274360;
+	}
+	#titulo, #categoria, #subcategoria, #data-ocorrencia, #distanciaArea, #tipoGeometria, #descricao, #botao-categoria, #enviar{
+		border-radius: 5px;
+		border: 1px solid #274360;
 	}
 </style>
