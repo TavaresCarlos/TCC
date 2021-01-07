@@ -33,7 +33,7 @@
 
 <style>
 .card{
-	margin-left: 1%;
+	margin-left: 0%;
 	height: 100%;
 	border-radius: 0px;
 }

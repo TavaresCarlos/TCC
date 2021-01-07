@@ -143,6 +143,43 @@ app.post('/trocarSenha', (req, res) => {
 		})
 	//}
 })
+
+app.post('/setCategoria', (req, res) => {
+	const categoria = req.body.categoria;
+
+	var query_01 = `SELECT nome FROM categorias WHERE nome = '${categoria}'`;
+	var query_02 = `INSERT INTO categorias (nome) VALUES ('${categoria}')`;
+	console.log(query_01);
+
+	pool.query(query_01, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			//Categoria ainda não cadastrada
+			if(results.rows.length == 0){
+				executaSql(query_02, res)
+			} 
+			//Categoria já cadastrada
+			else{
+				res.json("Categoria já cadastrada");
+			}
+		}
+	})
+})
+
+app.post('/getCategoria', (req, res)=>{
+	var query = "SELECT nome FROM categorias";
+	console.log(query);
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
+})
 	
 
 //Rodando o servidor

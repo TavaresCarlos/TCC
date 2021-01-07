@@ -13,9 +13,11 @@ import Colaboracoes from './componentes/Colaboracoes.vue'
 import Exportar from './componentes/Exportar.vue'
 
 import Colaborador from './componentes/painel/Colaborador.vue'
+import Administrador from './componentes/painel/Administrador.vue'
 import Perfil from './componentes/painel/Perfil.vue'
 import TrocarSenha from './componentes/painel/TrocarSenha.vue'
 import Colaboracao from './componentes/painel/Colaboracao.vue'
+import AdicionarCategorias from './componentes/painel/AdicionarCategorias.vue'
 
 Vue.use(VueRouter)
 
@@ -32,6 +34,12 @@ const router = new VueRouter({
 			{ path: '/colaborador/perfil', component: Perfil },
 			{ path: '/colaborador/trocarSenha', component: TrocarSenha },
 			{ path: '/colaborador/colaboracao', component: Colaboracao}
+		]},
+		{ path: '/administrador', component: Administrador, children: [
+			{ path: '/administrador/perfil', component: Perfil },
+			{ path: '/administrador/trocarSenha', component: TrocarSenha },
+			{ path: '/administrador/colaboracao', component: Colaboracao },
+			{ path: '/administrador/adicionarCategorias', component: AdicionarCategorias }
 		]}
 	]
 })

@@ -5,15 +5,31 @@
 </template>
 
 <script>
+    import axios from 'axios';
+
 	export default{
 		data(){
 			return{
 				mapa: '',
 				tileLayer: '',
 				baseLayer: [],
-				overlayLayer: ''
+				overlayLayer: '',
+                titulo: '',
+                categoria: [],
+                subcategoria: '',
+                distanciaArea: '',
+                dataOcorrencia: '',
+                tipoGeometria: '',
+                descricao: ''
 			}
 		},
+        created: function(){
+            axios.post('http://localhost:3000/getCategoria').then((response) => {
+                for(var i=0; i<response.data.length; i++){
+                    this.categoria.push(response.data[i].nome);
+                }
+            })
+        },
 		mounted(){
 			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 13);
 		
@@ -133,44 +149,12 @@
                     //var formato_consulta = "'" + tipo + "("+ latLng + ")'";
                     var formato_consulta = "[" + latLng + "]";
 
-                    var formulario = `<div id="formulario">
-                                        <form action="" method="POST">
-                                            Titulo da colaboração:
-                                            <br> 
-                                            <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
-                                            <br>
-                                            <br>
-                                            <button onclick="selectCategoria();" id="botao-categoria">Categoria:</button>
-                                            <select id="categoria" name="categoria" onchange="selectSubcategoria()">
-                                            </select>
-                                            <br>
-                                            Subcategoria:
-                                            <br>
-                                            <select id="subcategoria" name="subcategoria"></select>
-                                            <br>
-                                            Data da ocorrência:
-                                            <br>
-                                            <input type="date" id="data-ocorrencia" name="data-ocorrencia" required>
-                                            <br>
-                                            Tipo de geometria:
-                                            <br>
-                                            <input type="text" id="tipoGeometria" name="tipoGeometria" value="`+ tipo +`" readonly="readonly">
-                                            <br>
-                                            Distância atingida:
-                                            <br>
-                                            <input type="text" id="distanciaArea" name="distanciaArea" value="`+ distanciaTeste +`"> m
-                                            <br>
-                                            Descrição:
-                                            <br>
-                                            <textarea id="descricao" name="descricao" rows="4" cols="30" required></textarea>
-                                            <br>
-                                            <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
-                                            <br>
-                                            <button type="submit" id="enviar">Enviar</button>
-                                            </form>
-                                          </div>
-                                    `;
+                    formulario = `<div id="formulario">
+                                    `+this.categoria+`
+                                  </div>`;
+
                     layer.bindPopup(formulario);
+
                 }
 
                 if(type == 'marker'){
@@ -182,38 +166,36 @@
                     var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";
                                     
                     var informacoesConsulta = `<div id="informacoes">
-                                                    <form action="" method="POST">
                                                         <div id="formulario">
                                                          	Titulo da colaboração:
                                                             <br> 
-                                                            <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
+                                                            <input type="text" id="titulo" name="titulo" v-model="titulo" placeholder="Titulo" required">
                                                             <br>
                                                             <br>
-                                                            <button onclick="selectCategoria();" id="botao-categoria">Categoria:</button>
-                                                            <select id="categoria" name="categoria" onchange="selectSubcategoria()"></select>
+                                                            <button @click="selectCategoria" id="botao-categoria">Categoria:</button>
+                                                            <select id="categoria" name="categoria" v-model="categoria" onchange="selectSubcategoria()"></select>
                                                             <br>
                                                             Subcategoria
                                                             <br>
-                                                            <select id="subcategoria" name="subcategoria"> </select>
+                                                            <select id="subcategoria" name="subcategoria" v-model="subcategoria"> </select>
                                                             <br>
                                                             Data da ocorrência:
                                                             <br>
-                                                            <input type="date" id="data-ocorrencia" name="data-ocorrencia" required>
+                                                            <input type="date" id="data-ocorrencia" name="data-ocorrencia" v-model="dataOcorrencia" required>
                                                             <br>            
                                                             Tipo de geometria:
                                                             <br>
-                                                            <input type="text" id="tipoGeometria" name="tipoGeometria" value="`+ tipo +`" readonly="readonly">
+                                                            <input type="text" id="tipoGeometria" name="tipoGeometria" v-model="tipoGeometria" value="`+ tipo +`" readonly="readonly">
                                                             <br>
                                                             Descrição:
                                                             <br>
-                                                            <textarea id="descricao" name="descricao" rows="4" cols="30" required></textarea>
+                                                            <textarea id="descricao" name="descricao" rows="4" cols="30" v-model="descricao" required></textarea>
                                                             <br>
                                                             <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
                                                             <br>
                                                             <input type=hidden id="distanciaArea" name="distanciaArea" value="0.0">
                                                             <button type="submit" id="enviar">Enviar</button>
                                                         </div>
-                                                    </form>
                                                 </div>
                                     			`;
                                     
@@ -254,13 +236,13 @@
                     const area = L.GeometryUtil.geodesicArea(e.layer.getLatLngs()[0]);
 
                     var formulario = `<div id="formulario">
-                                         	<form action="" method="POST">
+                                         	
                                             	Titulo da colaboração:
                                                 <br> 
                                                 <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
                                                 <br>
                                                 <br>
-                                                <button onclick="selectCategoria();" id="botao-categoria">Categoria:</button>
+                                                <button type="submit" @click="selectCategoria()" id="botao-categoria">Categoria:</button>
                                                 <select id="categoria" name="categoria" onchange="selectSubcategoria()"></select>
                                                 <br>
                                                 Subcategoria:
@@ -286,9 +268,10 @@
                                                 <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
                                                 <br>
                                                 <button type="submit" id="enviar">Enviar</button>
-                                            </form>
+                                           
                                         </div>
                                     `;
+
 					layer.bindPopup(formulario);
                 }
 
@@ -298,7 +281,12 @@
             L.control.groupedLayers(baseMaps, null, optionsControl).addTo(this.mapa);
 			//Barra de escala
 			L.control.scale({ metric: true }).addTo(this.mapa);
-		}
+		},
+        methods:{
+            selectCategoria: function(){
+                console.log(this.titulo);
+            }
+        }
 	}
 </script>
 

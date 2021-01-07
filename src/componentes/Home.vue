@@ -63,10 +63,10 @@
                     	if(response.data[0].tipo == 'colaborador'){
                     		this.$router.push('/colaborador');
                     	}
-                    	/*
                     	else if(response.data[0].tipo == 'administrador'){
                     		this.$router.push('/administrador');
                     	}
+                    	/*
                     	else if(response.data[0].tipo == 'anonimo'){
                     		this.$router.push('/anonimo');
                     	}
