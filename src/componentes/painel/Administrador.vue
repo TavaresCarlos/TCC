@@ -48,6 +48,6 @@
 	margin-top: 1%;
 }
 #colaborar, #perfil, #trocarSenha, #logout{
-	margin: 2px 1px 2px 2px;
+	margin: 1px 1px 1px 1px;
 }
 </style>

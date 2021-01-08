@@ -1,6 +1,27 @@
 <template>
 	<div id="colaboracao">
 		<div id="mapa"></div>
+
+
+		<div id="mymodal" class="modal fade" tabindex="-1" role="dialog">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		         	<div class="modal-header">
+		            	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		            		<h4 class="modal-title">Modal title</h4>
+		          	</div>
+			        <div class="modal-body">
+			            <p>One fine body&hellip;</p>
+			        </div>
+			        <div class="modal-footer">
+			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			            <button type="button" class="btn btn-primary">Confirm</button>
+			        </div>
+		    	</div>
+			</div>
+    	</div>
+
+    	
 	</div>
 </template>
 
@@ -101,6 +122,8 @@
             this.mapa.on('draw:created', (e) => { 
                 var type = e.layerType;
                 var layer = e.layer;
+
+                $('#mymodal').modal('show');
 
                 if(type == 'polyline'){
                     const tipo = "LineString";
@@ -283,17 +306,17 @@
 			L.control.scale({ metric: true }).addTo(this.mapa);
 		},
         methods:{
-            selectCategoria: function(){
-                console.log(this.titulo);
-            }
-        }
+            formularioColaboracao: function(){
+            	
+			}
+		}
 	}
 </script>
 
 <style>
 	#colaboracao{
 		margin-left: 1%;
-		width: 87%;
+		width: 85%;
 	   	height: 90vh;
 	   	margin-top: 0.5%;
 	}
