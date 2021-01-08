@@ -8,14 +8,30 @@
 		        <div class="modal-content">
 		         	<div class="modal-header">
 		            	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		            		<h4 class="modal-title">Modal title</h4>
 		          	</div>
 			        <div class="modal-body">
-			            <p>One fine body&hellip;</p>
-			        </div>
-			        <div class="modal-footer">
-			        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			            <button type="button" class="btn btn-primary">Confirm</button>
+                        <div id="formulario">
+                            <label for="titulo" class="form-label">Titulo</label>
+                                <input type="text" class="form-control" id="titulo" name="titulo" v-model="titulo" placeholder="Titulo">
+                            <label for="categoria" class="form-label">Categoria</label><br>
+                                <select v-model="categoria">
+                                    <option v-for="cat in this.categoria">
+                                        {{ cat }}
+                                    </option>
+                                </select>
+                            <br>
+                            <label for="subcategoria" class="form-label">Subategoria</label><br>
+                            <label for="distanciaArea" class="form-label">Distância ou Área</label>
+                                <input type="text" class="form-control" id="distanciaArea" name="distanciaArea" v-model="this.distanciaArea">
+                            <label for="dataOcorrencia" class="form-label">Data</label>
+                                <input type="date" class="form-control" id="dataOcorrencia"" name="dataOcorrencia" placeholder="">
+                            <label for="tipoGeometria" class="form-label">Tipo de Geometria</label>
+                                <input type="text" class="form-control" id="tipoGeometria" name="tipoGeometria" v-model="this.tipoGeometria">
+                            <label for="descricao" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                            <br>
+                            <button class="btn btn-success btn-sm btn-block" type="submit" @click="">Enviar</button>
+                        </div>
 			        </div>
 		    	</div>
 			</div>
@@ -38,7 +54,7 @@
                 titulo: '',
                 categoria: [],
                 subcategoria: '',
-                distanciaArea: '',
+                distanciaArea: 0,
                 dataOcorrencia: '',
                 tipoGeometria: '',
                 descricao: ''
@@ -126,7 +142,6 @@
                 $('#mymodal').modal('show');
 
                 if(type == 'polyline'){
-                    const tipo = "LineString";
                     var latLng = "";
                                     
                     //Definindo o formato da entrada tipo linestring                
@@ -166,67 +181,28 @@
                     //Passando a distância de 'km' para 'm'
                     distanciaTeste = (distanciaTeste*1000).toFixed(2);
 
+                    this.distanciaArea = distanciaTeste;
+                    this.tipoGeometria = "LineString";
+
                     //Alterar o formato_consulta para o do Leaflet (faciliar e muito na hora de plotar nele)
 
                     //Monta a variável no formato da consulta de inserção no banco de dados
                     //var formato_consulta = "'" + tipo + "("+ latLng + ")'";
                     var formato_consulta = "[" + latLng + "]";
 
-                    formulario = `<div id="formulario">
-                                    `+this.categoria+`
-                                  </div>`;
-
-                    layer.bindPopup(formulario);
-
                 }
 
                 if(type == 'marker'){
                     var coord = layer.getLatLng();
 
-                    var tipo = "Point";
+                    this.distanciaArea = 0;
+                    this.tipoGeometria = "Point";
 
                     //Monta a variável no formato da consulta de inserção no banco de dados
-                    var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";
-                                    
-                    var informacoesConsulta = `<div id="informacoes">
-                                                        <div id="formulario">
-                                                         	Titulo da colaboração:
-                                                            <br> 
-                                                            <input type="text" id="titulo" name="titulo" v-model="titulo" placeholder="Titulo" required">
-                                                            <br>
-                                                            <br>
-                                                            <button @click="selectCategoria" id="botao-categoria">Categoria:</button>
-                                                            <select id="categoria" name="categoria" v-model="categoria" onchange="selectSubcategoria()"></select>
-                                                            <br>
-                                                            Subcategoria
-                                                            <br>
-                                                            <select id="subcategoria" name="subcategoria" v-model="subcategoria"> </select>
-                                                            <br>
-                                                            Data da ocorrência:
-                                                            <br>
-                                                            <input type="date" id="data-ocorrencia" name="data-ocorrencia" v-model="dataOcorrencia" required>
-                                                            <br>            
-                                                            Tipo de geometria:
-                                                            <br>
-                                                            <input type="text" id="tipoGeometria" name="tipoGeometria" v-model="tipoGeometria" value="`+ tipo +`" readonly="readonly">
-                                                            <br>
-                                                            Descrição:
-                                                            <br>
-                                                            <textarea id="descricao" name="descricao" rows="4" cols="30" v-model="descricao" required></textarea>
-                                                            <br>
-                                                            <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
-                                                            <br>
-                                                            <input type=hidden id="distanciaArea" name="distanciaArea" value="0.0">
-                                                            <button type="submit" id="enviar">Enviar</button>
-                                                        </div>
-                                                </div>
-                                    			`;
-                                    
-                    layer.bindPopup(informacoesConsulta);
+                    var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";        
                 }
 
                 if(type == 'polygon'){
-                    const tipo = "Polygon";
                     //Determina a quantidade de pontos que o usuário entrou
                     const quant_pontos = e.layer._latlngs[0].length;   
 
@@ -257,45 +233,8 @@
 
                     //Obtendo a area em m2
                     const area = L.GeometryUtil.geodesicArea(e.layer.getLatLngs()[0]);
-
-                    var formulario = `<div id="formulario">
-                                         	
-                                            	Titulo da colaboração:
-                                                <br> 
-                                                <input type="text" id="titulo" name="titulo" placeholder="Titulo" required">
-                                                <br>
-                                                <br>
-                                                <button type="submit" @click="selectCategoria()" id="botao-categoria">Categoria:</button>
-                                                <select id="categoria" name="categoria" onchange="selectSubcategoria()"></select>
-                                                <br>
-                                                Subcategoria:
-                                                <br>
-                                                <select id="subcategoria" name="subcategoria"></select>
-                                                <br>
-                                                Data da ocorrência:
-                                                <br>
-                                                <input type="date" id="data-ocorrencia" name="data-ocorrencia" required>
-                                                <br>
-                                                Área atingida:
-                                                <br>
-                                                <input type="text" id="distanciaArea" name="distanciaArea" value="`+ area.toFixed(2) +`">  m2
-                                                <br>
-                                                Tipo de geometria:
-                                                <br>
-                                                <input type="text" id="tipoGeometria" name="tipoGeometria" value="`+ tipo +`" readonly="readonly">
-                                                <br>
-                                                Descrição:
-                                                <br>
-                                                <textarea id="descricao" name="descricao" rows="4" cols="30" required></textarea>
-                                                <br>
-                                                <input type=hidden id="consulta" name="consulta" value=`+ formato_consulta +`>
-                                                <br>
-                                                <button type="submit" id="enviar">Enviar</button>
-                                           
-                                        </div>
-                                    `;
-
-					layer.bindPopup(formulario);
+                    this.distanciaArea = area.toFixed(2);
+                    this.tipoGeometria = "Polygon";
                 }
 
                 drawnItems.addLayer(layer); //Define o desenho como uma camada
@@ -306,9 +245,6 @@
 			L.control.scale({ metric: true }).addTo(this.mapa);
 		},
         methods:{
-            formularioColaboracao: function(){
-            	
-			}
 		}
 	}
 </script>
