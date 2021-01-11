@@ -18,6 +18,7 @@ import Perfil from './componentes/painel/Perfil.vue'
 import TrocarSenha from './componentes/painel/TrocarSenha.vue'
 import Colaboracao from './componentes/painel/Colaboracao.vue'
 import AdicionarCategorias from './componentes/painel/AdicionarCategorias.vue'
+import AdiconarSubcategorias from './componentes/painel/AdiconarSubcategorias.vue'
 
 Vue.use(VueRouter)
 
@@ -39,7 +40,8 @@ const router = new VueRouter({
 			{ path: '/administrador/perfil', component: Perfil },
 			{ path: '/administrador/trocarSenha', component: TrocarSenha },
 			{ path: '/administrador/colaboracao', component: Colaboracao },
-			{ path: '/administrador/adicionarCategorias', component: AdicionarCategorias }
+			{ path: '/administrador/adicionarCategorias', component: AdicionarCategorias },
+			{ path: '/administrador/adicionarSubcategorias', component: AdiconarSubcategorias }
 		]}
 	]
 })

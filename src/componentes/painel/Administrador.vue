@@ -5,7 +5,7 @@
 				<h5 class="card-title"><center>Bem-Vindo</center></h5>
 				<div id="painel">
 					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addCategorias()"><span class="oi oi-plus"></span>Add Categorias</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Add Subcategorias</a>
+					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addSubcategorias()"><span class="oi oi-plus"></span>Add Subcategorias</a>
 					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Contatos</a>
 					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Colaborações</a>
 					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="colaboracao()"><span class="oi oi-plus"></span>Colaboração</a>
@@ -33,6 +33,9 @@
 			},
 			addCategorias: function(){
 				this.$router.push({ path: `/administrador/adicionarCategorias` })
+			},
+			addSubcategorias: function(){
+				this.$router.push({ path: `/administrador/adicionarSubcategorias` })
 			}
 		}
 	}

@@ -14,13 +14,19 @@
                             <label for="titulo" class="form-label">Titulo</label>
                                 <input type="text" class="form-control" id="titulo" name="titulo" v-model="titulo" placeholder="Titulo">
                             <label for="categoria" class="form-label">Categoria</label><br>
-                                <select v-model="categoria">
+                                <select v-model="categoriaSalvar">
                                     <option v-for="cat in this.categoria">
                                         {{ cat }}
                                     </option>
                                 </select>
                             <br>
-                            <label for="subcategoria" class="form-label">Subategoria</label><br>
+                            <label for="subcategoria" class="form-label">Subcategoria</label><br>
+                                <select v-model="subcategoriaSalvar">
+                                        <option v-for="subcat in this.subcategoria">
+                                            {{ subcat }}
+                                        </option>
+                                    </select>
+                                <br>
                             <label for="distanciaArea" class="form-label">Distância ou Área</label>
                                 <input type="text" class="form-control" id="distanciaArea" name="distanciaArea" v-model="this.distanciaArea">
                             <label for="dataOcorrencia" class="form-label">Data</label>
@@ -53,7 +59,9 @@
 				overlayLayer: '',
                 titulo: '',
                 categoria: [],
+                categoriaSalvar: '',
                 subcategoria: '',
+                subcategoriaSalvar: '',
                 distanciaArea: 0,
                 dataOcorrencia: '',
                 tipoGeometria: '',

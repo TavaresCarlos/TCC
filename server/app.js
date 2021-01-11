@@ -158,7 +158,7 @@ app.post('/setCategoria', (req, res) => {
 		else{
 			//Categoria ainda não cadastrada
 			if(results.rows.length == 0){
-				executaSql(query_02, res)
+				executaSql(query_02, res);
 			} 
 			//Categoria já cadastrada
 			else{
@@ -177,6 +177,42 @@ app.post('/getCategoria', (req, res)=>{
 		}
 		else{
 			res.json(results.rows);
+		}
+	})
+})
+
+app.post('/setSubcategoria', (req, res) => {
+	const categoria = req.body.categoria;
+	const subcategoria = req.body.subcategoria;
+
+	var query_01 = `SELECT nome FROM subcategorias WHERE nome = '${subcategoria}'`;
+	var query_02 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
+
+	pool.query(query_01, (error, results) => {
+		console.log(query_01);
+		if(error){
+			res.json(error);
+		}
+		else{
+			//Subcategoria ainda não cadastrada
+			if(results.rows.length == 0){
+				console.log(query_02);
+				pool.query(query_02, (error, results) => {
+					if(error){
+						res.json(error);
+					}
+					else{
+						const idcategorias = results.rows[0].idcategorias;
+						var query_03 = `INSERT INTO subcategorias (nome, idcategorias) VALUES ('${subcategoria}', '${idcategorias}')`;
+						console.log(query_03);
+						executaSql(query_03, res);
+					}
+				})
+			} 
+			//Subcategoria já cadastrada
+			else{
+				res.json("Categoria já cadastrada");
+			}
 		}
 	})
 })
