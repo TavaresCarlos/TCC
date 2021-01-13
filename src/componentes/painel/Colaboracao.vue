@@ -14,7 +14,7 @@
                             <label for="titulo" class="form-label">Titulo</label>
                                 <input type="text" class="form-control" id="titulo" name="titulo" v-model="titulo" placeholder="Titulo">
                             <label for="categoria" class="form-label">Categoria</label><br>
-                                <select v-model="categoriaSalvar">
+                                <select v-model="categoriaSalvar" @change="selecionarSubcategorias">
                                     <option v-for="cat in this.categoria">
                                         {{ cat }}
                                     </option>
@@ -22,21 +22,21 @@
                             <br>
                             <label for="subcategoria" class="form-label">Subcategoria</label><br>
                                 <select v-model="subcategoriaSalvar">
-                                        <option v-for="subcat in this.subcategoria">
-                                            {{ subcat }}
-                                        </option>
-                                    </select>
+                                    <option v-for="subcat in this.subcategoria">
+                                        {{ subcat }}
+                                    </option>
+                                </select>
                                 <br>
                             <label for="distanciaArea" class="form-label">Distância ou Área</label>
                                 <input type="text" class="form-control" id="distanciaArea" name="distanciaArea" v-model="this.distanciaArea">
                             <label for="dataOcorrencia" class="form-label">Data</label>
-                                <input type="date" class="form-control" id="dataOcorrencia"" name="dataOcorrencia" placeholder="">
+                                <input type="date" class="form-control" id="dataOcorrencia"" name="dataOcorrencia" v-model="dataOcorrencia" placeholder="">
                             <label for="tipoGeometria" class="form-label">Tipo de Geometria</label>
                                 <input type="text" class="form-control" id="tipoGeometria" name="tipoGeometria" v-model="this.tipoGeometria">
                             <label for="descricao" class="form-label">Descrição</label>
-                                <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                                <textarea class="form-control" id="descricao" name="descricao" v-model="descricao" rows="3"></textarea>
                             <br>
-                            <button class="btn btn-success btn-sm btn-block" type="submit" @click="">Enviar</button>
+                            <button class="btn btn-success btn-sm btn-block" type="submit" @click="enviar">Enviar</button>
                         </div>
 			        </div>
 		    	</div>
@@ -60,7 +60,7 @@
                 titulo: '',
                 categoria: [],
                 categoriaSalvar: '',
-                subcategoria: '',
+                subcategoria: [],
                 subcategoriaSalvar: '',
                 distanciaArea: 0,
                 dataOcorrencia: '',
@@ -253,6 +253,28 @@
 			L.control.scale({ metric: true }).addTo(this.mapa);
 		},
         methods:{
+            selecionarSubcategorias: function(){
+                axios.post('http://localhost:3000/getSubcategoria',  { categoria: this.categoriaSalvar }).then((response) => {
+                    console.log(typeof(response.data));
+                    if(response.data.length != 0){
+                        for(var i=0; i<response.data.length; i++){
+                            this.subcategoria.push(response.data[i].nome);
+                        }
+                    }
+                    else if(response.data.length == 0){
+                        this.subcategoria = [];
+                    }
+                })
+            },
+            enviar: function(){
+                console.log(this.titulo);
+                console.log(this.categoriaSalvar);
+                console.log(this.subcategoriaSalvar);
+                console.log(this.distanciaArea);
+                console.log(this.dataOcorrencia);
+                console.log(this.tipoGeometria);
+                console.log(this.descricao);
+            }
 		}
 	}
 </script>

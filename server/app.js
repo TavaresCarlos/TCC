@@ -216,6 +216,32 @@ app.post('/setSubcategoria', (req, res) => {
 		}
 	})
 })
+
+app.post('/getSubcategoria', (req, res)=>{
+	var categoria = req.body.categoria;
+
+	var query_01 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
+
+	console.log(query_01);
+	pool.query(query_01, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			var idcategorias = (results.rows[0].idcategorias);
+			var query_02 = `SELECT nome FROM subcategorias WHERE idcategorias = '${idcategorias}'`;
+			console.log(query_02);
+			pool.query(query_02, (error, results) => {
+				if(error){
+					res.json(error);
+				}
+				else{
+					res.json(results.rows);
+				}
+			})
+		}
+	})
+})
 	
 
 //Rodando o servidor

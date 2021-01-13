@@ -17,7 +17,7 @@
 		},
 		methods:{
 			salvarCategoria(){
-				axios.post('http://localhost:3000/setCategoria', { categoria: this.categoria }).then((response) => {
+				axios.post('http://localhost:3000/setCategoria', { categoria: this.categoria } ).then((response) => {
 					if(response.data.length == 0){
                         this.$router.push('/administrador');
                         alert("Categoria cadastrada com sucesso");
