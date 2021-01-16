@@ -18,7 +18,8 @@
 <br>-Anônimo
 <br>-Colaborador
 <h2>Como usar:</h2>
-
+<h2>Observação:</h2>
+<p>Cada categoria deve conter pelo menos uma subcategoria cadastrada no sistema.</p>
 <h2>Instalação</h2>
 
 <h3>Dependências</h3>
