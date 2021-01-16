@@ -242,7 +242,53 @@ app.post('/getSubcategoria', (req, res)=>{
 		}
 	})
 })
-	
+
+app.post('/setColaboracao', (req, res) => {
+	const titulo = req.body.titulo;
+	const categoria = req.body.categoria;
+	const subcategoria = req.body.subcategoria;
+	const distanciaArea = req.body.distanciaArea;
+	const dataOcorrencia = req.body.dataOcorrencia;
+	const tipoGeometria = req.body.tipoGeometria;
+	const descricao = req.body.descricao;
+	const publicado = 'nao';
+
+	var query_01 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
+	var query_02 = `SELECT idsubcategorias FROM subcategorias WHERE nome = '${subcategoria}'`;
+
+	pool.query(query_01, (error, results) => {
+		console.log(query_01);
+		if(error){
+			res.json(error);
+		}
+		else{
+			const idcategorias = results.rows[0].idcategorias;
+			pool.query(query_02, (error, results) => {
+				console.log(results.rows.length);
+				console.log(query_02);
+				if(error){
+					res.json(error);
+				}
+				else{
+					//Há subcategorias
+					if(results.rows.length != 0){
+						const idsubcategorias = results.rows[0].idsubcategorias;
+						var query_03 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}')`;
+						executaSql(query_03, res);
+						console.log(query_03);
+					}
+					//Não há subcategorias
+					else if(results.rows.length == 0){
+						const idsubcategorias = 0;
+						var query_03 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}')`;
+						executaSql(query_03, res);
+						console.log(query_03);
+					}
+				}
+			})
+		}
+	})
+})
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {

@@ -147,6 +147,11 @@
                 var type = e.layerType;
                 var layer = e.layer;
 
+          		this.titulo = '';
+          		this.dataOcorrencia = '';
+          		this.tipoGeometria = '';
+          		this.descricao = '';
+
                 $('#mymodal').modal('show');
 
                 if(type == 'polyline'){
@@ -257,6 +262,7 @@
                 axios.post('http://localhost:3000/getSubcategoria',  { categoria: this.categoriaSalvar }).then((response) => {
                     console.log(typeof(response.data));
                     if(response.data.length != 0){
+                    	this.subcategoria = [];
                         for(var i=0; i<response.data.length; i++){
                             this.subcategoria.push(response.data[i].nome);
                         }
@@ -267,13 +273,19 @@
                 })
             },
             enviar: function(){
-                console.log(this.titulo);
+                /*console.log(this.titulo);
                 console.log(this.categoriaSalvar);
                 console.log(this.subcategoriaSalvar);
                 console.log(this.distanciaArea);
                 console.log(this.dataOcorrencia);
                 console.log(this.tipoGeometria);
-                console.log(this.descricao);
+                console.log(this.descricao);*/
+
+                axios.post('http://localhost:3000/setColaboracao',  { titulo: this.titulo, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, distanciaArea: this.distanciaArea, dataOcorrencia: this.dataOcorrencia, tipoGeometria: this.tipoGeometria, descricao: this.descricao }).then((response) => {
+                    	if(response.data.length == 0){
+                    		alert("Contribuição inserida com sucesso");
+                    	}
+                })
             }
 		}
 	}
