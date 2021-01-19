@@ -18,10 +18,10 @@
 <br>-Anônimo
 <br>-Colaborador
 <h2>Como usar:</h2>
+<p>Basta clonar o repositório do projeto em seu computador. Após isso, é necessário criar o banco de dados PostgreSQL, executando o script da pasta "banco-de-dados" e definir os parâmetros de conexão no arquivo "server/app.js".</p>
 <h2>Observação:</h2>
 <p>Cada categoria adicionada pelo usuário administrador deve conter pelo menos uma subcategoria cadastrada no sistema.</p>
 <h2>Instalação</h2>
-
 <h3>Dependências</h3>
 <p>npm install</p>
 
