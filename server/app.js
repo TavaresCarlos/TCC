@@ -291,6 +291,22 @@ app.post('/setColaboracao', (req, res) => {
 	})
 })
 
+app.post('/getColaboracoes', (req, res) => {
+	var query = `SELECT ST_AsGeoJSON(geom) FROM contribuicao`;
+	//var query = `select st_asgeojson(st_transform(ST_SetSRID(geom, 3857), 4326)) from contribuicao`;
+		
+	console.log(query);
+
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
+})
+
 //Rodando o servidor
 http.createServer(app).listen(port, () => {
 	console.log("Servidor online");

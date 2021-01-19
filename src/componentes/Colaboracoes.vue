@@ -5,17 +5,31 @@
 </template>
 
 <script>
+	import axios from 'axios';
+
 	export default{
 		data(){
 			return{
 				mapa: '',
 				tileLayer: '',
 				baseLayer: [],
-				overlayLayer: ''
+				overlayLayer: '',
+				colaboracoes: []
 			}
 		},
+		created(){
+			axios.post('http://localhost:3000/getColaboracoes').then((response) => {
+                for(var i=0; i<response.data.length; i++){
+                    this.colaboracoes.push(response.data[i].st_asgeojson);
+                }
+
+                this.colaboracoes.forEach((data) => {
+                	L.geoJSON(JSON.parse(data)).addTo(this.mapa);
+                });
+            })
+		},
 		mounted(){
-			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 13);
+			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 4);
 		
 			const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(this.mapa);
@@ -34,6 +48,11 @@
 	        	"OSM 2": osm2,
 	            "Satélite": world
 	        };
+
+	        /*var geojson = [{"type":"Point","coordinates":[-19.53794677504797, -40.62796643556086]}];
+	        L.geoJSON(geojson).addTo(this.mapa);*/
+
+	       	L.geoJSON(this.colaboracoes).addTo(this.mapa);
 
 	        /*var overlay = {
             	"Base Maps" : {

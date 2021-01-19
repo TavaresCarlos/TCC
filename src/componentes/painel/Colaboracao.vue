@@ -215,7 +215,7 @@
                     //Monta a variável no formato da consulta de inserção no banco de dados
                     //var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";   
                     //this.coordenadas = "POINT(" + coord.lat + " " + coord.lng + ")";      
-                    this.coordenadas = '{ "type" : "Point", "coordinates" : [' + coord.lat + ', ' + coord.lng + '] }';
+                    this.coordenadas = '{ "type" : "Point", "coordinates" : [' + coord.lat + ', ' + coord.lng + '],"crs":{"type":"name","properties":{"name":"EPSG:3857"}} }';
                 }
 
                 if(type == 'polygon'){
