@@ -3,8 +3,8 @@
 <p>Framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas que utilizam VGI.</p> 
 <p>O sistema permite o compartilhamento de informações associados a pontos, linhas e polígonos traçados no mapa e a exportação dos dados no formato GeoJSON, permitindo assim o dimensionamento dos fatos observados e a interoperabilidade do sistema com outros sistemas de informação geográfica.
 <h2>Tecnologias:</h2>
--HTML
-<br>-CSS
+-HTML5
+<br>-CSS3
 <br>-Javascript
 <br>-Bootstrap
 <br>-Leaflet.js
@@ -19,7 +19,7 @@
 <br>-Colaborador
 <h2>Como usar:</h2>
 <h2>Observação:</h2>
-<p>Cada categoria deve conter pelo menos uma subcategoria cadastrada no sistema.</p>
+<p>Cada categoria adicionada pelo usuário administrador deve conter pelo menos uma subcategoria cadastrada no sistema.</p>
 <h2>Instalação</h2>
 
 <h3>Dependências</h3>
