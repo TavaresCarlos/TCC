@@ -252,6 +252,7 @@ app.post('/setColaboracao', (req, res) => {
 	const tipoGeometria = req.body.tipoGeometria;
 	const descricao = req.body.descricao;
 	const publicado = 'nao';
+	const coordenadas = req.body.coordenadas;
 
 	var query_01 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
 	var query_02 = `SELECT idsubcategorias FROM subcategorias WHERE nome = '${subcategoria}'`;
@@ -273,7 +274,7 @@ app.post('/setColaboracao', (req, res) => {
 					//Há subcategorias
 					if(results.rows.length != 0){
 						const idsubcategorias = results.rows[0].idsubcategorias;
-						var query_03 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}')`;
+						var query_03 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado, geom) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}', ST_GeomFromGeoJSON('${coordenadas}'))`;
 						executaSql(query_03, res);
 						console.log(query_03);
 					}

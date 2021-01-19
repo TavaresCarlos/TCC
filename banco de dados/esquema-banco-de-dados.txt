@@ -1,3 +1,4 @@
+CREATE EXTENSION postgis;
 CREATE TABLE usuario(
 idUsuario SERIAL NOT NULL,
 nome varchar(50),

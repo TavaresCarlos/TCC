@@ -65,7 +65,8 @@
                 distanciaArea: 0,
                 dataOcorrencia: '',
                 tipoGeometria: '',
-                descricao: ''
+                descricao: '',
+                coordenadas: ''
 			}
 		},
         created: function(){
@@ -200,8 +201,8 @@
                     //Alterar o formato_consulta para o do Leaflet (faciliar e muito na hora de plotar nele)
 
                     //Monta a variável no formato da consulta de inserção no banco de dados
-                    //var formato_consulta = "'" + tipo + "("+ latLng + ")'";
-                    var formato_consulta = "[" + latLng + "]";
+                    this.coordenadas = '{ "type" : "LineString", "coordinates" : [' + latLng + ' ]}';
+                    //var formato_consulta = latLng;
 
                 }
 
@@ -212,7 +213,9 @@
                     this.tipoGeometria = "Point";
 
                     //Monta a variável no formato da consulta de inserção no banco de dados
-                    var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";        
+                    //var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";   
+                    //this.coordenadas = "POINT(" + coord.lat + " " + coord.lng + ")";      
+                    this.coordenadas = '{ "type" : "Point", "coordinates" : [' + coord.lat + ', ' + coord.lng + '] }';
                 }
 
                 if(type == 'polygon'){
@@ -242,12 +245,14 @@
                     }
 
                     //Monta a variável no formato da consulta de inserção no banco de dados
-                    var formato_consulta = "[[" + latLng + "]]"    
+                    var formato_consulta = "('Poligono', ST_GeomFromGeoJSON('[[" + latLng + "]]"    
 
                     //Obtendo a area em m2
                     const area = L.GeometryUtil.geodesicArea(e.layer.getLatLngs()[0]);
                     this.distanciaArea = area.toFixed(2);
                     this.tipoGeometria = "Polygon";
+
+                    this.coordenadas = '{ "type" : "Polygon", "coordinates" : [[' + latLng + ' ]]}';
                 }
 
                 drawnItems.addLayer(layer); //Define o desenho como uma camada
@@ -279,9 +284,12 @@
                 console.log(this.distanciaArea);
                 console.log(this.dataOcorrencia);
                 console.log(this.tipoGeometria);
-                console.log(this.descricao);*/
+                console.log(this.descricao);
+                console.log(this.coordenadas);*/
 
-                axios.post('http://localhost:3000/setColaboracao',  { titulo: this.titulo, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, distanciaArea: this.distanciaArea, dataOcorrencia: this.dataOcorrencia, tipoGeometria: this.tipoGeometria, descricao: this.descricao }).then((response) => {
+                console.log(this.geometria);
+
+                axios.post('http://localhost:3000/setColaboracao',  { titulo: this.titulo, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, distanciaArea: this.distanciaArea, dataOcorrencia: this.dataOcorrencia, tipoGeometria: this.tipoGeometria, descricao: this.descricao, coordenadas: this.coordenadas }).then((response) => {
                     	if(response.data.length == 0){
                     		alert("Contribuição inserida com sucesso");
                     	}
