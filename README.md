@@ -27,7 +27,3 @@
 
 <h3>Executar aplicação no localhost:8080</h3>
 <p>npm run dev</p>
-
-`
-
-
