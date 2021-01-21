@@ -292,8 +292,9 @@ app.post('/setColaboracao', (req, res) => {
 })
 
 app.post('/getColaboracoes', (req, res) => {
-	var query = `SELECT ST_AsGeoJSON(geom) FROM contribuicao`;
-	//var query = `select st_asgeojson(st_transform(ST_SetSRID(geom, 3857), 4326)) from contribuicao`;
+	var query = `SELECT titulo, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, idcategorias, idsubcategorias, ST_AsGeoJSON(geom) FROM contribuicao WHERE publicado = 'nao'`;
+	//var query = `SELECT json_build_object('type' 'geometry'`;
+	//var query = `select ST_AsGeoJSON(ST_SetSRID(geom, 3857)) from contribuicao`;
 		
 	console.log(query);
 

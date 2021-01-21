@@ -198,8 +198,6 @@
                     this.distanciaArea = distanciaTeste;
                     this.tipoGeometria = "LineString";
 
-                    //Alterar o formato_consulta para o do Leaflet (faciliar e muito na hora de plotar nele)
-
                     //Monta a variável no formato da consulta de inserção no banco de dados
                     this.coordenadas = '{ "type" : "LineString", "coordinates" : [' + latLng + ' ]}';
                     //var formato_consulta = latLng;
@@ -212,10 +210,8 @@
                     this.distanciaArea = 0;
                     this.tipoGeometria = "Point";
 
-                    //Monta a variável no formato da consulta de inserção no banco de dados
-                    //var formato_consulta = "["+ coord.lat + ","+ coord.lng + "]";   
-                    //this.coordenadas = "POINT(" + coord.lat + " " + coord.lng + ")";      
-                    this.coordenadas = '{ "type" : "Point", "coordinates" : [' + coord.lat + ', ' + coord.lng + '],"crs":{"type":"name","properties":{"name":"EPSG:3857"}} }';
+                    //Monta a variável no formato da consulta de inserção no banco de dados    
+                    this.coordenadas = '{ "type" : "Point", "coordinates" : [' + coord.lat + ', ' + coord.lng + '] }';
                 }
 
                 if(type == 'polygon'){
@@ -242,16 +238,12 @@
                         if(i == layer._latlngs[0].length-1){
                             latLng = latLng + "," + primeiro_ponto;
                         }
-                    }
-
-                    //Monta a variável no formato da consulta de inserção no banco de dados
-                    var formato_consulta = "('Poligono', ST_GeomFromGeoJSON('[[" + latLng + "]]"    
+                    }   
 
                     //Obtendo a area em m2
                     const area = L.GeometryUtil.geodesicArea(e.layer.getLatLngs()[0]);
                     this.distanciaArea = area.toFixed(2);
                     this.tipoGeometria = "Polygon";
-
                     this.coordenadas = '{ "type" : "Polygon", "coordinates" : [[' + latLng + ' ]]}';
                 }
 

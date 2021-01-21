@@ -14,18 +14,25 @@
 				tileLayer: '',
 				baseLayer: [],
 				overlayLayer: '',
-				colaboracoes: []
+				colaboracoes: [],
+				titulo: '',
 			}
 		},
 		created(){
 			axios.post('http://localhost:3000/getColaboracoes').then((response) => {
+				console.log(response);
+               
                 for(var i=0; i<response.data.length; i++){
-                    this.colaboracoes.push(response.data[i].st_asgeojson);
+                	L.geoJSON(JSON.parse(response.data[i].st_asgeojson)).addTo(this.mapa).bindPopup(`
+                		Titulo: ` + response.data[i].titulo + `
+                		<br>Categoria: ` + response.data[i].idcategoria + `
+                		<br>Subcategoria: ` + response.data[i].idsubcategoria + `
+                		<br>Tipo de geometria: ` + response.data[i].tipogeometria + `
+                		<br>Distância (m) ou Área (m2): ` + response.data[i].distanciaarea + `
+                		<br>Data: ` + response.data[i].to_char + `
+                		<br>Descrição: ` + response.data[i].descricao + `
+                	`);
                 }
-
-                this.colaboracoes.forEach((data) => {
-                	L.geoJSON(JSON.parse(data)).addTo(this.mapa);
-                });
             })
 		},
 		mounted(){
@@ -52,7 +59,7 @@
 	        /*var geojson = [{"type":"Point","coordinates":[-19.53794677504797, -40.62796643556086]}];
 	        L.geoJSON(geojson).addTo(this.mapa);*/
 
-	       	L.geoJSON(this.colaboracoes).addTo(this.mapa);
+	       	//L.geoJSON(this.colaboracoes).addTo(this.mapa);
 
 	        /*var overlay = {
             	"Base Maps" : {
