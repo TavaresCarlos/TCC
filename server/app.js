@@ -292,7 +292,7 @@ app.post('/setColaboracao', (req, res) => {
 })
 
 app.post('/getColaboracoes', (req, res) => {
-	var query = `SELECT titulo, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, idcategorias, idsubcategorias, ST_AsGeoJSON(geom) FROM contribuicao WHERE publicado = 'nao'`;
+	var query = `SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'`;
 	//var query = `SELECT json_build_object('type' 'geometry'`;
 	//var query = `select ST_AsGeoJSON(ST_SetSRID(geom, 3857)) from contribuicao`;
 		

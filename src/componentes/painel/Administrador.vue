@@ -4,14 +4,14 @@
 			<div class="card-body">
 				<h5 class="card-title"><center>Bem-Vindo</center></h5>
 				<div id="painel">
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addCategorias()"><span class="oi oi-plus"></span>Add Categorias</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addSubcategorias()"><span class="oi oi-plus"></span>Add Subcategorias</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Contatos</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Colaborações</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="colaboracao()"><span class="oi oi-plus"></span>Colaboração</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="perfil()"><span class="oi oi-plus"></span> Ver Perfil</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="trocarSenha" name="trocarSenha" @click="trocarSenha()"><span class="oi oi-plus"></span> Trocar Senha</a>
-					<a href="#" class="btn btn-success btn-sm btn-block" id="logout" name="logout" @click=""><span class="oi oi-plus"></span> Sair</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addCategorias()"><span class="oi oi-plus"></span>Add Categorias</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addSubcategorias()"><span class="oi oi-plus"></span>Add Subcategorias</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Contatos</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Colaborações</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="colaboracao()"><span class="oi oi-plus"></span>Colaboração</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="perfil()"><span class="oi oi-plus"></span> Ver Perfil</a>
+					<a class="btn btn-success btn-sm btn-block" id="trocarSenha" name="trocarSenha" @click="trocarSenha()"><span class="oi oi-plus"></span> Trocar Senha</a>
+					<a class="btn btn-success btn-sm btn-block" id="logout" name="logout" @click="sair"><span class="oi oi-plus"></span> Sair</a>
 				</div>
 			</div>
 		</div>
@@ -36,6 +36,9 @@
 			},
 			addSubcategorias: function(){
 				this.$router.push({ path: `/administrador/adicionarSubcategorias` })
+			},
+			sair: function(){
+				this.$router.push({ path: `/` })
 			}
 		}
 	}

@@ -25,8 +25,8 @@
                 for(var i=0; i<response.data.length; i++){
                 	L.geoJSON(JSON.parse(response.data[i].st_asgeojson)).addTo(this.mapa).bindPopup(`
                 		Titulo: ` + response.data[i].titulo + `
-                		<br>Categoria: ` + response.data[i].idcategoria + `
-                		<br>Subcategoria: ` + response.data[i].idsubcategoria + `
+                		<br>Categoria: ` + response.data[i].nomecat + `
+                		<br>Subcategoria: ` + response.data[i].nomesubcat + `
                 		<br>Tipo de geometria: ` + response.data[i].tipogeometria + `
                 		<br>Distância (m) ou Área (m2): ` + response.data[i].distanciaarea + `
                 		<br>Data: ` + response.data[i].to_char + `

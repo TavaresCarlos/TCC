@@ -22,13 +22,13 @@ PRIMARY KEY (idContato)
 
 CREATE TABLE categorias(
 idCategorias SERIAL NOT NULL,
-nome varchar(200),
+nomecat varchar(200),
 PRIMARY KEY (idCategorias)
 );
 
 CREATE TABLE subcategorias(
 idSubcategorias SERIAL NOT NULL,
-nome varchar(200),
+nomesubcat varchar(200),
 idCategorias int,
 CONSTRAINT fk_subCategoriasCategorias FOREIGN KEY (idCategorias) REFERENCES categorias (idCategorias),
 PRIMARY KEY (idSubcategorias)
@@ -54,6 +54,10 @@ PRIMARY KEY (idContribuicao)
 
 INSERT INTO usuario VALUES ('1', 'admin', 'admin', 'admin@admin', 'admin', '', 'root');
 INSERT INTO usuario VALUES ('2', 'anonimo', 'anonimo', 'anonimo@anonimo', '', '', 'anonimo');
+
+//Consulta que retorna todos os dados de contribuição com o nome das categorias e subcategorias
+SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'
+
 
 
 
