@@ -38,7 +38,7 @@
 	color: #FFFFFF;
 }
 #novaCategoria{
-	width: 500%;
+	width: 450%;
 }
 
 </style>

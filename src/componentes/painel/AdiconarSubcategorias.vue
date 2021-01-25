@@ -26,8 +26,9 @@
 		},
 		created: function(){
             axios.post('http://localhost:3000/getCategoria').then((response) => {
+            	console.log(response);
                 for(var i=0; i<response.data.length; i++){
-                    this.categoria.push(response.data[i].nome);
+                    this.categoria.push(response.data[i].nomecat);
                 }
             })
         },
@@ -54,7 +55,7 @@
 	color: #FFFFFF;
 }
 #novasubcategoria{
-	width: 500%;
+	width: 450%;
 }
 
 </style>

@@ -169,7 +169,7 @@ app.post('/setCategoria', (req, res) => {
 })
 
 app.post('/getCategoria', (req, res)=>{
-	var query = "SELECT nome FROM categorias";
+	var query = "SELECT nomecat FROM categorias";
 	console.log(query);
 	pool.query(query, (error, results) => {
 		if(error){
@@ -185,8 +185,8 @@ app.post('/setSubcategoria', (req, res) => {
 	const categoria = req.body.categoria;
 	const subcategoria = req.body.subcategoria;
 
-	var query_01 = `SELECT nome FROM subcategorias WHERE nome = '${subcategoria}'`;
-	var query_02 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
+	var query_01 = `SELECT nomesubcat FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
+	var query_02 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
 
 	pool.query(query_01, (error, results) => {
 		console.log(query_01);
@@ -203,7 +203,7 @@ app.post('/setSubcategoria', (req, res) => {
 					}
 					else{
 						const idcategorias = results.rows[0].idcategorias;
-						var query_03 = `INSERT INTO subcategorias (nome, idcategorias) VALUES ('${subcategoria}', '${idcategorias}')`;
+						var query_03 = `INSERT INTO subcategorias (nomesubcat, idcategorias) VALUES ('${subcategoria}', '${idcategorias}')`;
 						console.log(query_03);
 						executaSql(query_03, res);
 					}
@@ -220,7 +220,7 @@ app.post('/setSubcategoria', (req, res) => {
 app.post('/getSubcategoria', (req, res)=>{
 	var categoria = req.body.categoria;
 
-	var query_01 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
+	var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
 
 	console.log(query_01);
 	pool.query(query_01, (error, results) => {
@@ -229,7 +229,7 @@ app.post('/getSubcategoria', (req, res)=>{
 		}
 		else{
 			var idcategorias = (results.rows[0].idcategorias);
-			var query_02 = `SELECT nome FROM subcategorias WHERE idcategorias = '${idcategorias}'`;
+			var query_02 = `SELECT nomesubcat FROM subcategorias WHERE idcategorias = '${idcategorias}'`;
 			console.log(query_02);
 			pool.query(query_02, (error, results) => {
 				if(error){
@@ -254,8 +254,8 @@ app.post('/setColaboracao', (req, res) => {
 	const publicado = 'nao';
 	const coordenadas = req.body.coordenadas;
 
-	var query_01 = `SELECT idcategorias FROM categorias WHERE nome = '${categoria}'`;
-	var query_02 = `SELECT idsubcategorias FROM subcategorias WHERE nome = '${subcategoria}'`;
+	var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
+	var query_02 = `SELECT idsubcategorias FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
 
 	pool.query(query_01, (error, results) => {
 		console.log(query_01);
@@ -293,9 +293,42 @@ app.post('/setColaboracao', (req, res) => {
 
 app.post('/getColaboracoes', (req, res) => {
 	var query = `SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'`;
-	//var query = `SELECT json_build_object('type' 'geometry'`;
-	//var query = `select ST_AsGeoJSON(ST_SetSRID(geom, 3857)) from contribuicao`;
 		
+	console.log(query);
+
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
+})
+
+app.post('/exportar', (req, res) => {
+	const formato = req.body.formato;
+
+	if(formato == 'json'){
+		var query = `SELECT array_to_json(array_agg(row_to_json(t)))
+					  FROM (
+					      SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'
+					    ) t`;
+		console.log(query);
+	}
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
+})
+
+app.post('/getContatos', (req, res) => {
+	var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato ORDER BY data DESC`;
+
 	console.log(query);
 
 	pool.query(query, (error, results) => {

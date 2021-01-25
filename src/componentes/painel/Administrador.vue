@@ -6,7 +6,7 @@
 				<div id="painel">
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addCategorias()"><span class="oi oi-plus"></span>Add Categorias</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addSubcategorias()"><span class="oi oi-plus"></span>Add Subcategorias</a>
-					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Contatos</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="contatos()"><span class="oi oi-plus"></span>Ver Contatos</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Colaborações</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="colaboracao()"><span class="oi oi-plus"></span>Colaboração</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="perfil()"><span class="oi oi-plus"></span> Ver Perfil</a>
@@ -37,6 +37,9 @@
 			addSubcategorias: function(){
 				this.$router.push({ path: `/administrador/adicionarSubcategorias` })
 			},
+			contatos: function(){
+				this.$router.push({ path: `/administrador/verContatos` })
+			},
 			sair: function(){
 				this.$router.push({ path: `/` })
 			}
@@ -56,4 +59,5 @@
 #colaborar, #perfil, #trocarSenha, #logout{
 	margin: 1px 1px 1px 1px;
 }
+
 </style>
