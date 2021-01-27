@@ -20,6 +20,7 @@ import Colaboracao from './componentes/painel/Colaboracao.vue'
 import AdicionarCategorias from './componentes/painel/AdicionarCategorias.vue'
 import AdiconarSubcategorias from './componentes/painel/AdiconarSubcategorias.vue'
 import VerContatos from './componentes/painel/VerContatos.vue'
+import VerColaboracoes from './componentes/painel/VerColaboracoes.vue'
 
 Vue.use(VueRouter)
 
@@ -43,7 +44,8 @@ const router = new VueRouter({
 			{ path: '/administrador/colaboracao', component: Colaboracao },
 			{ path: '/administrador/adicionarCategorias', component: AdicionarCategorias },
 			{ path: '/administrador/adicionarSubcategorias', component: AdiconarSubcategorias },
-			{ path: '/administrador/verContatos', component: VerContatos }
+			{ path: '/administrador/verContatos', component: VerContatos },
+			{ path: '/administrador/verColaboracoes', component: VerColaboracoes }
 		]}
 	]
 })

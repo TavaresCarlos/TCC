@@ -10,6 +10,7 @@
 					    <li class="list-group-item"> {{ c.to_char }} </li>
 					    <li class="list-group-item"> {{ c.email }} </li>
 					    <li class="list-group-item"> {{ c.mensagem }} </li>
+					    <li class="list-group-item"> <a class="btn btn-success btn-sm btn-block" id="excluir" name="excluir" @click=""><span class="oi oi-plus"></span> Apagar contato</a></li>
 				  	</ul>
 				</div>
 				<br>

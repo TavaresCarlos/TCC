@@ -23,10 +23,18 @@
 		},
 		methods: {
 			exportar(){
-				axios.post('http://localhost:3000/exportar', { formato: this.formato }).then((response) => {
-	                if(response){
+				axios.post('http://localhost:3000/exportar',{ formato: this.formato }/*, { responseType: 'blob'}*/).then((response) => {
+					console.log(response);
+
+					//console.log(response.replace('', ''));
+	                /*if(response){
 	                	console.log(response.data[0]);
-	                }
+	                	let blob = new Blob([response.data], { type: response.headers['content-type'] });
+					    let link = document.createElement('a');
+					    link.href = window.URL.createObjectURL(blob);
+					    link.download = 'texto.json';
+					    link.click();
+	                }*/
 	            })
 			}
 		}

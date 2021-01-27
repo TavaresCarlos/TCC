@@ -10,7 +10,8 @@ const Pool = require('pg').Pool;
 const app = express();
 const port = 3000;
 
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: false, cookie: {maxAge: 3600000} }));
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -80,7 +81,7 @@ app.post('/login', (req, res) => {
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
 	
-	var query = `SELECT nome,senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
 	pool.query(query, (error, results) => {
 		if(error){
@@ -92,9 +93,7 @@ app.post('/login', (req, res) => {
 			}
 			else{
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
-					//Iniciando a sessão do usuário no sistema
-					req.session.loggedin = true;
-					req.session.username = usuario;
+					//Iniciando a sessão do usuário no sistema	
 
 					res.json(results.rows);
 				}
@@ -110,7 +109,8 @@ app.post('/login', (req, res) => {
 
 app.post('/perfil', (req, res) => {
 	//if(req.session.loggedin){
-		const usuario = req.session.username;
+		/*const usuario = sessionStorage.username;
+		console.log(usuario);
 		var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 		
 		console.log(query);
@@ -122,26 +122,24 @@ app.post('/perfil', (req, res) => {
 			else{
 				res.json(results.rows);
 			}
-		})
+		})*/
 	//}
 })
 
 app.post('/trocarSenha', (req, res) => {
-	//if(req.session.loggedin){
-		const usuario = req.session.username;
-		var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
-		
-		console.log(query);
+	const usuario = req.session.username;
+	var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+	
+	console.log(query);
 
-		pool.query(query, (error, results) => {
-			if(error){
-				res.json(error);
-			}
-			else{
-				res.json(results.rows);
-			}
-		})
-	//}
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
 })
 
 app.post('/setCategoria', (req, res) => {
@@ -292,7 +290,7 @@ app.post('/setColaboracao', (req, res) => {
 })
 
 app.post('/getColaboracoes', (req, res) => {
-	var query = `SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'`;
+	var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom), publicado FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'sim'`;
 		
 	console.log(query);
 
@@ -329,6 +327,33 @@ app.post('/exportar', (req, res) => {
 app.post('/getContatos', (req, res) => {
 	var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato ORDER BY data DESC`;
 
+	console.log(query);
+
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
+})
+
+app.post('/alterarStatusColaboracao', (req, res) => {
+	const novoStatus = req.body.statusPublicacao;
+	const idcontribuicao = req.body.idcontribuicao;
+
+	console.log(idcontribuicao);
+	console.log(novoStatus);
+
+	var query = `UPDATE contribuicao SET publicado = '${novoStatus}' WHERE idcontribuicao = '${idcontribuicao}'`;
+	console.log(query);
+	executaSql(query, res);
+})
+
+app.post('/verColaboracoes', (req, res) => {
+	var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom), publicado FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias`;
+		
 	console.log(query);
 
 	pool.query(query, (error, results) => {

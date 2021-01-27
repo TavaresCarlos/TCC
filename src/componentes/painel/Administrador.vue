@@ -7,7 +7,7 @@
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addCategorias()"><span class="oi oi-plus"></span>Add Categorias</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="addSubcategorias()"><span class="oi oi-plus"></span>Add Subcategorias</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="contatos()"><span class="oi oi-plus"></span>Ver Contatos</a>
-					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Ver Colaborações</a>
+					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="colaboracoes()"><span class="oi oi-plus"></span>Ver Colaborações</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="colaboracao()"><span class="oi oi-plus"></span>Colaboração</a>
 					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="perfil()"><span class="oi oi-plus"></span> Ver Perfil</a>
 					<a class="btn btn-success btn-sm btn-block" id="trocarSenha" name="trocarSenha" @click="trocarSenha()"><span class="oi oi-plus"></span> Trocar Senha</a>
@@ -39,6 +39,9 @@
 			},
 			contatos: function(){
 				this.$router.push({ path: `/administrador/verContatos` })
+			},
+			colaboracoes: function(){
+				this.$router.push({ path: `/administrador/verColaboracoes` })
 			},
 			sair: function(){
 				this.$router.push({ path: `/` })
