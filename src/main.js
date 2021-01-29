@@ -12,6 +12,8 @@ import Cadastro from './componentes/Cadastro.vue'
 import Colaboracoes from './componentes/Colaboracoes.vue'
 import Exportar from './componentes/Exportar.vue'
 
+import ConfiguracaoInicial from './componentes/ConfiguracaoInicial.vue'
+
 import Colaborador from './componentes/painel/Colaborador.vue'
 import Administrador from './componentes/painel/Administrador.vue'
 import Perfil from './componentes/painel/Perfil.vue'
@@ -33,6 +35,7 @@ const router = new VueRouter({
 		{ path: '/cadastro', component: Cadastro },
 		{ path: '/colaboracoes', component: Colaboracoes },
 		{ path: '/exportar', component: Exportar },
+		{ path: '/inicial', component: ConfiguracaoInicial },
 		{ path: '/colaborador', component: Colaborador, children: [
 			{ path: '/colaborador/perfil', component: Perfil },
 			{ path: '/colaborador/trocarSenha', component: TrocarSenha },
