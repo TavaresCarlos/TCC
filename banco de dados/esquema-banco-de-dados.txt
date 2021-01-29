@@ -1,4 +1,15 @@
 CREATE EXTENSION postgis;
+
+CREATE TABLE configuracaoInicial(
+idinicial SERIAL NOT NULL,
+nomesistema varchar(50),
+latitude float,
+longitude float,
+zoom int,
+descricao varchar(200),
+PRIMARY KEY (idinicial)
+);
+
 CREATE TABLE usuario(
 idUsuario SERIAL NOT NULL,
 nome varchar(50),

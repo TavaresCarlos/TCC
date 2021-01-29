@@ -4,13 +4,16 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const passport = require('passport');
 const path = require('path');
 const Pool = require('pg').Pool;
 
 const app = express();
 const port = 3000;
 
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false, cookie: { maxAge: 30 * 60 * 1000 }}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -75,12 +78,12 @@ app.post('/novoContato', (req, res) => {
 })
 
 //Rota para autenticação do usuário e login
-app.post('/login', (req, res) => {
+app.post('/login', passport.authenticate('local'),(req, res) => {
 	console.log("Rota chamada");
 
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
-	
+
 	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
 	pool.query(query, (error, results) => {
@@ -94,7 +97,7 @@ app.post('/login', (req, res) => {
 			else{
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
 					//Iniciando a sessão do usuário no sistema	
-
+					req.usuario = usuario;
 					res.json(results.rows);
 				}
 				else{
