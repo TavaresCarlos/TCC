@@ -12,8 +12,6 @@ const app = express();
 const port = 3000;
 
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false, cookie: { maxAge: 30 * 60 * 1000 }}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -42,6 +40,10 @@ function executaSql(sql, res) {
 app.get('/', (req, res) => {
 	//res.json({ message: 'Funcionando' })
 	executaSql('SELECT * FROM usuario', res);
+});
+
+app.post('/home', (req, res) => {
+	executaSql('SELECT * FROM configuracaoinicial', res);
 });
 
 app.post('/cadastroNovoUsuario', (req, res) => {
@@ -78,7 +80,7 @@ app.post('/novoContato', (req, res) => {
 })
 
 //Rota para autenticação do usuário e login
-app.post('/login', passport.authenticate('local'),(req, res) => {
+app.post('/login', (req, res) => {
 	console.log("Rota chamada");
 
 	const usuario = req.body.usuario;
@@ -97,7 +99,6 @@ app.post('/login', passport.authenticate('local'),(req, res) => {
 			else{
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
 					//Iniciando a sessão do usuário no sistema	
-					req.usuario = usuario;
 					res.json(results.rows);
 				}
 				else{
@@ -111,26 +112,10 @@ app.post('/login', passport.authenticate('local'),(req, res) => {
 })
 
 app.post('/perfil', (req, res) => {
-	//if(req.session.loggedin){
-		/*const usuario = sessionStorage.username;
-		console.log(usuario);
-		var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
-		
-		console.log(query);
-
-		pool.query(query, (error, results) => {
-			if(error){
-				res.json(error);
-			}
-			else{
-				res.json(results.rows);
-			}
-		})*/
-	//}
+	
 })
 
 app.post('/trocarSenha', (req, res) => {
-	const usuario = req.session.username;
 	var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
 	console.log(query);
@@ -367,6 +352,19 @@ app.post('/verColaboracoes', (req, res) => {
 			res.json(results.rows);
 		}
 	})
+})
+
+app.post('/setConfInicial', (req, res) => {
+	const nomeSistema = req.body.nomeSistema;
+	const latitude = req.body.latitude;
+	const longitude = req.body.longitude;
+	const zoom = req.body.zoom;
+	const descricao = req.body.descricao;
+
+	var query = `INSERT INTO configuracaoinicial (nomesistema, latitude, longitude, zoom, descricao) VALUES ('${nomeSistema}', '${latitude}', '${longitude}', '${zoom}', '${descricao}')`;
+	executaSql(query, res);
+
+	console.log(query);
 })
 
 //Rodando o servidor

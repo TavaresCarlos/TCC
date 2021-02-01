@@ -72,7 +72,7 @@
         created: function(){
             axios.post('http://localhost:3000/getCategoria').then((response) => {
                 for(var i=0; i<response.data.length; i++){
-                    this.categoria.push(response.data[i].nome);
+                    this.categoria.push(response.data[i].nomecat);
                 }
             })
         },
@@ -261,7 +261,7 @@
                     if(response.data.length != 0){
                     	this.subcategoria = [];
                         for(var i=0; i<response.data.length; i++){
-                            this.subcategoria.push(response.data[i].nome);
+                            this.subcategoria.push(response.data[i].nomesubcat);
                         }
                     }
                     else if(response.data.length == 0){

@@ -10,6 +10,9 @@
 	export default{
 		data(){
 			return{
+				latitude: '',
+				longitude: '',
+				zoom: '',
 				mapa: '',
 				tileLayer: '',
 				baseLayer: [],
@@ -18,26 +21,33 @@
 				titulo: '',
 			}
 		},
-		created(){
-			axios.post('http://localhost:3000/getColaboracoes').then((response) => {
+		created: function(){
+			axios.post('http://localhost:3000/home').then((response) => {
 				console.log(response);
-               
+				if(response.data.length > 0){
+					this.latitude = response.data[0].latitude; 
+					this.longitude = response.data[0].longitude;
+					this.zoom = response.data[0].zoom; 
+				}
+			});
+			axios.post('http://localhost:3000/getColaboracoes').then((response) => {
+            	console.log(response);
                 for(var i=0; i<response.data.length; i++){
                 	L.geoJSON(JSON.parse(response.data[i].st_asgeojson)).addTo(this.mapa).bindPopup(`
-                		Titulo: ` + response.data[i].titulo + `
-                		<br>Categoria: ` + response.data[i].nomecat + `
-                		<br>Subcategoria: ` + response.data[i].nomesubcat + `
-                		<br>Tipo de geometria: ` + response.data[i].tipogeometria + `
-                		<br>Distância (m) ou Área (m2): ` + response.data[i].distanciaarea + `
-                		<br>Data: ` + response.data[i].to_char + `
-                		<br>Descrição: ` + response.data[i].descricao + `
+                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
+                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
+                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
+                		<br><strong>Distância (m) ou Área (m2):</strong> ` + response.data[i].distanciaarea + `
+                		<br><strong>Data:</strong> ` + response.data[i].to_char + `
+                		<br><strong>Descrição:</strong> ` + response.data[i].descricao + `
                 	`);
                 }
-            })
+            });
 		},
-		mounted(){
+		mounted: function(){
 			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 4);
-		
+
 			const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(this.mapa);
 	        const osm2 = L.tileLayer.wms('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors');

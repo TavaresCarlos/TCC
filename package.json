@@ -1,7 +1,7 @@
 {
   "name": "my-vue-app",
   "description": "A Vue.js project",
-  "author": "TavaresCarlos <caca_cht@hotmail.com>",
+  "author": "TavaresCarlos <carlos.h.tavares@ufv.br>",
   "private": true,
   "scripts": {
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",

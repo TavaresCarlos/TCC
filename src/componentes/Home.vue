@@ -3,7 +3,7 @@
         <div class="col-xl-4 col-sm-2"></div>
             <div class="col-xl-4 col-sm-8">
                 <div id="login">
-					<center><h4>Nome do sistema</h4></center>
+					<center><h4>{{ this.nomeSistema }}</h4></center>
 					<center><img src="src/img/logo/logo.png" width="30" height="30" alt=""></center>
 					<br>
 					<input class="form-control mr-sm-2" type="text" placeholder="Email ou apelido" aria-label="Login" id="usuario" name="usuario" v-model="usuario">
@@ -32,9 +32,17 @@
 	export default{
 		data(){
 			return{
+				nomeSistema: '',
 				usuario: '',
 				senha: ''
 			}
+		},
+		created: function(){
+			axios.post('http://localhost:3000/home').then((response) => {
+				if(response.data.length > 0){
+					this.nomeSistema = response.data[0].nomesistema; 
+				}
+			});
 		},
 		methods:{
 			colaborar: function(){
@@ -69,11 +77,11 @@
                     	/*
                     	else if(response.data[0].tipo == 'anonimo'){
                     		this.$router.push('/anonimo');
+                    	}*/
+                    	else if(response.data[0].tipo == 'root'){
+                    		this.$router.push('/root');
                     	}
-                    	else if(response.data[0].tipo == 'default'){
-                    		this.$router.push('/default');
-                    	}
-                    	*/
+                    	
                     }
                 })
 			}

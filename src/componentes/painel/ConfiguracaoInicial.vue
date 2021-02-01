@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div class="col-12">
-			<div id="titulo"><h1><center>CONFIGURAÇÕES DO FRAMEWORK</center></h1></div>
+			<div id="tituloInicial"><h1>CONFIGURAÇÕES DO FRAMEWORK</h1></div>
 			<div id="configuracaoInicial">
 				<form action="" method="">
 					<label for="vencimentoBolsa">Nome do Sistema:</label>
@@ -26,13 +26,15 @@
 				</form>
 				<div id="mapaConfiguracaoInicial"></div>
 				<br>
-				<button type="button" class="btn btn-success btn-lg btn-block">Enviar</button>
+				<button type="button" class="btn btn-success btn-lg btn-block" @click="salvarConf()">Enviar</button>
 			</div>
 	</div>
 	</div>
 </template>
 
 <script>
+	import axios from 'axios';
+
 	export default{
 		data(){
 			return{
@@ -64,7 +66,7 @@
 	            this.latitude = lat;
 	            this.longitude = lng;
 	            this.zoom = zoom;
-	            //document.getElementById('zoom-form').value = zoom;
+
 	        });
 
 	        console.log(this.latitude);
@@ -81,19 +83,34 @@
             };
             L.control.groupedLayers(baseMaps, null, optionsControl).addTo(this.mapa);
 			L.control.scale({ metric: true }).addTo(this.mapa);
+		},
+		methods:{
+			salvarConf(){
+			 axios.post('http://localhost:3000/setConfInicial', { nomeSistema: this.nomeSistema, latitude: this.latitude, longitude: this.longitude, zoom: this.zoom, descricao: this.descricao }).then((response) => {
+				if(response.data.length == 0){
+                    this.$router.push('/root');
+                    alert("Sistema configurado com sucesso");
+                }
+                else{
+                    alert(response.data);
+                }
+			 });
+			}
 		}
 	}
 </script>
 
 <style>
-#titulo{
+#tituloInicial{
 	color: #FFFFFF;
-
+	margin-left: 16%;
 }
 #configuracaoInicial{
 	color: #FFFFFF;
 	border: solid white 1px;
 	padding: 10px 10px 10px 10px;
+	width: 130%;
+	margin-left: 3%;
 }
 #latitude, #longitude{
 	width: 100%;
@@ -102,5 +119,5 @@
 	    width: 100%;
 	   	height: 45vh;
 	   	margin-top: 0.5%;
-	}
+}
 </style>
