@@ -32,21 +32,50 @@
 			});
 			axios.post('http://localhost:3000/getColaboracoes').then((response) => {
             	console.log(response);
+
                 for(var i=0; i<response.data.length; i++){
-                	L.geoJSON(JSON.parse(response.data[i].st_asgeojson)).addTo(this.mapa).bindPopup(`
-                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
-                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
-                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
-                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
-                		<br><strong>Distância (m) ou Área (m2):</strong> ` + response.data[i].distanciaarea + `
-                		<br><strong>Data:</strong> ` + response.data[i].to_char + `
-                		<br><strong>Descrição:</strong> ` + response.data[i].descricao + `
-                	`);
+                	var geometria = JSON.parse(response.data[i].st_asgeojson);
+
+                	if(geometria.type == "Point"){
+                		L.marker(geometria.coordinates).addTo(this.mapa).bindPopup(`
+	                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+	                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
+	                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
+	                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
+	                		<br><strong>Distância (m) ou Área (m2):</strong> ` + response.data[i].distanciaarea + `
+	                		<br><strong>Data:</strong> ` + response.data[i].to_char + `
+	                		<br><strong>Descrição:</strong> ` + response.data[i].descricao + `
+	                	`);
+                	};
+
+                	if(geometria.type == 'LineString'){
+                		L.polyline(geometria.coordinates, {color: 'red'}).addTo(this.mapa).bindPopup(`
+	                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+	                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
+	                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
+	                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
+	                		<br><strong>Distância (m) ou Área (m2):</strong> ` + response.data[i].distanciaarea + `
+	                		<br><strong>Data:</strong> ` + response.data[i].to_char + `
+	                		<br><strong>Descrição:</strong> ` + response.data[i].descricao + `
+	                	`);
+                	};
+                	
+                	if(geometria.type == "Polygon"){
+                		L.polygon(geometria.coordinates, {color: 'red'}).addTo(this.mapa).bindPopup(`
+	                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+	                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
+	                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
+	                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
+	                		<br><strong>Distância (m) ou Área (m2):</strong> ` + response.data[i].distanciaarea + `
+	                		<br><strong>Data:</strong> ` + response.data[i].to_char + `
+	                		<br><strong>Descrição:</strong> ` + response.data[i].descricao + `
+	                	`);
+                	};
                 }
             });
 		},
 		mounted: function(){
-			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 4);
+			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 13);
 
 			const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(this.mapa);
@@ -65,9 +94,6 @@
 	        	"OSM 2": osm2,
 	            "Satélite": world
 	        };
-
-	        /*var geojson = [{"type":"Point","coordinates":[-19.53794677504797, -40.62796643556086]}];
-	        L.geoJSON(geojson).addTo(this.mapa);*/
 
 	       	//L.geoJSON(this.colaboracoes).addTo(this.mapa);
 

@@ -1,14 +1,15 @@
 <template>
 	<div class="row">
 		<div class="card" id="menu">
-			<div class="card-body">
-				<h5 class="card-title"><center>Bem-Vindo</center></h5>
-				<div id="painel">
-					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="configuracaoSistema"><span class="oi oi-plus"></span>Configurar sistema</a>
-					<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Add Administradores</a>
-					<a class="btn btn-success btn-sm btn-block" id="logout" name="logout" @click="sair"><span class="oi oi-plus"></span> Sair</a>
+			<img class="card-img-top" src="src/img/avatar.jpg" alt="Card image cap">
+				<div class="card-body">
+					<h5 class="card-title"><center>Bem-Vindo</center></h5>
+					<div id="painel">
+						<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click="configuracaoSistema"><span class="oi oi-plus"></span>Configurar sistema</a>
+						<a class="btn btn-success btn-sm btn-block" id="perfil" name="perfil" @click=""><span class="oi oi-plus"></span>Add Administradores</a>
+						<a class="btn btn-success btn-sm btn-block" id="logout" name="logout" @click="sair"><span class="oi oi-plus"></span> Sair</a>
+					</div>
 				</div>
-			</div>
 		</div>
 		<router-view></router-view>
 	</div>

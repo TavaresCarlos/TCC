@@ -63,6 +63,9 @@
 
 <style>
 #verColaboracoes{
-	margin-left: 3%;
+	margin-left: 15%;
+	/*margin-top: -27%;
+	position: relative;
+	overflow: hidden;*/
 }
 </style>
