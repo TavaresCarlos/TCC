@@ -1,14 +1,12 @@
 <template>
-	<div>
-		<div id="mapa"></div>
-	</div>
+	<div id="mapa"></div>
 </template>
 
 <script>
 	import axios from 'axios';
 
 	export default{
-		data(){
+		data: function(){
 			return{
 				latitude: '',
 				longitude: '',
@@ -76,7 +74,7 @@
 		},
 		mounted: function(){
 			this.mapa = L.map('mapa').setView([-19.53794677504797, -40.62796643556086], 13);
-
+			
 			const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(this.mapa);
 	        const osm2 = L.tileLayer.wms('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors');
@@ -94,8 +92,6 @@
 	        	"OSM 2": osm2,
 	            "Satélite": world
 	        };
-
-	       	//L.geoJSON(this.colaboracoes).addTo(this.mapa);
 
 	        /*var overlay = {
             	"Base Maps" : {
