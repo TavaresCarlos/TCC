@@ -8,11 +8,11 @@
 <br>-CSS3
 <br>-Javascript
 <br>-Bootstrap
-<br>-Leaflet.js
+<br>-Leaflet
 <br>-PostgreSQL 
 <br>
 <br>-Frontend: VUE
-<br>-Backend: NodeJS (Express)
+<br>-Backend: NodeJS 
 <h2>Tipos de usuários e funcionalidades:</h2>
 -Default (Super Usuário)
 <br>-Administrador
