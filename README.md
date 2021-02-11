@@ -2,7 +2,7 @@
 <img src="apresentação-do-sistema/imagens/home.jpg" width="700" height="500">
 <h2>Trabalho de conclusão de curso (TCC)</h2>
 <p>Framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas que utilizam VGI.</p> 
-<p>O sistema permite o compartilhamento de informações associados a pontos, linhas e polígonos traçados no mapa e a exportação dos dados no formato GeoJSON, permitindo assim o dimensionamento dos fatos observados e a interoperabilidade do sistema com outros sistemas de informação geográfica.
+<p>O sistema permite o compartilhamento de informações associados a pontos, linhas e polígonos traçados no mapa, gerado pela biblioteca gráfica Leaflet, e a exportação dos dados no formato GeoJSON, permitindo assim o dimensionamento dos fatos observados e a interoperabilidade do sistema com outros sistemas de informação geográfica (SIG) .
 <h2>Tecnologias:</h2>
 -HTML5
 <br>-CSS3
