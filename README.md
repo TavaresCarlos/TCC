@@ -1,4 +1,5 @@
 <h1>Framework para Sistemas VGI</h1>
+<img src="apresentação-do-sistema/imagens/home.jpg">
 <h2>Trabalho de conclusão de curso (TCC)</h2>
 <p>Framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas que utilizam VGI.</p> 
 <p>O sistema permite o compartilhamento de informações associados a pontos, linhas e polígonos traçados no mapa e a exportação dos dados no formato GeoJSON, permitindo assim o dimensionamento dos fatos observados e a interoperabilidade do sistema com outros sistemas de informação geográfica.
