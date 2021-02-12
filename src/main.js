@@ -14,6 +14,7 @@ import Exportar from './componentes/Exportar.vue'
 
 import Root from './componentes/painel/Root.vue'
 import ConfiguracaoInicial from './componentes/painel/ConfiguracaoInicial.vue'
+import AddAdministradores from './componentes/painel/AddAdministradores.vue'
 
 import Anonimo from './componentes/painel/Anonimo.vue'
 
@@ -54,6 +55,7 @@ const router = new VueRouter({
 		]},
 		{ path: '/root', component: Root, children: [
 			{ path: '/root/ConfiguracaoInicial', component: ConfiguracaoInicial },
+			{ path: '/root/addAdministradores', component: AddAdministradores }
 		]},
 		{ path: '/anonimo', component: Anonimo, children: [
 			{ path: '/anonimo/colaboracao', component: Colaboracao },

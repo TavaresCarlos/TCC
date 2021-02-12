@@ -28,6 +28,7 @@ assunto varchar(50),
 email varchar(50),
 data date,
 mensagem varchar(500),
+publicado varchar(3),
 PRIMARY KEY (idContato)
 );
 

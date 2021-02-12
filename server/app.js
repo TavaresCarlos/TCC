@@ -313,7 +313,7 @@ app.post('/exportar', (req, res) => {
 })
 
 app.post('/getContatos', (req, res) => {
-	var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato ORDER BY data DESC`;
+	var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato WHERE publicado = 'sim' ORDER BY data DESC`;
 
 	console.log(query);
 
@@ -366,6 +366,32 @@ app.post('/setConfInicial', (req, res) => {
 
 	console.log(query);
 })
+
+app.post('/setAdministradores', (req, res) => {
+	const administrador = req.body.administrador;
+	var query = `UPDATE usuario SET tipo = 'administrador' WHERE nome = '${administrador}'`;
+	console.log(query);
+	executaSql(query, res);
+})
+
+app.post('/getColaboradores', (req, res) => {
+	var query = "SELECT nome FROM usuario WHERE tipo = 'colaborador'";
+	console.log(query);
+	pool.query(query, (error, results) => {
+		if(error){
+			res.json(error);
+		}
+		else{
+			res.json(results.rows);
+		}
+	})
+})
+
+app.post('/apagarContato', (req, res) => {
+	const idcontato = req.body.id;
+	var query = `UPDATE contato SET publicado = 'nao' WHERE idcontato = '${idcontato}'`;
+	console.log(query);
+	executaSql(query, res);})
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {

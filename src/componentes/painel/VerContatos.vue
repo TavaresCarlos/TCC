@@ -10,7 +10,7 @@
 					    <li class="list-group-item"> {{ c.to_char }} </li>
 					    <li class="list-group-item"> {{ c.email }} </li>
 					    <li class="list-group-item"> {{ c.mensagem }} </li>
-					    <li class="list-group-item"> <a class="btn btn-success btn-sm btn-block" id="excluir" name="excluir" @click=""><span class="oi oi-plus"></span> Apagar contato</a></li>
+					    <li class="list-group-item"> <a class="btn btn-success btn-sm btn-block" id="excluir" name="excluir" @click="apagarContato(c.idcontato)"><span class="oi oi-plus"></span> Apagar contato</a></li>
 				  	</ul>
 				</div>
 				<br>
@@ -35,6 +35,20 @@
                     this.contato.push(response.data[i]);
                 }
             })
+		},
+		methods:{
+			apagarContato(id){
+				console.log(id);
+				axios.post('http://localhost:3000/apagarContato', { id: id } ).then((response) => {
+					if(response.data.length == 0){
+                        this.$router.push('/administrador');
+                        alert("Contato apagado");
+                    }
+                    else{
+                        alert(response.data);
+                    }
+				});
+			}
 		}
 	}
 </script>
