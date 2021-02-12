@@ -1,4 +1,5 @@
 <h1>Framework para Sistemas VGI</h1>
+<img src="apresentação-do-sistema/imagens/home.jpg" width="700" height="500">
 <h2>Trabalho de conclusão de curso (TCC)</h2>
 <p>Esse projeto é de um framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas que utilizam VGI como forma de obtenção de dados georreferenciados (que possuem latitude e longitude).</p> 
 <p>O sistema permite o compartilhamento de informações por usuários, associando-as a pontos, linhas e polígonos traçados no mapa e permitindo a exportação dos dados no formato GeoJSON, permitindo assim o dimensionamento dos fatos observados e a comunicação do sistema com outros sistemas de informação geográfica.
@@ -7,9 +8,8 @@
 <br>-CSS3
 <br>-Javascript
 <br>-Bootstrap
-<br>-Leaflet.js
+<br>-Leaflet
 <br>-PostgreSQL 
-<br>
 <br>-Frontend: VUE
 <br>-Backend: NodeJS (Express)
 <h2>Funcionalidades iniciais:</h2>
@@ -52,6 +52,5 @@
 <h2>Instalação</h2>
 <h3>Dependências</h3>
 <p>npm install</p>
-
 <h3>Executar aplicação no localhost:8080</h3>
 <p>npm run dev</p>
