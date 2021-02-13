@@ -1,8 +1,15 @@
 <h1>Framework para Sistemas VGI</h1>
 <img src="apresentação-do-sistema/imagens/home.jpg" width="700" height="500">
 <h2>Trabalho de conclusão de curso (TCC)</h2>
+
+<p><strong>Português</strong></p>
 <p>Esse projeto é de um framework inspirado no <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> para facilitar o desenvolvimento de sistemas que utilizam VGI como forma de obtenção de dados georreferenciados (que possuem latitude e longitude).</p> 
 <p>O sistema permite o compartilhamento de informações por usuários, associando-as a pontos, linhas e polígonos traçados no mapa e permitindo a exportação dos dados no formato GeoJSON, permitindo assim o dimensionamento dos fatos observados e a comunicação do sistema com outros sistemas de informação geográfica.
+
+<p><strong>English</strong></p>
+<p>This project is a framework inspired on <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> for easily the systems development that used to VGI for get spatial data.</p>
+<p>The framework permit to share the users informations associate with points, lines or polygons in the map and export the spatial data in geojson or csv formats, adding the facts dimensionality and the comunication from this systems to all GIS.</p>
+
 <h2>Tecnologias utilizadas:</h2>
 -HTML5
 <br>-CSS3
@@ -47,9 +54,15 @@
 <br>-/apagarContato: Atualiza o status de um contato recebido como "publicado = não", mantendo assim ele ainda salvo no banco de dados como histórico para o sistema.
 <h2>Como usar:</h2>
 <p>Basta clonar o repositório do projeto em seu computador. Após isso, é necessário criar o banco de dados PostgreSQL, executando o script da pasta "banco-de-dados" e definir os parâmetros de conexão no arquivo "server/app.js".</p>
+
 <h2>Observação:</h2>
+<p><strong>Português</strong></p>
 <p>Cada categoria adicionada pelo usuário administrador deve conter pelo menos uma subcategoria cadastrada no sistema.</p>
 <p>A inserção dos polígonos não respeita a Regra da Mão Direita.</p>
+<p><strong>Inglês</strong></p>
+<p>Each category add by administrator user need a once subcategory add too in the system.</p>
+<p>The polygon insertion don't follow the righ-hand rule.</p>
+
 <h2>Instalação</h2>
 <h3>Dependências</h3>
 <p>npm install</p>

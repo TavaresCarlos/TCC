@@ -82,8 +82,7 @@
                     	else if(response.data[0].tipo == 'root'){
                     		this.$router.push('/root');
                     	}
-                    	
-                    }
+                	}
                 })
 			}
 		}

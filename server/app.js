@@ -8,6 +8,8 @@ const passport = require('passport');
 const path = require('path');
 const Pool = require('pg').Pool;
 
+const jwt = require('jsonwebtoken');
+
 const app = express();
 const port = 3000;
 
@@ -79,12 +81,16 @@ app.post('/novoContato', (req, res) => {
 	console.log(query);
 })
 
-//Rota para autenticação do usuário e login
 app.post('/login', (req, res) => {
 	console.log("Rota chamada");
 
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
+
+	//Create user token
+	const token = jwt.sign({
+		name: usuario
+	}, 'segredo');
 
 	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
@@ -99,8 +105,9 @@ app.post('/login', (req, res) => {
 			else{
 				//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
-					//Iniciando a sessão do usuário no sistema
-					//AQUI	
+					//Send token to fronteed adding it to "results.rows"
+					results.rows[0]['token'] = token;
+					//console.log(results.rows[0]);
 					res.json(results.rows);
 				}
 				else{
@@ -114,7 +121,7 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/perfil', (req, res) => {
-	
+
 })
 
 app.post('/trocarSenha', (req, res) => {
