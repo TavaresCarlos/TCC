@@ -73,17 +73,12 @@
                     	alert(response.data);
                     }
                     else if(response.data.length != 0){
-                    	console.log(response);
                     	if(response.data[0].tipo == 'colaborador'){
                     		this.$router.push('/colaborador');
                     	}
                     	else if(response.data[0].tipo == 'administrador'){
                     		this.$router.push('/administrador');
                     	}
-                    	/*
-                    	else if(response.data[0].tipo == 'anonimo'){
-                    		this.$router.push('/anonimo');
-                    	}*/
                     	else if(response.data[0].tipo == 'root'){
                     		this.$router.push('/root');
                     	}
@@ -97,7 +92,6 @@
 
 <style>
 #login{
-	
 	padding: 20px 20px 20px 20px;
 	margin-top: 18%;
 	color: #FFFFFF;

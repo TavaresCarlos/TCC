@@ -97,8 +97,10 @@ app.post('/login', (req, res) => {
 				res.json("Usuário inválido. Tente novamente.");
 			}
 			else{
+				//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
-					//Iniciando a sessão do usuário no sistema	
+					//Iniciando a sessão do usuário no sistema
+					//AQUI	
 					res.json(results.rows);
 				}
 				else{
@@ -296,10 +298,25 @@ app.post('/exportar', (req, res) => {
 	const formato = req.body.formato;
 
 	if(formato == 'json'){
-		var query = `SELECT array_to_json(array_agg(row_to_json(t)))
-					  FROM (
-					      SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'
-					    ) t`;
+		var query = `SELECT json_agg(
+			            json_build_object(
+			            	'type', 'Feature',
+							'geometry', ST_AsGeoJSON(geom)::json,
+							'properties', json_build_object(
+								'titulo', titulo,
+								'categoria', categorias.nomecat, 
+								'subcategoria', subcategorias.nomesubcat,
+								'data',to_char(data, 'DD/MM/YYYY'),
+								'distancia ou area',distanciaarea,
+								'descricao', descricao,
+								'tipo',tipogeometria
+							)
+			            )
+			        ) 
+					FROM contribuicao 
+					INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+					WHERE publicado = 'sim'`;
 		console.log(query);
 	}
 	pool.query(query, (error, results) => {
