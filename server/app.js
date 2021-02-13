@@ -297,7 +297,7 @@ app.post('/getColaboracoes', (req, res) => {
 app.post('/exportar', (req, res) => {
 	const formato = req.body.formato;
 
-	if(formato == 'json'){
+	if(formato == 'geojson'){
 		var query = `SELECT json_agg(
 			            json_build_object(
 			            	'type', 'Feature',
@@ -318,6 +318,23 @@ app.post('/exportar', (req, res) => {
 					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
 					WHERE publicado = 'sim'`;
 		console.log(query);
+	}
+	else if(formato == 'csv'){
+		var query = `
+			SELECT 
+				titulo,
+				categorias.nomecat, 
+				subcategorias.nomesubcat,
+				to_char(data, 'DD/MM/YYYY'),
+				distanciaarea,
+				descricao,
+				tipogeometria,
+				ST_AsGeoJSON(geom)::json
+				
+			FROM contribuicao 
+			INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+			INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+			WHERE publicado = 'sim'`;
 	}
 	pool.query(query, (error, results) => {
 		if(error){
