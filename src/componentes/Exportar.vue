@@ -47,15 +47,11 @@
 	                	let blob = new Blob([geojson_format ], { type: response.headers['content-type'] });
 					    let link = document.createElement('a');
 
-					    console.log(link);
-
 					    link.href = window.URL.createObjectURL(blob);
 					    link.download = 'colaboracoes.json';
 					    link.click();
 					}
 					else if(this.formato == 'csv'){
-						console.log(response);
-
 						var csv_format = "Titulo; Categoria; Subcategoria; Data; Distancia ou Area; Descricao; Tipo de Geometria; Coordenadas";
 						const size = response.data.length;
 
@@ -63,12 +59,8 @@
 							csv_format = csv_format + '\n' + response.data[i].titulo + ';' + response.data[i].nomecat + ';' + response.data[i].nomesubcat + ';' + response.data[i].to_char + ';' + response.data[i].distanciaarea + ';' + response.data[i].descricao + ';' + response.data[i].tipogeometria + ';' + JSON.stringify(response.data[i].st_asgeojson.coordinates);
 						}
 
-						console.log(csv_format);
-
 						let blob = new Blob([csv_format], { type: response.headers['content-type'] });
 					    let link = document.createElement('a');
-
-					    console.log(link);
 
 					    link.href = window.URL.createObjectURL(blob);
 					    link.download = 'colaboracoes.csv';

@@ -13,9 +13,9 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const port = 3000;
 
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: false, cookie: { maxAge: 30 * 60 * 1000 }}));
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: true, cookie: { maxAge: 30000 }}));
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, secure: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -88,9 +88,9 @@ app.post('/login', (req, res) => {
 	const senha = req.body.senha;
 
 	//Create user token
-	const token = jwt.sign({
+	/*const token = jwt.sign({
 		name: usuario
-	}, 'segredo');
+	}, 'segredo');*/
 
 	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
@@ -106,8 +106,9 @@ app.post('/login', (req, res) => {
 				//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
 					//Send token to fronteed adding it to "results.rows"
-					results.rows[0]['token'] = token;
+					//results.rows[0]['token'] = token;
 					//console.log(results.rows[0]);
+					req.session.user = usuario;
 					res.json(results.rows);
 				}
 				else{
@@ -121,7 +122,8 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/perfil', (req, res) => {
-
+	console.log(req.session.user);
+	//console.log(req);
 })
 
 app.post('/trocarSenha', (req, res) => {
