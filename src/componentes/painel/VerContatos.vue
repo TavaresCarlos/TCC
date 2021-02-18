@@ -57,7 +57,7 @@
 #contatos{
 	margin-left: 3%;
 	margin-top: 1%;
-	width: 70%;
+	width: 100%;
 	font-size: 15px;
 }
 #cardContato{

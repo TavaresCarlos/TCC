@@ -6,6 +6,8 @@
 					<center><h4>{{ this.nomeSistema }}</h4></center>
 					<center><img src="src/img/logo/logo.png" width="30" height="30" alt=""></center>
 					<br>
+					<div id="descricao" align="justify"> &nbsp{{ this.descricao }} </div>
+					<br>
 					<input class="form-control mr-sm-2" type="text" placeholder="Email ou apelido" aria-label="Login" id="usuario" name="usuario" v-model="usuario">
 					<br>
 		      		<input class="form-control mr-sm-2" type="password" placeholder="Senha" aria-label="Senha" id="senha" name="senha" v-model="senha" required>
@@ -37,6 +39,7 @@
 		data(){
 			return{
 				nomeSistema: '',
+				descricao: '',
 				usuario: '',
 				senha: ''
 			}
@@ -45,6 +48,7 @@
 			axios.post('http://localhost:3000/home').then((response) => {
 				if(response.data.length > 0){
 					this.nomeSistema = response.data[0].nomesistema; 
+					this.descricao = response.data[0].descricao; 
 				}
 			});
 		},
@@ -69,6 +73,7 @@
 			},
 			login(){
 				axios.post('http://localhost:3000/login', { usuario: this.usuario, senha: this.senha }).then((response) => {
+					console.log(response);
                     if(typeof(response.data) == 'string'){
                     	alert(response.data);
                     }
@@ -90,6 +95,9 @@
 </script>
 
 <style>
+#cadastro, #contato, #colaboracoes, #exportar{
+	padding: 5px 5px 5px 5px; 
+} 
 #login{
 	padding: 20px 20px 20px 20px;
 	margin-top: 18%;

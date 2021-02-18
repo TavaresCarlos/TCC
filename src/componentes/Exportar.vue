@@ -1,6 +1,8 @@
 <template>
 	<div id="exportar">
-		<p>Escolha o formato abaixo para exportar os dados:</p>
+		Escolha o formato abaixo para exportar os dados:
+		<br>
+		<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-success">
 		    <input type="radio" name="json" id="json" value="geojson" v-model="formato" @change="exportar" autocomplete="off"> GeoJSON

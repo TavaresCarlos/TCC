@@ -64,7 +64,7 @@
 <style>
 #verColaboracoes{
 	margin-left: 3%;
-	width: 80%;
+	width: 100%;
 	
 }
 </style>

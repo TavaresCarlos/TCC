@@ -23,7 +23,7 @@
 		    <nav class="navbar navbar-expand-lg navbar-light">
 		        <div class="container-fluid">
 
-		            <button type="button" id="sidebarCollapse" class="btn btn-dark">
+		            <button type="button" id="sidebarCollapse" class="btn btn-primary">
 		                <i class="fas fa-align-left"></i>
 		                <span>Menu</span>
 		            </button>
@@ -129,14 +129,14 @@ a, a:hover, a:focus {
 
 #sidebar {
     /* don't forget to add all the previously mentioned styles here too */
-    background: #000000;
+    background: #315478;
     color: #fff;
     transition: all 0.3s;
 }
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #000000;
+    background: #315478;
 }
 
 #sidebar ul.components {

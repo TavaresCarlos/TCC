@@ -87,11 +87,6 @@ app.post('/login', (req, res) => {
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
 
-	//Create user token
-	/*const token = jwt.sign({
-		name: usuario
-	}, 'segredo');*/
-
 	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
 	pool.query(query, (error, results) => {
@@ -108,7 +103,6 @@ app.post('/login', (req, res) => {
 					//Send token to fronteed adding it to "results.rows"
 					//results.rows[0]['token'] = token;
 					//console.log(results.rows[0]);
-					req.session.user = usuario;
 					res.json(results.rows);
 				}
 				else{
@@ -122,8 +116,7 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/perfil', (req, res) => {
-	console.log(req.session.user);
-	//console.log(req);
+	
 })
 
 app.post('/trocarSenha', (req, res) => {
