@@ -8,7 +8,7 @@
 
 <p><strong>English</strong></p>
 <p>This project is a framework inspired on <a href="http://www.dpi.ufv.br/projetos/clickonmap/">ClickOnMap</a> for easily the systems development that used to VGI for get spatial data.</p>
-<p>The framework permit to share the users informations associate with points, lines or polygons in the map and export the spatial data in geojson or csv formats, adding the facts dimensionality and the comunication from this systems to all GIS.</p>
+<p>The framework permit to share the users informations associate with points, lines or polygons in the map and export the spatial data in geojson or csv formats, adding the facts dimensionality and the comunication from this systems to all others GIS.</p>
 
 <h2>Tecnologias utilizadas:</h2>
 -HTML5
