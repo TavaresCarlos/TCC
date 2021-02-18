@@ -2,7 +2,7 @@
 	<div id="adicionarCategorias">
         <input type="text" class="form-control" id="novaCategoria" name="novaCategoria" v-model="categoria" placeholder="Digite a nova categoria aqui" required>
         <br>
-        <button class="btn btn-success btn-sm btn-block" type="submit" @click="salvarCategoria()">Salvar Categoria</button>
+        <button class="btn btn-success btn-sm" type="submit" @click="salvarCategoria()">Salvar Categoria</button>
 	</div>
 </template>
 
@@ -38,7 +38,7 @@
 	color: #FFFFFF;
 }
 #novaCategoria{
-	width: 450%;
+	width: 60%;
 }
 
 </style>

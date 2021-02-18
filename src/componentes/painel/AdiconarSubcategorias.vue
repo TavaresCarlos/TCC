@@ -9,7 +9,7 @@
 	    <br><br>
         <input type="text" class="form-control" id="novasubcategoria" name="novaSubcategoria" v-model="subcategoria" placeholder="Digite a nova subcategoria aqui" required>
         <br>
-        <button class="btn btn-success btn-sm btn-block" type="submit" @click="salvarSubcategoria()">Salvar Subcategoria</button>
+        <button class="btn btn-success btn-sm" type="submit" @click="salvarSubcategoria()">Salvar Subcategoria</button>
 	</div>
 </template>
 
@@ -55,7 +55,7 @@
 	color: #FFFFFF;
 }
 #novasubcategoria{
-	width: 450%;
+	width: 60%;
 }
 
 </style>

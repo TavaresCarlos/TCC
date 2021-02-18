@@ -8,7 +8,7 @@
 	        </select>
 	    <br>
 	    <br>
-        <button class="btn btn-success btn-sm btn-block" type="submit" @click="salvarAdministrador()">Salvar Administrador</button>
+        <button class="btn btn-success btn-sm" type="submit" @click="salvarAdministrador()">Salvar Administrador</button>
 	</div>
 </template>
 

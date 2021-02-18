@@ -1,7 +1,6 @@
 <template>
 	<div class="row">
 		<div class="col-12">
-			<div id="tituloInicial"><h1>CONFIGURAÇÕES DO FRAMEWORK</h1></div>
 			<div id="configuracaoInicial">
 				<form action="" method="">
 					<label for="vencimentoBolsa">Nome do Sistema:</label>
@@ -26,7 +25,7 @@
 				</form>
 				<div id="mapaConfiguracaoInicial"></div>
 				<br>
-				<button type="button" class="btn btn-success btn-lg btn-block" @click="salvarConf()">Enviar</button>
+				<button type="button" class="btn btn-success btn-lg" @click="salvarConf()">Enviar</button>
 			</div>
 	</div>
 	</div>
@@ -109,15 +108,15 @@
 	color: #FFFFFF;
 	border: solid white 1px;
 	padding: 10px 10px 10px 10px;
-	width: 130%;
+	width: 97%;
 	margin-left: 3%;
 }
 #latitude, #longitude{
 	width: 100%;
 }
 #mapaConfiguracaoInicial{
-	    width: 100%;
-	   	height: 45vh;
-	   	margin-top: 0.5%;
+   	width: 100%;
+	height: 43vh;
+	margin-top: 0.5%;
 }
 </style>

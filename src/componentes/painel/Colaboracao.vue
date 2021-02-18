@@ -294,7 +294,7 @@
 <style>
 	#colaboracao{
 		margin-left: 1%;
-		width: 85%;
+		width: 97%;
 	   	height: 90vh;
 	   	margin-top: 0.5%;
 	}
