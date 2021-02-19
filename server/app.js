@@ -4,16 +4,11 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const passport = require('passport');
 const path = require('path');
 const Pool = require('pg').Pool;
 
-const jwt = require('jsonwebtoken');
-
 const app = express();
 const port = 3000;
-
-app.use(session({ secret: 'secret', resave: false, saveUninitialized: true, cookie: { maxAge: 30000 }}));
 
 app.use(bodyParser.urlencoded({ extended: true, secure: false }));
 app.use(bodyParser.json());
@@ -45,6 +40,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/home', (req, res) => {
+	
+	app.locals.user = '';
+	app.locals.logged = false;
+
 	executaSql('SELECT * FROM configuracaoinicial', res);
 });
 
@@ -100,9 +99,11 @@ app.post('/login', (req, res) => {
 			else{
 				//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
 				if(bcrypt.compareSync(senha, results.rows[0].senha)){
-					//Send token to fronteed adding it to "results.rows"
-					//results.rows[0]['token'] = token;
-					//console.log(results.rows[0]);
+
+					//Autenticação do usuário
+					app.locals.user = usuario;
+					app.locals.logged = true;
+
 					res.json(results.rows);
 				}
 				else{
@@ -116,7 +117,18 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/perfil', (req, res) => {
-	
+	if(app.locals.logged){
+		var query = `SELECT nome, apelido, email, faixaetaria, tipo FROM usuario WHERE apelido = '${app.locals.user}'`;
+		console.log(query);
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	}
 })
 
 app.post('/trocarSenha', (req, res) => {
@@ -135,102 +147,110 @@ app.post('/trocarSenha', (req, res) => {
 })
 
 app.post('/setCategoria', (req, res) => {
-	const categoria = req.body.categoria;
+	if(app.locals.logged){
+		const categoria = req.body.categoria;
 
-	var query_01 = `SELECT nome FROM categorias WHERE nome = '${categoria}'`;
-	var query_02 = `INSERT INTO categorias (nome) VALUES ('${categoria}')`;
-	console.log(query_01);
+		var query_01 = `SELECT nome FROM categorias WHERE nome = '${categoria}'`;
+		var query_02 = `INSERT INTO categorias (nome) VALUES ('${categoria}')`;
+		console.log(query_01);
 
-	pool.query(query_01, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			//Categoria ainda não cadastrada
-			if(results.rows.length == 0){
-				executaSql(query_02, res);
-			} 
-			//Categoria já cadastrada
-			else{
-				res.json("Categoria já cadastrada");
+		pool.query(query_01, (error, results) => {
+			if(error){
+				res.json(error);
 			}
-		}
-	})
+			else{
+				//Categoria ainda não cadastrada
+				if(results.rows.length == 0){
+					executaSql(query_02, res);
+				} 
+				//Categoria já cadastrada
+				else{
+					res.json("Categoria já cadastrada");
+				}
+			}
+		})
+	}
 })
 
 app.post('/getCategoria', (req, res)=>{
-	var query = "SELECT nomecat FROM categorias";
-	console.log(query);
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			res.json(results.rows);
-		}
-	})
+	if(app.locals.logged){
+		var query = "SELECT nomecat FROM categorias";
+		console.log(query);
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	}
 })
 
 app.post('/setSubcategoria', (req, res) => {
-	const categoria = req.body.categoria;
-	const subcategoria = req.body.subcategoria;
+	if(app.locals.logged){
+		const categoria = req.body.categoria;
+		const subcategoria = req.body.subcategoria;
 
-	var query_01 = `SELECT nomesubcat FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
-	var query_02 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
+		var query_01 = `SELECT nomesubcat FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
+		var query_02 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
 
-	pool.query(query_01, (error, results) => {
+		pool.query(query_01, (error, results) => {
+			console.log(query_01);
+			if(error){
+				res.json(error);
+			}
+			else{
+				//Subcategoria ainda não cadastrada
+				if(results.rows.length == 0){
+					console.log(query_02);
+					pool.query(query_02, (error, results) => {
+						if(error){
+							res.json(error);
+						}
+						else{
+							const idcategorias = results.rows[0].idcategorias;
+							var query_03 = `INSERT INTO subcategorias (nomesubcat, idcategorias) VALUES ('${subcategoria}', '${idcategorias}')`;
+							console.log(query_03);
+							executaSql(query_03, res);
+						}
+					})
+				} 
+				//Subcategoria já cadastrada
+				else{
+					res.json("Categoria já cadastrada");
+				}
+			}
+		})
+	}
+})
+
+app.post('/getSubcategoria', (req, res)=>{
+	if(app.locals.logged){
+		var categoria = req.body.categoria;
+
+		var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
+
 		console.log(query_01);
-		if(error){
-			res.json(error);
-		}
-		else{
-			//Subcategoria ainda não cadastrada
-			if(results.rows.length == 0){
+		pool.query(query_01, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				var idcategorias = (results.rows[0].idcategorias);
+				var query_02 = `SELECT nomesubcat FROM subcategorias WHERE idcategorias = '${idcategorias}'`;
 				console.log(query_02);
 				pool.query(query_02, (error, results) => {
 					if(error){
 						res.json(error);
 					}
 					else{
-						const idcategorias = results.rows[0].idcategorias;
-						var query_03 = `INSERT INTO subcategorias (nomesubcat, idcategorias) VALUES ('${subcategoria}', '${idcategorias}')`;
-						console.log(query_03);
-						executaSql(query_03, res);
+						res.json(results.rows);
 					}
 				})
-			} 
-			//Subcategoria já cadastrada
-			else{
-				res.json("Categoria já cadastrada");
 			}
-		}
-	})
-})
-
-app.post('/getSubcategoria', (req, res)=>{
-	var categoria = req.body.categoria;
-
-	var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
-
-	console.log(query_01);
-	pool.query(query_01, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			var idcategorias = (results.rows[0].idcategorias);
-			var query_02 = `SELECT nomesubcat FROM subcategorias WHERE idcategorias = '${idcategorias}'`;
-			console.log(query_02);
-			pool.query(query_02, (error, results) => {
-				if(error){
-					res.json(error);
-				}
-				else{
-					res.json(results.rows);
-				}
-			})
-		}
-	})
+		})
+	}
 })
 
 app.post('/setColaboracao', (req, res) => {
@@ -349,45 +369,51 @@ app.post('/exportar', (req, res) => {
 })
 
 app.post('/getContatos', (req, res) => {
-	var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato WHERE publicado = 'sim' ORDER BY data DESC`;
+	if(app.locals.logged){
+		var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato WHERE publicado = 'sim' ORDER BY data DESC`;
 
-	console.log(query);
+		console.log(query);
 
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			res.json(results.rows);
-		}
-	})
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	}
 })
 
 app.post('/alterarStatusColaboracao', (req, res) => {
-	const novoStatus = req.body.statusPublicacao;
-	const idcontribuicao = req.body.idcontribuicao;
+	if(app.locals.logged){
+		const novoStatus = req.body.statusPublicacao;
+		const idcontribuicao = req.body.idcontribuicao;
 
-	console.log(idcontribuicao);
-	console.log(novoStatus);
+		console.log(idcontribuicao);
+		console.log(novoStatus);
 
-	var query = `UPDATE contribuicao SET publicado = '${novoStatus}' WHERE idcontribuicao = '${idcontribuicao}'`;
-	console.log(query);
-	executaSql(query, res);
+		var query = `UPDATE contribuicao SET publicado = '${novoStatus}' WHERE idcontribuicao = '${idcontribuicao}'`;
+		console.log(query);
+		executaSql(query, res);
+	}
 })
 
 app.post('/verColaboracoes', (req, res) => {
-	var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom), publicado FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias`;
-		
-	console.log(query);
+	if(app.locals.logged){
+		var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom), publicado FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias`;
+			
+		console.log(query);
 
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			res.json(results.rows);
-		}
-	})
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	}
 })
 
 app.post('/setConfInicial', (req, res) => {
@@ -404,30 +430,37 @@ app.post('/setConfInicial', (req, res) => {
 })
 
 app.post('/setAdministradores', (req, res) => {
-	const administrador = req.body.administrador;
-	var query = `UPDATE usuario SET tipo = 'administrador' WHERE nome = '${administrador}'`;
-	console.log(query);
-	executaSql(query, res);
+	if(app.locals.logged){
+		const administrador = req.body.administrador;
+		var query = `UPDATE usuario SET tipo = 'administrador' WHERE nome = '${administrador}'`;
+		console.log(query);
+		executaSql(query, res);
+	}
 })
 
 app.post('/getColaboradores', (req, res) => {
-	var query = "SELECT nome FROM usuario WHERE tipo = 'colaborador'";
-	console.log(query);
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			res.json(results.rows);
-		}
-	})
+	if(app.locals.logged){
+		var query = "SELECT nome FROM usuario WHERE tipo = 'colaborador'";
+		console.log(query);
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	}
 })
 
 app.post('/apagarContato', (req, res) => {
-	const idcontato = req.body.id;
-	var query = `UPDATE contato SET publicado = 'nao' WHERE idcontato = '${idcontato}'`;
-	console.log(query);
-	executaSql(query, res);})
+	if(app.locals.logged){
+		const idcontato = req.body.id;
+		var query = `UPDATE contato SET publicado = 'nao' WHERE idcontato = '${idcontato}'`;
+		console.log(query);
+		executaSql(query, res);
+	}
+})
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {

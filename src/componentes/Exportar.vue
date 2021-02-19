@@ -5,12 +5,14 @@
 		<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-success">
-		    <input type="radio" name="json" id="json" value="geojson" v-model="formato" @change="exportar" autocomplete="off"> GeoJSON
+		    <input type="radio" name="geojson" id="geojson" value="geojson" v-model="formato" @click="exportar" autocomplete="off"> GeoJSON
 		  </label>
 		  <label class="btn btn-success">
-		    <input type="radio" name="csv" id="csv" value="csv" v-model="formato" @change="exportar" autocomplete="off"> CSV
+		    <input type="radio" name="csv" id="csv" value="csv" v-model="formato" @click="exportar" autocomplete="off"> CSV
 		  </label>
 		</div>
+
+
 	</div>
 </template>
 
