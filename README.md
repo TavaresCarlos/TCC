@@ -19,6 +19,7 @@
 <br>-PostgreSQL 
 <br>-Frontend: VUE
 <br>-Backend: NodeJS (Express)
+<br>-Sequelize
 <h2>Funcionalidades iniciais:</h2>
 <p>Na tela inicial do sistema, ficam disponíveis as seguintes funcionalidades iniciais:</p>
 -Cadastro de novo usuário

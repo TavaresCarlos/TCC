@@ -1,38 +1,31 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
 
-const Contato = database.define('contato', {
-	idcontato: {
+const ConfInicial = database.define('configuracaoinicial', {
+	idinicial: {
 		type: Sequelize.INTEGER,
 		autoIncrement: true,
 		allowNull: false,
 		primaryKey: true
 	},
-	nome: {
+	nomesistema: {
 		type: Sequelize.STRING,
 		allowNull: false
 	},
-	assunto: {
-		type: Sequelize.STRING,
+	latitude: {
+		type: Sequelize.DOUBLE,
 		allowNull: false
 	},
-	email: {
-		type: Sequelize.STRING,
+	longitude: {
+		type: Sequelize.DOUBLE,
 		allowNull: false
 	},
-	mensagem: {
-		type: Sequelize.STRING,
+	zoom: {
+		type: Sequelize.INTEGER,
 		allowNull: false
 	},
-	publicado: {
+	descricao: {
 		type: Sequelize.STRING,
-		allowNull: false
-	},
-	data: {
-		type: Sequelize.DATE,
 		allowNull: false
 	}
-
 })
-
-module.exports = Contato;

@@ -78,13 +78,13 @@
                     	alert(response.data);
                     }
                     else if(response.data.length != 0){
-                    	if(response.data[0].tipo == 'colaborador'){
+                    	if(response.data.tipo == 'colaborador'){
                     		this.$router.push('/colaborador');
                     	}
-                    	else if(response.data[0].tipo == 'administrador'){
+                    	else if(response.data.tipo == 'administrador'){
                     		this.$router.push('/administrador');
                     	}
-                    	else if(response.data[0].tipo == 'root'){
+                    	else if(response.data.tipo == 'root'){
                     		this.$router.push('/root');
                     	}
                 	}

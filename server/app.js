@@ -1,11 +1,20 @@
 const http = require('http');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const Sequelize = require('sequelize');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 const Pool = require('pg').Pool;
+
+const database = require('../database/db');
+const Usuarios = require('../database/models/Usuario.js');
+const Contatos = require('../database/models/Contato.js');
+const Categorias = require('../database/models/Categorias.js');
+const Subcategorias = require('../database/models/Subcategorias.js');
+const Contribuicao = require('../database/models/Contribuicao.js');
+const ConfInicial = require('../database/models/ConfInicial.js');
 
 const app = express();
 const port = 3000;
@@ -35,8 +44,7 @@ function executaSql(sql, res) {
 
 //Rotas
 app.get('/', (req, res) => {
-	//res.json({ message: 'Funcionando' })
-	executaSql('SELECT * FROM usuario', res);
+	res.json("Servidor online");
 });
 
 app.post('/home', (req, res) => {
@@ -44,40 +52,37 @@ app.post('/home', (req, res) => {
 	app.locals.user = '';
 	app.locals.logged = false;
 
-	executaSql('SELECT * FROM configuracaoinicial', res);
+	//executaSql('SELECT * FROM configuracaoinicial', res);
 });
 
 app.post('/cadastroNovoUsuario', (req, res) => {
-	console.log("Rota chamada");
 
-	const nome = req.body.nome;
-	const apelido = req.body.apelido;
-	const faixaEtaria = req.body.faixaEtaria;
-	const email = req.body.email;
 	const senha = bcrypt.hashSync(req.body.senha, 10);
 	const tipo = 'colaborador';
 
-	var query = `INSERT INTO usuario (nome, apelido, email, senha, faixaEtaria, tipo) VALUES ( '${nome}', '${apelido}', '${email}', '${senha}', '${faixaEtaria}', '${tipo}' )`;
-	executaSql(query, res);
-
-	console.log(query);
+	const cadastro = Usuarios.create({
+		nome: req.body.nome,
+		apelido: req.body.apelido,
+		email: req.body.email,
+		faixaetaria: req.body.faixaEtaria,
+		tipo: tipo,
+		senha: senha
+	}).then(res.json("Sucesso"));
 });
 
 app.post('/novoContato', (req, res) => {
-	console.log("Rota chamada");
 
 	var date = new Date;
+	const publicado = "sim";
 
-	const nome = req.body.nome;
-	const email = req.body.email;
-	const assunto = req.body.assunto;
-	const mensagem = req.body.mensagem;
-	const data = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
-	var query = `INSERT INTO contato (nome, email, assunto, mensagem, data) VALUES ('${nome}', '${email}', '${assunto}', '${mensagem}', '${data}')`;
-	executaSql(query, res);
-
-	console.log(query);
+	const contato = Contatos.create({
+		nome: req.body.nome,
+		assunto:  req.body.assunto,
+		email: req.body.email,
+		mensagem: req.body.mensagem,
+		publicado: publicado,
+		data: date
+	}).then(res.json("Sucesso"));
 })
 
 app.post('/login', (req, res) => {
@@ -86,103 +91,42 @@ app.post('/login', (req, res) => {
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
 
-	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
-	
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
+	Usuarios.findOne({ where:{ apelido: usuario }}).then((user) =>{
+		if(bcrypt.compareSync(senha, user.senha)){
+			//Autenticação do usuário
+			app.locals.user = user.apelido;
+			app.locals.logged = true;
+			res.json(user);
 		}
-		else{
-			if(results.rows.length == 0){
-				res.json("Usuário inválido. Tente novamente.");
-			}
-			else{
-				//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
-				if(bcrypt.compareSync(senha, results.rows[0].senha)){
-
-					//Autenticação do usuário
-					app.locals.user = usuario;
-					app.locals.logged = true;
-
-					res.json(results.rows);
-				}
-				else{
-					res.json("Senha inválida. Tente novamente.");
-				}
-			}
-		}
-	})
-
-	console.log(query);
+	});
 })
 
 app.post('/perfil', (req, res) => {
-	if(app.locals.logged){
-		var query = `SELECT nome, apelido, email, faixaetaria, tipo FROM usuario WHERE apelido = '${app.locals.user}'`;
-		console.log(query);
-		pool.query(query, (error, results) => {
-			if(error){
-				res.json(error);
-			}
-			else{
-				res.json(results.rows);
-			}
-		})
-	}
+	Usuarios.findOne({ where:{ apelido: app.locals.user }}).then((user) =>{
+		res.json(user);
+	});
 })
 
 app.post('/trocarSenha', (req, res) => {
-	var query = `SELECT * FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 	
-	console.log(query);
-
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			res.json(results.rows);
-		}
-	})
 })
 
 app.post('/setCategoria', (req, res) => {
+	
 	if(app.locals.logged){
-		const categoria = req.body.categoria;
-
-		var query_01 = `SELECT nome FROM categorias WHERE nome = '${categoria}'`;
-		var query_02 = `INSERT INTO categorias (nome) VALUES ('${categoria}')`;
-		console.log(query_01);
-
-		pool.query(query_01, (error, results) => {
-			if(error){
-				res.json(error);
-			}
-			else{
-				//Categoria ainda não cadastrada
-				if(results.rows.length == 0){
-					executaSql(query_02, res);
-				} 
-				//Categoria já cadastrada
-				else{
-					res.json("Categoria já cadastrada");
-				}
-			}
-		})
+		Categorias.create({
+			nomecat: req.body.categoria
+		}).then(res.json("Categoria inserida."))
 	}
 })
 
-app.post('/getCategoria', (req, res)=>{
+app.get('/getCategoria', (req, res)=>{
 	if(app.locals.logged){
-		var query = "SELECT nomecat FROM categorias";
-		console.log(query);
-		pool.query(query, (error, results) => {
-			if(error){
-				res.json(error);
-			}
-			else{
-				res.json(results.rows);
-			}
+		Categorias.findAll({
+			raw: true,
+			atributes: ['nomecat']
+		}).then((data) => {
+			res.json(data);
 		})
 	}
 })
@@ -464,5 +408,72 @@ app.post('/apagarContato', (req, res) => {
 
 //Rodando o servidor
 http.createServer(app).listen(port, () => {
+	(async() => {
+			try{
+			Subcategorias.belongsTo(Categorias, {
+				constraint: true,
+				foreignKey: 'idcategorias'
+			});
+
+			Contribuicao.belongsTo(Subcategorias, {
+				constraint: true,
+				foreignKey: 'idsubcategorias'
+			});
+
+			Contribuicao.belongsTo(Categorias, {
+				constraint: true,
+				foreignKey: 'idcategorias'
+			});
+
+			Contribuicao.belongsTo(Usuarios, {
+				constraint: true,
+				foreignKey: 'idusuarios'
+			});
+
+			//Define 1:N
+			Categorias.hasMany(Subcategorias, {
+				foreignKey: 'idsubcategorias'
+			});
+
+			Subcategorias.hasMany(Contribuicao, {
+				foreignKey: 'idcontribuicao'
+			});
+
+			Categorias.hasMany(Contribuicao, {
+				foreignKey: 'idcontribuicao'
+			});
+
+			Usuarios.hasMany(Contribuicao, {
+				foreignKey: 'idcontribuicao'
+			});
+
+			const result = await database.sync( /*{force: true}*/ );
+
+			/*if(result){
+				const admin = await Usuarios.create({
+					nome: 'admin',
+					apelido: 'admin',
+					email: 'admin@admin',
+					senha: 'admin',
+					faixaetaria: '',
+					tipo: 'admin'
+				});
+
+				const anoninmo = await Usuarios.create({
+					nome: 'anonimo',
+					apelido: 'anonimo',
+					email: 'anonimo@anonimo',
+					senha: '',
+					faixaetaria: '',
+					tipo: 'anonimo'
+				});
+			}*/
+
+			console.log("Base de dados criada e atualizada.");
+		}
+		catch(error){
+			console.log(error);
+		}
+	})();
 	console.log("Servidor online");
 })

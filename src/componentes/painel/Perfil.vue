@@ -28,11 +28,11 @@
 		},
 		mounted(){
 			axios.post('http://localhost:3000/perfil').then((response) => {
-				this.nome = response.data[0].nome;
-				this.apelido = response.data[0].apelido;
-				this.email = response.data[0].email;
-				this.faixaetaria = response.data[0].faixaetaria;
-				this.tipo = response.data[0].tipo;
+				this.nome = response.data.nome;
+				this.apelido = response.data.apelido;
+				this.email = response.data.email;
+				this.faixaetaria = response.data.faixaetaria;
+				this.tipo = response.data.tipo;
 			})
 		}
 	}

@@ -25,8 +25,7 @@
 			}
 		},
 		created: function(){
-            axios.post('http://localhost:3000/getCategoria').then((response) => {
-            	console.log(response);
+            axios.get('http://localhost:3000/getCategoria').then((response) => {
                 for(var i=0; i<response.data.length; i++){
                     this.categoria.push(response.data[i].nomecat);
                 }
