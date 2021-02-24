@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const database = require('../db');
+const Categorias = require('./Categorias.js')
 
 const Subcategorias = database.define('subcategorias', {
 	idsubcategorias: {

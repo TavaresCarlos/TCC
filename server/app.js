@@ -31,17 +31,6 @@ const pool = new Pool({
 	port: 5432,
 });
 
-function executaSql(sql, res) {
-	pool.query(sql, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			res.json(results.rows);
-		}
-	})
-}
-
 //Rotas
 app.get('/', (req, res) => {
 	res.json("Servidor online");
@@ -60,7 +49,7 @@ app.post('/cadastroNovoUsuario', (req, res) => {
 	const senha = bcrypt.hashSync(req.body.senha, 10);
 	const tipo = 'colaborador';
 
-	const cadastro = Usuarios.create({
+	Usuarios.create({
 		nome: req.body.nome,
 		apelido: req.body.apelido,
 		email: req.body.email,
@@ -75,7 +64,7 @@ app.post('/novoContato', (req, res) => {
 	var date = new Date;
 	const publicado = "sim";
 
-	const contato = Contatos.create({
+	Contatos.create({
 		nome: req.body.nome,
 		assunto:  req.body.assunto,
 		email: req.body.email,
@@ -131,41 +120,19 @@ app.get('/getCategoria', (req, res)=>{
 	}
 })
 
+//Arrumar essa rota
 app.post('/setSubcategoria', (req, res) => {
 	if(app.locals.logged){
 		const categoria = req.body.categoria;
 		const subcategoria = req.body.subcategoria;
 
-		var query_01 = `SELECT nomesubcat FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
-		var query_02 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
-
-		pool.query(query_01, (error, results) => {
-			console.log(query_01);
-			if(error){
-				res.json(error);
-			}
-			else{
-				//Subcategoria ainda não cadastrada
-				if(results.rows.length == 0){
-					console.log(query_02);
-					pool.query(query_02, (error, results) => {
-						if(error){
-							res.json(error);
-						}
-						else{
-							const idcategorias = results.rows[0].idcategorias;
-							var query_03 = `INSERT INTO subcategorias (nomesubcat, idcategorias) VALUES ('${subcategoria}', '${idcategorias}')`;
-							console.log(query_03);
-							executaSql(query_03, res);
-						}
-					})
-				} 
-				//Subcategoria já cadastrada
-				else{
-					res.json("Categoria já cadastrada");
-				}
-			}
-		})
+		Categorias.findOne({ where:{ nomecat: categoria }}).then((categoria) =>{
+			console.log(categoria);
+			const subcategoriaAdd = Subcategorias.create({
+				nomesubcat: subcategoria,
+				idcategorias: categoria.idcategorias
+			}).then(res.json("Subcategoria inserida."));
+		});
 	}
 })
 
@@ -314,17 +281,13 @@ app.post('/exportar', (req, res) => {
 
 app.post('/getContatos', (req, res) => {
 	if(app.locals.logged){
-		var query = `SELECT idcontato, nome, assunto, email,  to_char(data, 'DD/MM/YYYY'), mensagem FROM contato WHERE publicado = 'sim' ORDER BY data DESC`;
-
-		console.log(query);
-
-		pool.query(query, (error, results) => {
-			if(error){
-				res.json(error);
-			}
-			else{
-				res.json(results.rows);
-			}
+		Contatos.findAll({ 
+			where: { publicado: 'sim' }, 
+			order: [ 'data', 'DESC' ],
+			raw: true,
+			atributes: ['idcontato', 'nome', 'assunto', 'email', 'mensagem', 'data']
+		}).then((data) => {
+			res.json(data);
 		})
 	}
 })
@@ -399,7 +362,6 @@ app.post('/getColaboradores', (req, res) => {
 
 app.post('/apagarContato', (req, res) => {
 	if(app.locals.logged){
-		const idcontato = req.body.id;
 		var query = `UPDATE contato SET publicado = 'nao' WHERE idcontato = '${idcontato}'`;
 		console.log(query);
 		executaSql(query, res);
@@ -432,7 +394,7 @@ http.createServer(app).listen(port, () => {
 
 			//Define 1:N
 			Categorias.hasMany(Subcategorias, {
-				foreignKey: 'idsubcategorias'
+				foreignKey: 'idcategorias'
 			});
 
 			Subcategorias.hasMany(Contribuicao, {
@@ -448,26 +410,6 @@ http.createServer(app).listen(port, () => {
 			});
 
 			const result = await database.sync( /*{force: true}*/ );
-
-			/*if(result){
-				const admin = await Usuarios.create({
-					nome: 'admin',
-					apelido: 'admin',
-					email: 'admin@admin',
-					senha: 'admin',
-					faixaetaria: '',
-					tipo: 'admin'
-				});
-
-				const anoninmo = await Usuarios.create({
-					nome: 'anonimo',
-					apelido: 'anonimo',
-					email: 'anonimo@anonimo',
-					senha: '',
-					faixaetaria: '',
-					tipo: 'anonimo'
-				});
-			}*/
 
 			console.log("Base de dados criada e atualizada.");
 		}
