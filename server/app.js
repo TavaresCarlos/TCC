@@ -57,7 +57,7 @@ app.post('/cadastroNovoUsuario', (req, res) => {
 	const senha = bcrypt.hashSync(req.body.senha, 10);
 	const tipo = 'colaborador';
 
-	var query = `INSERT INTO usuario (nome, apelido, email, senha, faixaEtaria, tipo) VALUES ( '${nome}', '${apelido}', '${email}', '${senha}', '${faixaEtaria}', '${tipo}' )`;
+	var query = `INSERT INTO usuario (nome, apelido, email, senha, faixaetaria, tipo) VALUES ( '${nome}', '${apelido}', '${email}', '${senha}', '${faixaEtaria}', '${tipo}' )`;
 	executaSql(query, res);
 
 	console.log(query);
