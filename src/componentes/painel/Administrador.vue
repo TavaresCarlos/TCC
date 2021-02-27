@@ -74,7 +74,7 @@
 				this.$router.push({ path: `/administrador/adicionarCategorias` })
 			},
 			addSubcategorias: function(){
-				this.$router.push({ path: `/administrador/adicionarSubcategorias` })
+				this.$router.push({ path: `/administrador/adicionarSubcategorias`})
 			},
 			contatos: function(){
 				this.$router.push({ path: `/administrador/verContatos` })
