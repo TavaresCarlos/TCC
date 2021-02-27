@@ -37,6 +37,7 @@
                 	if(geometria.type == "Point"){
                 		L.marker(geometria.coordinates).addTo(this.mapa).bindPopup(`
 	                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+	                		<br><strong>Colaborador:</strong> ` + response.data[i].nome + `
 	                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
 	                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
 	                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
@@ -49,6 +50,7 @@
                 	if(geometria.type == 'LineString'){
                 		L.polyline(geometria.coordinates, {color: 'red'}).addTo(this.mapa).bindPopup(`
 	                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+	                		<br><strong>Colaborador:</strong> ` + response.data[i].nome + `
 	                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
 	                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
 	                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `
@@ -61,6 +63,7 @@
                 	if(geometria.type == "Polygon"){
                 		L.polygon(geometria.coordinates, {color: 'red'}).addTo(this.mapa).bindPopup(`
 	                		<strong>Titulo:</strong> ` + response.data[i].titulo + `
+	                		<br><strong>Colaborador:</strong> ` + response.data[i].nome + `
 	                		<br><strong>Categoria:</strong> ` + response.data[i].nomecat + `
 	                		<br><strong>Subcategoria:</strong> ` + response.data[i].nomesubcat + `
 	                		<br><strong>Tipo de geometria:</strong> ` + response.data[i].tipogeometria + `

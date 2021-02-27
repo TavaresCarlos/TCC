@@ -277,15 +277,13 @@
                 console.log(this.dataOcorrencia);
                 console.log(this.tipoGeometria);
                 console.log(this.descricao);
-                console.log(this.coordenadas);*/
-
-                console.log(this.geometria);
+                console.log(this.coordenadas);
+                console.log(this.geometria);*/
 
                 axios.post('http://localhost:3000/setColaboracao',  { titulo: this.titulo, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, distanciaArea: this.distanciaArea, dataOcorrencia: this.dataOcorrencia, tipoGeometria: this.tipoGeometria, descricao: this.descricao, coordenadas: this.coordenadas }).then((response) => {
                     	if(response.data.length == 0){
                     		alert("Contribuição inserida com sucesso");
                     	}
-                        console.log(response);
                 })
             }
 		}

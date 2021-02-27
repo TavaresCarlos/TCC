@@ -43,7 +43,7 @@
 		},
 		created(){
 			axios.post('http://localhost:3000/verColaboracoes').then((response) => {
-				//console.log(response);
+				console.log(response);
                 for(var i=0; i<response.data.length; i++){
                     this.colaboracoes.push(response.data[i]);
                 }

@@ -322,8 +322,13 @@ app.post('/setColaboracao', (req, res) => {
 })
 
 app.post('/getColaboracoes', (req, res) => {
-	var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom), publicado FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'sim'`;
-		
+	var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geometria), publicado, usuario.nome  
+	FROM contribuicao 
+	INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+	INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+	INNER JOIN usuario ON contribuicao.idusuario = usuario.idusuario
+	WHERE publicado = 'sim'`;	
+
 	console.log(query);
 
 	pool.query(query, (error, results) => {
@@ -421,7 +426,11 @@ app.post('/alterarStatusColaboracao', (req, res) => {
 
 app.post('/verColaboracoes', (req, res) => {
 	if(app.locals.logged){
-		var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom), publicado FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias`;
+		var query = `SELECT idcontribuicao, titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geometria), publicado, usuario.nome  
+		FROM contribuicao 
+		INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+		INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+		INNER JOIN usuario ON contribuicao.idusuario = usuario.idusuario`;
 			
 		console.log(query);
 
