@@ -63,7 +63,7 @@ app.post('/cadastroNovoUsuario', (req, res) => {
 	console.log(query);
 });
 
-app.post('/novoContato', (req, res) => {
+app.post('/setContato', (req, res) => {
 	console.log("Rota chamada");
 
 	var date = new Date;
@@ -72,12 +72,18 @@ app.post('/novoContato', (req, res) => {
 	const email = req.body.email;
 	const assunto = req.body.assunto;
 	const mensagem = req.body.mensagem;
+	const publicado = 'sim';
 	const data = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
-	var query = `INSERT INTO contato (nome, email, assunto, mensagem, data) VALUES ('${nome}', '${email}', '${assunto}', '${mensagem}', '${data}')`;
+	var query = `INSERT INTO contato (nome, email, assunto, mensagem, data, publicado) VALUES ('${nome}', '${email}', '${assunto}', '${mensagem}', '${data}', '${publicado}')`;
 	executaSql(query, res);
 
 	console.log(query);
+})
+
+app.post('/logout', (req, res) => {
+	app.locals.user = '';
+	app.locals.logged = false;
 })
 
 app.post('/login', (req, res) => {
@@ -86,34 +92,40 @@ app.post('/login', (req, res) => {
 	const usuario = req.body.usuario;
 	const senha = req.body.senha;
 
-	var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
-	
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
-		}
-		else{
-			if(results.rows.length == 0){
-				res.json("Usuário inválido. Tente novamente.");
+	if(usuario == 'anonimo'){
+		//Autenticação do usuário
+		app.locals.user = 'anonimo';
+		app.locals.logged = true;
+		res.json('Anonimo logado');
+	}
+	else{
+		var query = `SELECT nome, senha, tipo FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
 			}
 			else{
-				//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
-				if(bcrypt.compareSync(senha, results.rows[0].senha)){
-
-					//Autenticação do usuário
-					app.locals.user = usuario;
-					app.locals.logged = true;
-
-					res.json(results.rows);
+				if(results.rows.length == 0){
+					res.json("Usuário inválido. Tente novamente.");
 				}
 				else{
-					res.json("Senha inválida. Tente novamente.");
+					//Compara a senha que o usuário digitou com a senha que retornou da consulta ao banco de dados
+					if(bcrypt.compareSync(senha, results.rows[0].senha)){
+
+						//Autenticação do usuário
+						app.locals.user = usuario;
+						app.locals.logged = true;
+
+						res.json(results.rows);
+					}
+					else{
+						res.json("Senha inválida. Tente novamente.");
+					}
 				}
 			}
-		}
-	})
-
-	console.log(query);
+		})
+		console.log(query);
+	}	
 })
 
 app.post('/perfil', (req, res) => {
@@ -266,8 +278,11 @@ app.post('/setColaboracao', (req, res) => {
 	const publicado = 'nao';
 	const coordenadas = req.body.coordenadas;
 
+	const usuario = app.locals.user;
+
 	var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
 	var query_02 = `SELECT idsubcategorias FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
+	var query_03 = `SELECT idusuario FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 
 	pool.query(query_01, (error, results) => {
 		console.log(query_01);
@@ -277,7 +292,6 @@ app.post('/setColaboracao', (req, res) => {
 		else{
 			const idcategorias = results.rows[0].idcategorias;
 			pool.query(query_02, (error, results) => {
-				console.log(results.rows.length);
 				console.log(query_02);
 				if(error){
 					res.json(error);
@@ -286,16 +300,20 @@ app.post('/setColaboracao', (req, res) => {
 					//Há subcategorias
 					if(results.rows.length != 0){
 						const idsubcategorias = results.rows[0].idsubcategorias;
-						var query_03 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado, geom) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}', ST_GeomFromGeoJSON('${coordenadas}'))`;
-						executaSql(query_03, res);
+
 						console.log(query_03);
-					}
-					//Não há subcategorias
-					else if(results.rows.length == 0){
-						const idsubcategorias = 0;
-						var query_03 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}')`;
-						executaSql(query_03, res);
-						console.log(query_03);
+						pool.query(query_03, (error, results) => {
+							if(error){
+								res.json(error);
+							}
+							else{
+								const idusuario = results.rows[0].idusuario;
+								console.log(idusuario);
+								var query_04 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado, geometria, idusuario) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}', ST_GeomFromGeoJSON('${coordenadas}'), '${idusuario}')`;
+								executaSql(query_04, res);
+								console.log(query_04);
+							}
+						})
 					}
 				}
 			})

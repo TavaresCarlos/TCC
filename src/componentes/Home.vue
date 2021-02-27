@@ -6,8 +6,6 @@
 					<center><h4>{{ this.nomeSistema }}</h4></center>
 					<center><img src="src/img/logo/logo.png" width="30" height="30" alt=""></center>
 					<br>
-					<div id="descricao" align="justify"> &nbsp{{ this.descricao }} </div>
-					<br>
 					<input class="form-control mr-sm-2" type="text" placeholder="Email ou apelido" aria-label="Login" id="usuario" name="usuario" v-model="usuario">
 					<br>
 		      		<input class="form-control mr-sm-2" type="password" placeholder="Senha" aria-label="Senha" id="senha" name="senha" v-model="senha" required>
@@ -29,6 +27,9 @@
 					<button class="btn btn-success btn-lg btn-block" type="submit" id="anonimo" @click="anonimo"><i class="fa fa-sign-in" aria-hidden="true"></i>Colaboração Anônima</button>
 				</div>
 			</div>
+			<br>
+			<div id="descricao" align="justify"> &nbsp{{ this.descricao }} </div>
+		</div>
 	</div>
 </template>
 
@@ -69,7 +70,9 @@
 				this.$router.push('/exportar')
 			},
 			anonimo(){
-				this.$router.push('/anonimo')
+				axios.post('http://localhost:3000/login', { usuario: 'anonimo' }).then((response) => {
+                })
+                this.$router.push('/anonimo');
 			},
 			login(){
 				axios.post('http://localhost:3000/login', { usuario: this.usuario, senha: this.senha }).then((response) => {

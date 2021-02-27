@@ -285,6 +285,7 @@
                     	if(response.data.length == 0){
                     		alert("Contribuição inserida com sucesso");
                     	}
+                        console.log(response);
                 })
             }
 		}

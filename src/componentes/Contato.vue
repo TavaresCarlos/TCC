@@ -34,7 +34,7 @@
         },
         methods:{
             novoContato(){
-                axios.post('http://localhost:3000/novoContato', { nome: this.nome, email: this.email, assunto: this.assunto, mensagem: this.mensagem }).then((response) => {
+                axios.post('http://localhost:3000/setContato', { nome: this.nome, email: this.email, assunto: this.assunto, mensagem: this.mensagem }).then((response) => {
                     if(response.statusText == 'OK'){
                         this.$router.push('/');
                         alert("Mensagem enviada com sucesso");
