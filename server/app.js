@@ -150,18 +150,20 @@ app.post('/setCategoria', (req, res) => {
 	if(app.locals.logged){
 		const categoria = req.body.categoria;
 
-		var query_01 = `SELECT nome FROM categorias WHERE nome = '${categoria}'`;
-		var query_02 = `INSERT INTO categorias (nome) VALUES ('${categoria}')`;
-		console.log(query_01);
+		var query_01 = `SELECT nomecat FROM categorias WHERE nomecat = '${categoria}'`;
+		var query_02 = `INSERT INTO categorias (nomecat) VALUES ('${categoria}')`;
 
 		pool.query(query_01, (error, results) => {
+			console.log(query_01);
 			if(error){
 				res.json(error);
 			}
 			else{
 				//Categoria ainda não cadastrada
+				console.log(results.rows);
 				if(results.rows.length == 0){
 					executaSql(query_02, res);
+					console.log(query_02);
 				} 
 				//Categoria já cadastrada
 				else{
@@ -458,6 +460,14 @@ app.post('/apagarContato', (req, res) => {
 		const idcontato = req.body.id;
 		var query = `UPDATE contato SET publicado = 'nao' WHERE idcontato = '${idcontato}'`;
 		console.log(query);
+		executaSql(query, res);
+	}
+})
+
+app.post('/contadorTabela', (req, res) => {
+	if(app.locals.logged){
+		const nomeTabela = req.body.nomeTabela;
+		var query = `SELECT COUNT(*) FROM ${nomeTabela}`;
 		executaSql(query, res);
 	}
 })

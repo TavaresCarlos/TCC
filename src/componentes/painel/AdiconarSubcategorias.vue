@@ -10,6 +10,9 @@
         <input type="text" class="form-control" id="novasubcategoria" name="novaSubcategoria" v-model="subcategoria" placeholder="Digite a nova subcategoria aqui" required>
         <br>
         <button class="btn btn-success btn-sm" type="submit" @click="salvarSubcategoria()">Salvar Subcategoria</button>
+        <br>
+        <br>
+        <p id="contador">{{ this.numeroLinhas }} subcategorias adicionadas no sistema.</p>
 	</div>
 </template>
 
@@ -21,7 +24,8 @@
 			return{
 				categoria: [],
 				categoriaSalvar: '',
-				subcategoria: ''
+				subcategoria: '',
+				numeroLinhas: ''
 			}
 		},
 		created: function(){
@@ -30,7 +34,11 @@
                 for(var i=0; i<response.data.length; i++){
                     this.categoria.push(response.data[i].nomecat);
                 }
-            })
+            });
+            axios.post('http://localhost:3000/contadorTabela', { nomeTabela: 'subcategorias' } ).then((response) => {
+				console.log(response);
+				this.numeroLinhas = response.data[0].count;
+			});
         },
 		methods:{
 			salvarSubcategoria(){

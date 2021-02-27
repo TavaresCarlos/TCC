@@ -3,6 +3,9 @@
         <input type="text" class="form-control" id="novaCategoria" name="novaCategoria" v-model="categoria" placeholder="Digite a nova categoria aqui" required>
         <br>
         <button class="btn btn-success btn-sm" type="submit" @click="salvarCategoria()">Salvar Categoria</button>
+        <br>
+        <br>
+        <p id="contador">{{ this.numeroLinhas }} categorias adicionadas no sistema.</p>
 	</div>
 </template>
 
@@ -12,8 +15,15 @@
 	export default{
 		data(){
 			return{
-				categoria: ''
+				categoria: '',
+				numeroLinhas: ''
 			}
+		},
+		created: function(){
+			axios.post('http://localhost:3000/contadorTabela', { nomeTabela: 'categorias' } ).then((response) => {
+				console.log(response);
+				this.numeroLinhas = response.data[0].count;
+			});
 		},
 		methods:{
 			salvarCategoria(){
@@ -39,6 +49,9 @@
 }
 #novaCategoria{
 	width: 60%;
+}
+#contador{
+	color: #FFFFFF;
 }
 
 </style>
