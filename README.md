@@ -43,28 +43,29 @@
 
 <h2>Rotas criadas:</h2>
 -/home:
-<br>-/cadastroNovoUsuario:
-<br>-/novoContato:
-<br>-/login:
-<br>-/perfil:
-<br>-/trocarSenha:
-<br>-/setCategoria:
-<br>-/getCategoria:
-<br>-/setSubcategoria:
-<br>-/getSubcategoria:
-<br>-/setColaboracao:
-<br>-/getColaboracoes:
-<br>-/exportar:
-<br>-/getContatos:
-<br>-/alterarStatusColaboracao:
-<br>-/verColaboracoes:
-<br>-/setConfInicial:
-<br>-/setAdministradores:
-<br>-/getColaboradores:
-<br>-/apagarContato: Atualiza o status de um contato recebido como "publicado = não", mantendo assim ele ainda salvo no banco de dados como histórico para o sistema.
+<br>/cadastroNovoUsuario:
+<br>/novoContato:
+<br>/login:
+<br>/perfil: Retorna o nome, apelido, email, faixa etaria e tipo do usuário que está logado no sistema. 
+<br>/trocarSenha:
+<br>/setCategoria: Busca no banco de dados a categoria fornecida e caso ainda não esteja cadastrada no sistema, insere ela. 
+<br>/getCategoria: Retorna todas as categorias inseridas. 
+<br>/setSubcategoria: Busca no banco de dados a subcategoria fornecida e caso ainda não esteja cadastrada no sistema, insere ela. 
+<br>/getSubcategoria: Retorna todas as subcategorias inseridas. 
+<br>/setColaboracao: Insere no banco de dados a colaboração com todos os atributos informados pelo usuário e com o atributo publicado = "não".
+<br>/getColaboracoes: Retorna todas as colaborações com o atributo publicado = "sim". 
+<br>/exportar:
+<br>/getContatos: Retorna os campos idcontato, nome, assunto, email, data e mensagem de todas as colaborações que foram realizadas para o sistema e com a propriedade publicado = "sim". 
+<br>/alterarStatusColaboracao: Altera o status da colaboração para publicado = "sim", tornando-a visível na tela de "Colaborações". 
+<br>/verColaboracoes:
+<br>/setConfInicial:
+<br>/setAdministradores:
+<br>/getColaboradores:
+<br>/apagarContato: Atualiza o status de um contato recebido como "publicado = não", mantendo assim a integridade do banco de dados.
 
 <h2>Como usar:</h2>
-<p>Basta clonar o repositório do projeto em seu computador. Após isso, é necessário criar o banco de dados PostgreSQL, executando o script da pasta "banco-de-dados" e definir os parâmetros de conexão no arquivo "server/app.js".</p>
+<p>A aplicação trabalha com dois servidores: localhost:3000 (servidor Express) e localhost:8081 (servidor do VUE).</p>
+<p>Além disso, é necessário criar o banco de dados PostgreSQL com o script da pasta "banco de dados/esquema.txt"</p>
 
 <h2>Observação:</h2>
 <p><strong>Português</strong></p>
@@ -77,5 +78,7 @@
 <h2>Instalação</h2>
 <h3>Dependências</h3>
 <p>npm install</p>
-<h3>Executar aplicação no localhost:8080</h3>
+<h3>Executar servidor VUE</h3>
 <p>npm run dev</p>
+<h3>Executar servidor Express</h3>
+<p>node app.js</p>
