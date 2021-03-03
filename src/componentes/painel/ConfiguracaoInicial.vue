@@ -68,8 +68,6 @@
 
 	        });
 
-	        console.log(this.latitude);
-
 		    //Agrupando camadas wms
 	        var baseMaps = { 
 	        	"OpenStreetMap": osm.addTo(this.mapa),
@@ -86,6 +84,7 @@
 		methods:{
 			salvarConf(){
 			 axios.post('http://localhost:3000/setConfInicial', { nomeSistema: this.nomeSistema, latitude: this.latitude, longitude: this.longitude, zoom: this.zoom, descricao: this.descricao }).then((response) => {
+			 	console.log(response);
 				if(response.data.length == 0){
                     this.$router.push('/root');
                     alert("Sistema configurado com sucesso");

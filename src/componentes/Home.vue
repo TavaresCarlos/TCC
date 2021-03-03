@@ -26,9 +26,12 @@
 					<br>
 					<button class="btn btn-success btn-lg btn-block" type="submit" id="anonimo" @click="anonimo"><i class="fa fa-sign-in" aria-hidden="true"></i>Colaboração Anônima</button>
 				</div>
+				<br>
+				<div id="descricao"><center> &nbsp{{ this.descricao }} </center></div>
 			</div>
 			<br>
-			<div id="descricao" align="justify"> &nbsp{{ this.descricao }} </div>
+			<br>
+			
 		</div>
 	</div>
 </template>
@@ -109,7 +112,7 @@
 #menu{
 	margin-top: 2%;
 }
-#ou{
+#ou, #descricao{
 	color: #FFFFFF;
 }
 body{

@@ -26,11 +26,21 @@
 <br>-Visualização das colaborações já realizadas e aprovadas
 <br>-Exportação das colaborações nos formatos GeoJSON e CSV
 <br>-Possibilidade de realizar a colaboração de forma anônima
-<h2>Tipos de usuários:</h2>
+
+<h2>Tipos de usuários e funcionalidades:</h2>
 -Root (Super Usuário)
-<br>-Administrador
-<br>-Anônimo
-<br>-Colaborador
+<br>
+<img src="apresentação-do-sistema/imagens/root.jpg" width="700" height="500">
+<br><br>-Administrador
+<br>
+<img src="apresentação-do-sistema/imagens/admin.jpg" width="700" height="500">
+<br><br>-Anônimo
+<br>
+<img src="apresentação-do-sistema/imagens/anonimo.jpg" width="700" height="500">
+<br><br>-Colaborador
+<br>
+<img src="apresentação-do-sistema/imagens/colaborador.jpg" width="700" height="500">
+
 <h2>Rotas criadas:</h2>
 -/home:
 <br>-/cadastroNovoUsuario:
@@ -52,6 +62,7 @@
 <br>-/setAdministradores:
 <br>-/getColaboradores:
 <br>-/apagarContato: Atualiza o status de um contato recebido como "publicado = não", mantendo assim ele ainda salvo no banco de dados como histórico para o sistema.
+
 <h2>Como usar:</h2>
 <p>Basta clonar o repositório do projeto em seu computador. Após isso, é necessário criar o banco de dados PostgreSQL, executando o script da pasta "banco-de-dados" e definir os parâmetros de conexão no arquivo "server/app.js".</p>
 
