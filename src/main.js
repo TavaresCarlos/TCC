@@ -10,7 +10,7 @@ import Colaborar from './componentes/Colaborar.vue'
 import Contato from './componentes/Contato.vue'
 import Cadastro from './componentes/Cadastro.vue'
 import Colaboracoes from './componentes/Colaboracoes.vue'
-import Exportar from './componentes/Exportar.vue'
+
 
 import Root from './componentes/painel/Root.vue'
 import ConfiguracaoInicial from './componentes/painel/ConfiguracaoInicial.vue'
@@ -27,6 +27,7 @@ import AdicionarCategorias from './componentes/painel/AdicionarCategorias.vue'
 import AdiconarSubcategorias from './componentes/painel/AdiconarSubcategorias.vue'
 import VerContatos from './componentes/painel/VerContatos.vue'
 import VerColaboracoes from './componentes/painel/VerColaboracoes.vue'
+import Exportar from './componentes/painel/Exportar.vue'
 
 Vue.use(VueRouter)
 
@@ -38,11 +39,11 @@ const router = new VueRouter({
 		{ path: '/contato', component: Contato },
 		{ path: '/cadastro', component: Cadastro },
 		{ path: '/colaboracoes', component: Colaboracoes },
-		{ path: '/exportar', component: Exportar },
 		{ path: '/colaborador', component: Colaborador, children: [
 			{ path: '/colaborador/perfil', component: Perfil },
 			{ path: '/colaborador/trocarSenha', component: TrocarSenha },
-			{ path: '/colaborador/colaboracao', component: Colaboracao}
+			{ path: '/colaborador/colaboracao', component: Colaboracao },
+			{ path: '/colaborador/exportar', component: Exportar }
 		]},
 		{ path: '/administrador', component: Administrador, children: [
 			{ path: '/administrador/perfil', component: Perfil },
@@ -51,7 +52,8 @@ const router = new VueRouter({
 			{ path: '/administrador/adicionarCategorias', component: AdicionarCategorias },
 			{ path: '/administrador/adicionarSubcategorias', component: AdiconarSubcategorias },
 			{ path: '/administrador/verContatos', component: VerContatos },
-			{ path: '/administrador/verColaboracoes', component: VerColaboracoes }
+			{ path: '/administrador/verColaboracoes', component: VerColaboracoes },
+			{ path: '/administrador/exportar', component: Exportar },
 		]},
 		{ path: '/root', component: Root, children: [
 			{ path: '/root/ConfiguracaoInicial', component: ConfiguracaoInicial },

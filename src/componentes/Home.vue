@@ -19,7 +19,6 @@
 						<button class="btn btn-success my-2 my-sm-0" type="submit" id="cadastro" @click="cadastro"><i class="fa fa-sign-in" aria-hidden="true"></i> Cadastro</button>
 						<button class="btn btn-success my-2 my-sm-0" type="submit" id="contato" @click="contato"><i class="fa fa-sign-in" aria-hidden="true"></i> Contato</button>
 						<button class="btn btn-success my-2 my-sm-0" type="submit" id="colaboracoes" @click="colaboracoes"><i class="fa fa-sign-in" aria-hidden="true"></i> Colaborações</button>
-						<button class="btn btn-success my-2 my-sm-0" type="submit" id="exportar" @click="exportar"><i class="fa fa-sign-in" aria-hidden="true"></i> Exportar</button>
 					</center>	
 					<br>
 					<center id="ou">OU</center>
@@ -68,9 +67,6 @@
 			},
 			colaboracoes: function(){
 				this.$router.push('/colaboracoes')
-			},
-			exportar: function(){
-				this.$router.push('/exportar')
 			},
 			anonimo(){
 				axios.post('http://localhost:3000/login', { usuario: 'anonimo' }).then((response) => {

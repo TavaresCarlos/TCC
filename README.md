@@ -62,6 +62,8 @@
 <br>/setAdministradores:
 <br>/getColaboradores:
 <br>/apagarContato: Atualiza o status de um contato recebido como "publicado = não", mantendo assim a integridade do banco de dados.
+<br>/contadorTabela:
+<br>/setConfInicial:
 
 <h2>Como usar:</h2>
 <p>A aplicação trabalha com dois servidores: localhost:3000 (servidor Express) e localhost:8081 (servidor do VUE).</p>

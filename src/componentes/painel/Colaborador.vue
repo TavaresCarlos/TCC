@@ -16,6 +16,8 @@
 	            <li>
 	            	<a @click="trocarSenha()">Trocar Senha</a>
 	            </li>
+	            <li>
+	                <a @click="exportar()">Exportar colaborações</a>
 	            </li>
 	            <li>
 	                <a @click="sair">Sair</a>
@@ -61,6 +63,9 @@
 			},
 			colaboracao: function(){
 				this.$router.push({ path: `/colaborador/colaboracao` })
+			},
+			exportar: function(){
+				this.$router.push({ path: `/colaborador/exportar` })
 			},
 			sair: function(){
 				this.$router.push({ path: `/` })

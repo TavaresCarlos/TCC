@@ -1,6 +1,30 @@
 <template>
 	<div id="exportar">
-		Escolha o formato abaixo para exportar os dados:
+		<p id="textoHeader">Defina as configurações abaixo para exportação das colaborações:</p>
+		<label for="categoria" class="form-label">Selecione a categoria:</label><br>
+			<select v-model="categoriaSalvar" @change="selecionarSubcategorias">
+	            <option v-for="cat in this.categoria">
+	                {{ cat }}
+	            </option>
+	        </select>
+		<br>
+		<br>
+		<label for="subcategoria" class="form-label">Subcategoria</label><br>
+            <select v-model="subcategoriaSalvar">
+                <option v-for="subcat in this.subcategoria">
+                    {{ subcat }}
+                </option>
+            </select>
+		<br>
+		<br>
+		<div class="row">
+			<label for="período" class="form-label">&nbsp&nbsp&nbsp Período: De &nbsp&nbsp&nbsp</label>
+			<input type="date" class="form-control" id="dataInicio" name="dataInicio" v-model="dataInicio" placeholder="">
+			&nbsp&nbsp&nbsp
+			Até
+			&nbsp&nbsp&nbsp
+			<input type="date" class="form-control" id="dataFim"" name="dataFim" v-model="dataFim" placeholder="">
+		</div>
 		<br>
 		<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -22,12 +46,40 @@
 	export default{
 		data(){
 			return{
+				categoria: [],
+				categoriaSalvar: '',
+				subcategoria: [],
+				subcategoriaSalvar: '',
+				dataInicio: '',
+				dataFim: '',
 				formato: ''
 			}
 		},
+		created:function(){
+			axios.post('http://localhost:3000/getCategoria').then((response) => {
+            	console.log(response);
+                for(var i=0; i<response.data.length; i++){
+                    this.categoria.push(response.data[i].nomecat);
+                }
+            });
+		},
 		methods: {
+			selecionarSubcategorias: function(){
+                axios.post('http://localhost:3000/getSubcategoria',  { categoria: this.categoriaSalvar }).then((response) => {
+                    console.log(typeof(response.data));
+                    if(response.data.length != 0){
+                    	this.subcategoria = [];
+                        for(var i=0; i<response.data.length; i++){
+                            this.subcategoria.push(response.data[i].nomesubcat);
+                        }
+                    }
+                    else if(response.data.length == 0){
+                        this.subcategoria = [];
+                    }
+                })
+            },
 			exportar(){
-				axios.post('http://localhost:3000/exportar',{ formato: this.formato }).then((response) => {
+				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, dataInicio: this.dataInicio, dataFim: this.dataFim }).then((response) => {
 
 					if(this.formato == 'geojson'){
 						var geojson_format = '{ "type": "FeatureCollection", "features":[';
@@ -77,7 +129,10 @@
 </script>
 
 <style>
-#exportar{
+#exportar, #textoHeader{
 	color: #FFFFFF;
+}
+#dataInicio, #dataFim{
+	width: 15%;
 }
 </style>

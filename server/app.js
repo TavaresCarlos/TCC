@@ -114,6 +114,7 @@ app.post('/login', (req, res) => {
 
 						//Autenticação do usuário
 						app.locals.user = usuario;
+						app.locals.type = results.rows[0].tipo;
 						app.locals.logged = true;
 
 						res.json(results.rows);
@@ -342,55 +343,62 @@ app.post('/getColaboracoes', (req, res) => {
 })
 
 app.post('/exportar', (req, res) => {
-	const formato = req.body.formato;
+	if(app.locals.logged){
+		const formato = req.body.formato;
+		const categoria = req.body.categoria;
+		const subcategoria = req.body.subcategoria;
+		const dataInicio = req.body.dataInicio;
+		const dataFim = req.body.dataFim;
+		const tipoUsuario = data.locals.type;
 
-	if(formato == 'geojson'){
-		var query = `SELECT json_agg(
-			            json_build_object(
-			            	'type', 'Feature',
-							'geometry', ST_AsGeoJSON(geom)::json,
-							'properties', json_build_object(
-								'titulo', titulo,
-								'categoria', categorias.nomecat, 
-								'subcategoria', subcategorias.nomesubcat,
-								'data',to_char(data, 'DD/MM/YYYY'),
-								'distancia ou area',distanciaarea,
-								'descricao', descricao,
-								'tipo',tipogeometria
-							)
-			            )
-			        ) 
-					FROM contribuicao 
-					INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-					WHERE publicado = 'sim'`;
-		console.log(query);
-	}
-	else if(formato == 'csv'){
-		var query = `
-			SELECT 
-				titulo,
-				categorias.nomecat, 
-				subcategorias.nomesubcat,
-				to_char(data, 'DD/MM/YYYY'),
-				distanciaarea,
-				descricao,
-				tipogeometria,
-				ST_AsGeoJSON(geom)::json
-				
-			FROM contribuicao 
-			INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-			INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-			WHERE publicado = 'sim'`;
-	}
-	pool.query(query, (error, results) => {
-		if(error){
-			res.json(error);
+		if(formato == 'geojson'){
+			var query = `SELECT json_agg(
+				            json_build_object(
+				            	'type', 'Feature',
+								'geometry', ST_AsGeoJSON(geom)::json,
+								'properties', json_build_object(
+									'titulo', titulo,
+									'categoria', categorias.nomecat, 
+									'subcategoria', subcategorias.nomesubcat,
+									'data',to_char(data, 'DD/MM/YYYY'),
+									'distancia ou area',distanciaarea,
+									'descricao', descricao,
+									'tipo',tipogeometria
+								)
+				            )
+				        ) 
+						FROM contribuicao 
+						INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+						WHERE publicado = 'sim'`;
+			console.log(query);
 		}
-		else{
-			res.json(results.rows);
+		else if(formato == 'csv'){
+			var query = `
+				SELECT 
+					titulo,
+					categorias.nomecat, 
+					subcategorias.nomesubcat,
+					to_char(data, 'DD/MM/YYYY'),
+					distanciaarea,
+					descricao,
+					tipogeometria,
+					ST_AsGeoJSON(geom)::json
+					
+				FROM contribuicao 
+				INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+				INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+				WHERE publicado = 'sim'`;
 		}
-	})
+		pool.query(query, (error, results) => {
+			if(error){
+				res.json(error);
+			}
+			else{
+				res.json(results.rows);
+			}
+		})
+	}
 })
 
 app.post('/getContatos', (req, res) => {

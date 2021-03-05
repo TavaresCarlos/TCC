@@ -26,6 +26,9 @@
 	                <a @click="perfil()">Ver Perfil</a>
 	            </li>
 	            <li>
+	                <a @click="exportar()">Exportar colaborações</a>
+	            </li>
+	            <li>
 	                <a @click="sair">Sair</a>
 	            </li>
 	        </ul>
@@ -81,6 +84,9 @@
 			},
 			colaboracoes: function(){
 				this.$router.push({ path: `/administrador/verColaboracoes` })
+			},
+			exportar: function(){
+				this.$router.push({ path: `/administrador/exportar` })
 			},
 			sair: function(){
 				this.$router.push({ path: `/` })
