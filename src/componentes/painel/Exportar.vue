@@ -35,8 +35,6 @@
 		    <input type="radio" name="csv" id="csv" value="csv" v-model="formato" @click="exportar" autocomplete="off"> CSV
 		  </label>
 		</div>
-
-
 	</div>
 </template>
 
@@ -57,7 +55,6 @@
 		},
 		created:function(){
 			axios.post('http://localhost:3000/getCategoria').then((response) => {
-            	console.log(response);
                 for(var i=0; i<response.data.length; i++){
                     this.categoria.push(response.data[i].nomecat);
                 }
@@ -66,7 +63,6 @@
 		methods: {
 			selecionarSubcategorias: function(){
                 axios.post('http://localhost:3000/getSubcategoria',  { categoria: this.categoriaSalvar }).then((response) => {
-                    console.log(typeof(response.data));
                     if(response.data.length != 0){
                     	this.subcategoria = [];
                         for(var i=0; i<response.data.length; i++){
@@ -79,7 +75,13 @@
                 })
             },
 			exportar(){
+				/*console.log(this.categoriaSalvar);
+				console.log(this.subcategoriaSalvar);
+				console.log(this.dataInicio);
+				console.log(this.dataFim);*/
 				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, dataInicio: this.dataInicio, dataFim: this.dataFim }).then((response) => {
+
+					console.log(response);
 
 					if(this.formato == 'geojson'){
 						var geojson_format = '{ "type": "FeatureCollection", "features":[';
