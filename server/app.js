@@ -189,7 +189,7 @@ app.post('/setCategoria', (req, res) => {
 
 app.post('/getCategoria', (req, res)=>{
 	if(app.locals.logged){
-		var query = "SELECT nomecat FROM categorias";
+		var query = "SELECT idcategorias, nomecat FROM categorias";
 		console.log(query);
 		pool.query(query, (error, results) => {
 			if(error){
@@ -240,29 +240,19 @@ app.post('/setSubcategoria', (req, res) => {
 	}
 })
 
+/* Seleciona a subcategoria de acordo com o id da categoria passado */
 app.post('/getSubcategoria', (req, res)=>{
 	if(app.locals.logged){
-		var categoria = req.body.categoria;
+		var idcategoria = req.body.idcategoria;
 
-		var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
+		var query = `SELECT nomesubcat, idsubcategorias FROM subcategorias WHERE idcategorias = '${idcategoria}'`;
 
-		console.log(query_01);
-		pool.query(query_01, (error, results) => {
+		pool.query(query, (error, results) => {
 			if(error){
 				res.json(error);
 			}
 			else{
-				var idcategorias = (results.rows[0].idcategorias);
-				var query_02 = `SELECT nomesubcat FROM subcategorias WHERE idcategorias = '${idcategorias}'`;
-				console.log(query_02);
-				pool.query(query_02, (error, results) => {
-					if(error){
-						res.json(error);
-					}
-					else{
-						res.json(results.rows);
-					}
-				})
+				res.json(results.rows);
 			}
 		})
 	}
@@ -347,10 +337,8 @@ app.post('/exportar', (req, res) => {
 		const formato = req.body.formato;
 		const categoria = req.body.categoria;
 		const subcategoria = req.body.subcategoria;
-		/*const dataInicio = req.body.dataInicio;
-		const dataFim = req.body.dataFim;
-		//const tipoUsuario = data.locals.type; */
 
+		//const tipoUsuario = data.locals.type; 
 		if(formato == 'geojson'){
 			var query = `SELECT json_agg(
 				            json_build_object(
@@ -358,8 +346,8 @@ app.post('/exportar', (req, res) => {
 								'geometry', ST_AsGeoJSON(geometria)::json,
 								'properties', json_build_object(
 									'titulo', titulo,
-									'categoria', '${categoria}', 
-									'subcategoria', '${subcategoria}',
+									'categoria', categorias.nomecat, 
+									'subcategoria', subcategorias.nomesubcat,
 									'data',to_char(data, 'DD/MM/YYYY'),
 									'distancia ou area',distanciaarea,
 									'descricao', descricao,
@@ -370,7 +358,7 @@ app.post('/exportar', (req, res) => {
 						FROM contribuicao 
 						INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
 						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-						WHERE publicado = 'sim'`;
+						WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
 			console.log(query);
 		}
 		else if(formato == 'csv'){
@@ -388,7 +376,7 @@ app.post('/exportar', (req, res) => {
 				FROM contribuicao 
 				INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
 				INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-				WHERE publicado = 'sim'`;
+				WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
 		}
 
 		/*if(formato == 'geojson'){

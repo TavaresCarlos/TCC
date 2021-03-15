@@ -11,7 +11,7 @@
 	                <a @click="configuracaoSistema">Configurar Sistema</a>
 	            </li>
 	            <li>
-	                <a @click="addAdministradores">Adicionar Administradores</a>
+	                <a @click="addAdministradores">Adicionar Moderadores</a>
 	            </li>
 	            </li>
 	            <li>

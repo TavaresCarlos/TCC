@@ -1,31 +1,23 @@
 <template>
 	<div id="exportar">
-		<p id="textoHeader">Defina as configurações abaixo para exportação das colaborações:</p>
-		<label for="categoria" class="form-label">Selecione a categoria:</label><br>
-			<select v-model="categoriaSalvar" @change="selecionarSubcategorias">
-	            <option v-for="cat in this.categoria">
-	                {{ cat }}
+		<p id="textoHeader">Escolha a categoria e a subcategoria para exportação:</p>
+		<label for="categoria" class="form-label">Categoria:</label><br>
+			<select  v-model="categoriaSalvar" @change="selecionarSubcategorias">
+	            <option v-for="cat in this.categoria" v-bind:value="cat.idcategorias">
+	                {{ cat.nomecat }}
 	            </option>
 	        </select>
 		<br>
+		{{ this.categoriaSalvar }}
 		<br>
-		<label for="subcategoria" class="form-label">Subcategoria</label><br>
+		<label for="subcategoria" class="form-label">Subcategoria:</label><br>
             <select v-model="subcategoriaSalvar">
-                <option v-for="subcat in this.subcategoria">
-                    {{ subcat }}
+                <option v-for="subcat in this.subcategoria" v-bind:value="subcat.idsubcategorias">
+                    {{ subcat.nomesubcat }}
                 </option>
             </select>
 		<br>
-		<br>
-		<div class="row">
-			<label for="período" class="form-label">&nbsp&nbsp&nbsp Período: De &nbsp&nbsp&nbsp</label>
-			<input type="date" class="form-control" id="dataInicio" name="dataInicio" v-model="dataInicio" placeholder="">
-			&nbsp&nbsp&nbsp
-			Até
-			&nbsp&nbsp&nbsp
-			<input type="date" class="form-control" id="dataFim"" name="dataFim" v-model="dataFim" placeholder="">
-		</div>
-		<br>
+		{{ this.subcategoriaSalvar }}
 		<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-success">
@@ -48,25 +40,25 @@
 				categoriaSalvar: '',
 				subcategoria: [],
 				subcategoriaSalvar: '',
-				dataInicio: '',
-				dataFim: '',
 				formato: ''
 			}
 		},
 		created:function(){
 			axios.post('http://localhost:3000/getCategoria').then((response) => {
+				console.log(response);
                 for(var i=0; i<response.data.length; i++){
-                    this.categoria.push(response.data[i].nomecat);
+                    this.categoria.push({ 'idcategorias' : response.data[i].idcategorias, 'nomecat' : response.data[i].nomecat });
                 }
             });
 		},
 		methods: {
 			selecionarSubcategorias: function(){
-                axios.post('http://localhost:3000/getSubcategoria',  { categoria: this.categoriaSalvar }).then((response) => {
+                axios.post('http://localhost:3000/getSubcategoria',  { idcategoria: this.categoriaSalvar }).then((response) => {
+                	console.log(response);
                     if(response.data.length != 0){
                     	this.subcategoria = [];
                         for(var i=0; i<response.data.length; i++){
-                            this.subcategoria.push(response.data[i].nomesubcat);
+                            this.subcategoria.push({ 'idsubcategorias' : response.data[i].idsubcategorias, 'nomesubcat' : response.data[i].nomesubcat });
                         }
                     }
                     else if(response.data.length == 0){
@@ -76,14 +68,11 @@
             },
 			exportar(){
 				/*console.log(this.categoriaSalvar);
-				console.log(this.subcategoriaSalvar);
-				console.log(this.dataInicio);
-				console.log(this.dataFim);*/
-				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, dataInicio: this.dataInicio, dataFim: this.dataFim }).then((response) => {
-
-					console.log(response);
+				console.log(this.subcategoriaSalvar);*/
+				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar }).then((response) => {
 
 					if(this.formato == 'geojson'){
+						console.log(response);
 						var geojson_format = '{ "type": "FeatureCollection", "features":[';
 						var count = 0;
 						const size = response.data[0].json_agg.length;
