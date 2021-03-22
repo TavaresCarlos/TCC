@@ -66,9 +66,8 @@ PRIMARY KEY (idContribuicao)
 
 INSERT INTO usuario VALUES ('1', 'admin', 'admin', 'admin@admin', 'admin', '', 'root');
 INSERT INTO usuario VALUES ('2', 'anonimo', 'anonimo', 'anonimo@anonimo', '', '', 'anonimo');
+INSERT INTO configuracaoinicial VALUES ('1', '', '', '', '', '');
 
-//Consulta que retorna todos os dados de contribuição com o nome das categorias e subcategorias
-SELECT titulo, categorias.nomecat, subcategorias.nomesubcat, to_char(data, 'DD/MM/YYYY'), distanciaarea, descricao, tipogeometria, ST_AsGeoJSON(geom) FROM contribuicao INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias WHERE publicado = 'nao'
 
 
 

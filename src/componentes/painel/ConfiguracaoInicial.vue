@@ -103,6 +103,9 @@
 	color: #FFFFFF;
 	margin-left: 16%;
 }
+#descricao{
+	color: #000000;
+}
 #configuracaoInicial{
 	color: #FFFFFF;
 	border: solid white 1px;

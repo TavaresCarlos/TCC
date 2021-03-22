@@ -337,10 +337,11 @@ app.post('/exportar', (req, res) => {
 		const formato = req.body.formato;
 		const categoria = req.body.categoria;
 		const subcategoria = req.body.subcategoria;
-
 		//const tipoUsuario = data.locals.type; 
+
 		if(formato == 'geojson'){
-			var query = `SELECT json_agg(
+			if(categoria != '' && subcategoria != ''){
+				var query = `SELECT json_agg(
 				            json_build_object(
 				            	'type', 'Feature',
 								'geometry', ST_AsGeoJSON(geometria)::json,
@@ -359,28 +360,10 @@ app.post('/exportar', (req, res) => {
 						INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
 						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
 						WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
-			console.log(query);
-		}
-		else if(formato == 'csv'){
-			var query = `
-				SELECT 
-					titulo,
-					categorias.nomecat, 
-					subcategorias.nomesubcat,
-					to_char(data, 'DD/MM/YYYY'),
-					distanciaarea,
-					descricao,
-					tipogeometria,
-					ST_AsGeoJSON(geom)::json
-					
-				FROM contribuicao 
-				INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-				INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-				WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
-		}
-
-		/*if(formato == 'geojson'){
-			var query = `SELECT json_agg(
+				console.log(query);
+			}
+			else if(categoria != '' && subcategoria == ''){
+				var query = `SELECT json_agg(
 				            json_build_object(
 				            	'type', 'Feature',
 								'geometry', ST_AsGeoJSON(geometria)::json,
@@ -393,34 +376,53 @@ app.post('/exportar', (req, res) => {
 									'descricao', descricao,
 									'tipo',tipogeometria
 								)
-				            ) 
-				        )
+				            )
+				        ) 
 						FROM contribuicao 
 						INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
 						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-						WHERE publicado = 'sim'`;
-			console.log(query);
+						WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }'`;
+				console.log(query);
+			}
 		}
 		else if(formato == 'csv'){
-			var query = `
-				SELECT 
-					titulo,
-					categorias.nomecat, 
-					subcategorias.nomesubcat,
-					to_char(data, 'DD/MM/YYYY'),
-					distanciaarea,
-					descricao,
-					tipogeometria,
-					ST_AsGeoJSON(geom)::json
-					
-				FROM contribuicao 
-				INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-				INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-				WHERE publicado = 'sim'`;
-		}*/
+			if(categoria != '' && subcategoria != ''){
+				var query = `
+					SELECT 
+						titulo,
+						categorias.nomecat, 
+						subcategorias.nomesubcat,
+						to_char(data, 'DD/MM/YYYY'),
+						distanciaarea,
+						descricao,
+						tipogeometria,
+						ST_AsGeoJSON(geometria)::json
+						
+					FROM contribuicao 
+					INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+					WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
+			}
+			else if(categoria != '' && subcategoria == ''){
+				var query = `
+					SELECT 
+						titulo,
+						categorias.nomecat, 
+						subcategorias.nomesubcat,
+						to_char(data, 'DD/MM/YYYY'),
+						distanciaarea,
+						descricao,
+						tipogeometria,
+						ST_AsGeoJSON(geometria)::json
+						
+					FROM contribuicao 
+					INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
+					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
+					WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }'`;
+			}
+		}
 
 		if(query != undefined){
-			console.log(query);
 			pool.query(query, (error, results) => {
 				if(error){
 					res.json(error);
@@ -492,7 +494,7 @@ app.post('/setConfInicial', (req, res) => {
 	const zoom = req.body.zoom;
 	const descricao = req.body.descricao;
 
-	var query = `INSERT INTO configuracaoinicial (nomesistema, latitude, longitude, zoom, descricao) VALUES ('${nomeSistema}', '${latitude}', '${longitude}', '${zoom}', '${descricao}')`;
+	var query = `UPDATE configuracaoinicial SET nomesistema = '${nomeSistema}', latitude = '${latitude}', longitude = '${longitude}',  zoom = '${zoom}', descricao = '${descricao}' WHERE idinicial = '1'`;
 	executaSql(query, res);
 
 	console.log(query);

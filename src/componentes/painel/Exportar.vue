@@ -8,7 +8,7 @@
 	            </option>
 	        </select>
 		<br>
-		{{ this.categoriaSalvar }}
+		<!-- {{ this.categoriaSalvar }} -->
 		<br>
 		<label for="subcategoria" class="form-label">Subcategoria:</label><br>
             <select v-model="subcategoriaSalvar">
@@ -17,7 +17,7 @@
                 </option>
             </select>
 		<br>
-		{{ this.subcategoriaSalvar }}
+		<!-- {{ this.subcategoriaSalvar }} -->
 		<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-success">
@@ -72,46 +72,57 @@
 				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar }).then((response) => {
 
 					if(this.formato == 'geojson'){
-						console.log(response);
-						var geojson_format = '{ "type": "FeatureCollection", "features":[';
-						var count = 0;
-						const size = response.data[0].json_agg.length;
+						if(response.data[0].json_agg > 0){
+							console.log(response);
+							var geojson_format = '{ "type": "FeatureCollection", "features":[';
+							var count = 0;
+							const size = response.data[0].json_agg.length;
 
-						//The database return the geojson without parameter that define the multiple geometries in the same file. I need add the paramter with the "geojson_format" variable
-						for(var i=0; i<size; i++){
-							if(count == size-1){
-								geojson_format  = geojson_format  + JSON.stringify(response.data[0].json_agg[i]);
+							//The database return the geojson without parameter that define the multiple geometries in the same file. I need add the paramter with the "geojson_format" variable
+							for(var i=0; i<size; i++){
+								if(count == size-1){
+									geojson_format  = geojson_format  + JSON.stringify(response.data[0].json_agg[i]);
+								}
+								else{
+									geojson_format  = geojson_format  + JSON.stringify(response.data[0].json_agg[i]) + ',';
+								}
+								count++;
 							}
-							else{
-								geojson_format  = geojson_format  + JSON.stringify(response.data[0].json_agg[i]) + ',';
-							}
-							count++;
+							
+							geojson_format = geojson_format + ']}';
+
+							//Export "geojson_format" with file.json
+		                	let blob = new Blob([geojson_format ], { type: response.headers['content-type'] });
+						    let link = document.createElement('a');
+
+						    link.href = window.URL.createObjectURL(blob);
+						    link.download = 'colaboracoes.json';
+						    link.click();
 						}
-						
-						geojson_format = geojson_format + ']}';
-
-						//Export "geojson_format" with file.json
-	                	let blob = new Blob([geojson_format ], { type: response.headers['content-type'] });
-					    let link = document.createElement('a');
-
-					    link.href = window.URL.createObjectURL(blob);
-					    link.download = 'colaboracoes.json';
-					    link.click();
+						else{
+							alert("Erro: Não há dados dessa categoria/ subcategoria disponível.")
+						}
 					}
 					else if(this.formato == 'csv'){
-						var csv_format = "Titulo; Categoria; Subcategoria; Data; Distancia ou Area; Descricao; Tipo de Geometria; Coordenadas";
 						const size = response.data.length;
 
-						for(var i=0; i<size; i++){
-							csv_format = csv_format + '\n' + response.data[i].titulo + ';' + response.data[i].nomecat + ';' + response.data[i].nomesubcat + ';' + response.data[i].to_char + ';' + response.data[i].distanciaarea + ';' + response.data[i].descricao + ';' + response.data[i].tipogeometria + ';' + JSON.stringify(response.data[i].st_asgeojson.coordinates);
+						if(size > 0){
+							var csv_format = "Titulo; Categoria; Subcategoria; Data; Distancia ou Area; Descricao; Tipo de Geometria; Coordenadas";
+
+							for(var i=0; i<size; i++){
+								csv_format = csv_format + '\n' + response.data[i].titulo + ';' + response.data[i].nomecat + ';' + response.data[i].nomesubcat + ';' + response.data[i].to_char + ';' + response.data[i].distanciaarea + ';' + response.data[i].descricao + ';' + response.data[i].tipogeometria + ';' + JSON.stringify(response.data[i].st_asgeojson.coordinates);
+							}
+
+							let blob = new Blob([csv_format], { type: response.headers['content-type'] });
+						    let link = document.createElement('a');
+
+						    link.href = window.URL.createObjectURL(blob);
+						    link.download = 'colaboracoes.csv';
+						    link.click();
 						}
-
-						let blob = new Blob([csv_format], { type: response.headers['content-type'] });
-					    let link = document.createElement('a');
-
-					    link.href = window.URL.createObjectURL(blob);
-					    link.download = 'colaboracoes.csv';
-					    link.click();
+						else{
+							alert("Erro: Não há dados dessa categoria/ subcategoria disponível.")
+						}
 					}
 	            })
 			}

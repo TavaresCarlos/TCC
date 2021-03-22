@@ -73,6 +73,7 @@
 <p><strong>Português</strong></p>
 <p>Cada categoria adicionada pelo usuário administrador deve conter pelo menos uma subcategoria cadastrada no sistema.</p>
 <p>A inserção dos polígonos não respeita a Regra da Mão Direita.</p>
+<p>Existem 03 possibilidades para exportação dos dados: por categorias, por categorias e subcategorias e todas as colaborações realizadas. </p>
 <p><strong>English</strong></p>
 <p>Each category add by administrator user need a once subcategory add too in the system.</p>
 <p>The polygon insertion don't follow the righ-hand rule.</p>
