@@ -337,11 +337,14 @@ app.post('/exportar', (req, res) => {
 		const formato = req.body.formato;
 		const categoria = req.body.categoria;
 		const subcategoria = req.body.subcategoria;
-		//const tipoUsuario = data.locals.type; 
+		const dataInicio = req.body.dataInicio;
+		const dataFim = req.body.dataFim;
+
+		const tipoUsuario = app.locals.type; 
+		console.log(tipoUsuario);
 
 		if(formato == 'geojson'){
-			if(categoria != '' && subcategoria != ''){
-				var query = `SELECT json_agg(
+			var query_default = `SELECT json_agg(
 				            json_build_object(
 				            	'type', 'Feature',
 								'geometry', ST_AsGeoJSON(geometria)::json,
@@ -358,36 +361,11 @@ app.post('/exportar', (req, res) => {
 				        ) 
 						FROM contribuicao 
 						INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-						WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
-				console.log(query);
-			}
-			else if(categoria != '' && subcategoria == ''){
-				var query = `SELECT json_agg(
-				            json_build_object(
-				            	'type', 'Feature',
-								'geometry', ST_AsGeoJSON(geometria)::json,
-								'properties', json_build_object(
-									'titulo', titulo,
-									'categoria', categorias.nomecat, 
-									'subcategoria', subcategorias.nomesubcat,
-									'data',to_char(data, 'DD/MM/YYYY'),
-									'distancia ou area',distanciaarea,
-									'descricao', descricao,
-									'tipo',tipogeometria
-								)
-				            )
-				        ) 
-						FROM contribuicao 
-						INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-						WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }'`;
-				console.log(query);
-			}
+						INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias`;
+						//WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
 		}
 		else if(formato == 'csv'){
-			if(categoria != '' && subcategoria != ''){
-				var query = `
+			var query_default = `
 					SELECT 
 						titulo,
 						categorias.nomecat, 
@@ -400,26 +378,44 @@ app.post('/exportar', (req, res) => {
 						
 					FROM contribuicao 
 					INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-					WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
-			}
-			else if(categoria != '' && subcategoria == ''){
-				var query = `
-					SELECT 
-						titulo,
-						categorias.nomecat, 
-						subcategorias.nomesubcat,
-						to_char(data, 'DD/MM/YYYY'),
-						distanciaarea,
-						descricao,
-						tipogeometria,
-						ST_AsGeoJSON(geometria)::json
-						
-					FROM contribuicao 
-					INNER JOIN categorias ON contribuicao.idcategorias =  categorias.idcategorias 
-					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias
-					WHERE publicado = 'sim' AND contribuicao.idcategorias = '${ categoria }'`;
-			}
+					INNER JOIN subcategorias ON contribuicao.idsubcategorias = subcategorias.idsubcategorias`;
+		}
+
+		if(tipoUsuario == 'administrador'){
+			query_default = query_default + ` WHERE publicado = 'sim' OR publicado = 'nao'`;
+		}
+		else if(tipoUsuario == 'colaborador'){
+			query_default = query_default + ` WHERE publicado = 'sim'`;
+		}
+
+		//categoria
+		if(categoria != '' && subcategoria == '' && dataInicio == '' && dataFim == ''){
+			var query = query_default + ` AND contribuicao.idcategorias = '${ categoria }'`;
+			console.log(query);
+		}
+		//categoria + subcategoria
+		else if(categoria != '' && subcategoria != '' && dataInicio == '' && dataFim == ''){
+			var query = query_default + ` AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }'`;
+			console.log(query);
+		}
+		//data
+		else if(categoria == '' && subcategoria == '' && dataInicio != '' && dataFim != ''){
+			var query = query_default + ` AND data >= '${ dataInicio }' AND data <= '${ dataFim }'`;
+			console.log(query);
+		}
+		//categoria + data
+		else if(categoria != '' && subcategoria == '' && dataInicio != '' && dataFim != ''){
+			var query = query_default + ` AND contribuicao.idcategorias = '${ categoria }' AND data >= '${ dataInicio }' AND data <= '${ dataFim }'`;
+			console.log(query);
+		}
+		//categoria + subacategoria + data
+		else if(categoria != '' && subcategoria != '' && dataInicio != '' && dataFim != ''){
+			var query = query_default + `  AND contribuicao.idcategorias = '${ categoria }' AND contribuicao.idsubcategorias = '${ subcategoria }' AND data >= '${ dataInicio }' AND data <= '${ dataFim }'`;
+			console.log(query);
+		}
+		else{
+			var query = query_default;
+			console.log(query);
 		}
 
 		if(query != undefined){

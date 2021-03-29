@@ -1,6 +1,6 @@
 <template>
 	<div id="exportar">
-		<p id="textoHeader">Escolha a categoria e a subcategoria para exportação:</p>
+		<p id="textoHeader">Escolha o formato para exportação das colaborações. Se necessário, use o filtro abaixo para definir as propriedades:</p>
 		<label for="categoria" class="form-label">Categoria:</label><br>
 			<select  v-model="categoriaSalvar" @change="selecionarSubcategorias">
 	            <option v-for="cat in this.categoria" v-bind:value="cat.idcategorias">
@@ -18,6 +18,15 @@
             </select>
 		<br>
 		<!-- {{ this.subcategoriaSalvar }} -->
+		<br>
+		<label for="periodo" class="form-label">Período:</label><br>
+			<div class="row">
+				&nbsp&nbsp&nbsp&nbsp
+		    	<input type="date" class="form-control" id="dataInicio" v-model="dataInicio">
+		    	&nbsp&nbsp&nbsp&nbsp até &nbsp&nbsp&nbsp&nbsp
+		    	<input type="date" class="form-control" id="dataFim" v-model="dataFim">
+			</div>
+
 		<br>
 		<div class="btn-group btn-group-toggle" data-toggle="buttons">
 		  <label class="btn btn-success">
@@ -40,7 +49,9 @@
 				categoriaSalvar: '',
 				subcategoria: [],
 				subcategoriaSalvar: '',
-				formato: ''
+				formato: '',
+				dataInicio: '',
+				dataFim: ''
 			}
 		},
 		created:function(){
@@ -69,10 +80,10 @@
 			exportar(){
 				/*console.log(this.categoriaSalvar);
 				console.log(this.subcategoriaSalvar);*/
-				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar }).then((response) => {
+				axios.post('http://localhost:3000/exportar',{ formato: this.formato, categoria: this.categoriaSalvar, subcategoria: this.subcategoriaSalvar, dataInicio: this.dataInicio, dataFim: this.dataFim }).then((response) => {
 
 					if(this.formato == 'geojson'){
-						if(response.data[0].json_agg > 0){
+						if(response.data.length > 0){
 							console.log(response);
 							var geojson_format = '{ "type": "FeatureCollection", "features":[';
 							var count = 0;
