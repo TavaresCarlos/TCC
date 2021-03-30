@@ -65,7 +65,6 @@
 		methods: {
 			selecionarSubcategorias: function(){
                 axios.post('http://localhost:3000/getSubcategoria',  { idcategoria: this.categoriaSalvar }).then((response) => {
-                	console.log(response);
                     if(response.data.length != 0){
                     	this.subcategoria = [];
                         for(var i=0; i<response.data.length; i++){

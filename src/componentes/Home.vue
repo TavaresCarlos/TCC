@@ -75,7 +75,6 @@
 			},
 			login(){
 				axios.post('http://localhost:3000/login', { usuario: this.usuario, senha: this.senha }).then((response) => {
-					console.log(response);
                     if(typeof(response.data) == 'string'){
                     	alert(response.data);
                     }

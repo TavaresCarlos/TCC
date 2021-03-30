@@ -41,8 +41,8 @@ app.get('/', (req, res) => {
 
 app.post('/home', (req, res) => {
 	
-	app.locals.user = '';
-	app.locals.logged = false;
+	/*app.locals.user = '';
+	app.locals.logged = false;*/
 
 	executaSql('SELECT * FROM configuracaoinicial', res);
 });
@@ -124,6 +124,7 @@ app.post('/login', (req, res) => {
 					}
 				}
 			}
+			console.log(app.locals);
 		})
 		console.log(query);
 	}	
@@ -242,12 +243,13 @@ app.post('/setSubcategoria', (req, res) => {
 
 /* Seleciona a subcategoria de acordo com o id da categoria passado */
 app.post('/getSubcategoria', (req, res)=>{
-	if(app.locals.logged){
+	//if(app.locals.logged){
 		var idcategoria = req.body.idcategoria;
 
 		var query = `SELECT nomesubcat, idsubcategorias FROM subcategorias WHERE idcategorias = '${idcategoria}'`;
 
 		pool.query(query, (error, results) => {
+			console.log(query);
 			if(error){
 				res.json(error);
 			}
@@ -255,13 +257,14 @@ app.post('/getSubcategoria', (req, res)=>{
 				res.json(results.rows);
 			}
 		})
-	}
+	//}
 })
 
 app.post('/setColaboracao', (req, res) => {
+
 	const titulo = req.body.titulo;
-	const categoria = req.body.categoria;
-	const subcategoria = req.body.subcategoria;
+	const idcategorias = req.body.categoria;
+	const idsubcategorias = req.body.subcategoria;
 	const distanciaArea = req.body.distanciaArea;
 	const dataOcorrencia = req.body.dataOcorrencia;
 	const tipoGeometria = req.body.tipoGeometria;
@@ -271,43 +274,22 @@ app.post('/setColaboracao', (req, res) => {
 
 	const usuario = app.locals.user;
 
-	var query_01 = `SELECT idcategorias FROM categorias WHERE nomecat = '${categoria}'`;
-	var query_02 = `SELECT idsubcategorias FROM subcategorias WHERE nomesubcat = '${subcategoria}'`;
-	var query_03 = `SELECT idusuario FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
+	console.log(app.locals);
+
+	var query_01 = `SELECT idusuario FROM usuario WHERE apelido = '${usuario}' OR email = '${usuario}'`;
 
 	pool.query(query_01, (error, results) => {
-		console.log(query_01);
 		if(error){
 			res.json(error);
 		}
 		else{
-			const idcategorias = results.rows[0].idcategorias;
-			pool.query(query_02, (error, results) => {
-				console.log(query_02);
-				if(error){
-					res.json(error);
-				}
-				else{
-					//Há subcategorias
-					if(results.rows.length != 0){
-						const idsubcategorias = results.rows[0].idsubcategorias;
-
-						console.log(query_03);
-						pool.query(query_03, (error, results) => {
-							if(error){
-								res.json(error);
-							}
-							else{
-								const idusuario = results.rows[0].idusuario;
-								console.log(idusuario);
-								var query_04 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado, geometria, idusuario) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}', ST_GeomFromGeoJSON('${coordenadas}'), '${idusuario}')`;
-								executaSql(query_04, res);
-								console.log(query_04);
-							}
-						})
-					}
-				}
-			})
+			console.log(query_01);
+			console.log(results.rows);
+			const idusuario = results.rows[0].idusuario;
+			console.log(idusuario);
+			var query_02 = `INSERT INTO contribuicao (titulo, idcategorias, idsubcategorias, distanciaarea, data, tipoGeometria, descricao, publicado, geometria, idusuario) VALUES ('${titulo}', '${idcategorias}', '${idsubcategorias}', '${distanciaArea}', '${dataOcorrencia}', '${tipoGeometria}', '${descricao}', '${publicado}', ST_GeomFromGeoJSON('${coordenadas}'), '${idusuario}')`;
+			executaSql(query_02, res);
+			console.log(query_02);
 		}
 	})
 })
