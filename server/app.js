@@ -241,7 +241,7 @@ app.post('/setSubcategoria', (req, res) => {
 	}
 })
 
-/* Seleciona a subcategoria de acordo com o id da categoria passado */
+/* Seleciona a subcategoria de acordo com o id da categoria passada */
 app.post('/getSubcategoria', (req, res)=>{
 	//if(app.locals.logged){
 		var idcategoria = req.body.idcategoria;
@@ -364,7 +364,7 @@ app.post('/exportar', (req, res) => {
 		}
 
 		if(tipoUsuario == 'administrador'){
-			query_default = query_default + ` WHERE publicado = 'sim' OR publicado = 'nao'`;
+			query_default = query_default;
 		}
 		else if(tipoUsuario == 'colaborador'){
 			query_default = query_default + ` WHERE publicado = 'sim'`;

@@ -1,0 +1,9 @@
+Exclusão de categorias e subcategorias (usuário moderador)
+Visualização das categorias e subcategorias já cadastradas (usuário moderador)
+Alteração dos dados de perfil (cadastro)
+Trocar senha
+Imagem de perfil
+Editar colaborações (usuário moderador)
+Exportar por tipo de geometria
+Visualizar as colaborações por tipo de geometria
+Tempo de sessão do usuário

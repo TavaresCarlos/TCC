@@ -28,23 +28,19 @@
 <br>-Possibilidade de realizar a colaboração de forma anônima
 
 <h2>Tipos de usuários e funcionalidades:</h2>
--Root (Super Usuário)
-<br>
-<img src="apresentação-do-sistema/imagens/root.jpg" width="700" height="500">
-<br><br>-Administrador
-<br>
+<h3>Administrador</h3>
 <img src="apresentação-do-sistema/imagens/admin.jpg" width="700" height="500">
-<br><br>-Anônimo
-<br>
+<h3>Moderador</h3>
+<img src="apresentação-do-sistema/imagens/moderador.jpg" width="700" height="500">
+<h3>Anônimo</h3>
 <img src="apresentação-do-sistema/imagens/anonimo.jpg" width="700" height="500">
-<br><br>-Colaborador
-<br>
+<h3>Colaborador</h3>
 <img src="apresentação-do-sistema/imagens/colaborador.jpg" width="700" height="500">
 
 <h2>Rotas criadas:</h2>
--/home:
-<br>/cadastroNovoUsuario:
-<br>/novoContato:
+/home: Retorna as configurações iniciais do sistema: nome do sistema, latitude e longitude, nível de zoom e descrição.
+<br>/cadastroNovoUsuario: Insere na tabela de usuário os dados de um novo cadastro informado: nome, apelido, email, senha, faixa etária e tipo de usuário.
+<br>/novoContato: Insere na tabela de contato um novo contato realizado: nome, assunto, email, data, mensagem e o status dele no sistema.
 <br>/login:
 <br>/perfil: Retorna o nome, apelido, email, faixa etaria e tipo do usuário que está logado no sistema. 
 <br>/trocarSenha:
@@ -66,7 +62,7 @@
 <br>/setConfInicial:
 
 <h2>Como usar:</h2>
-<p>A aplicação trabalha com dois servidores: localhost:3000 (servidor Express) e localhost:8081 (servidor do VUE).</p>
+<p>A aplicação trabalha com dois servidores: localhost:3000 (servidor Express) e localhost:8080 (servidor do VUE).</p>
 <p>Além disso, é necessário criar o banco de dados PostgreSQL com o script da pasta "banco de dados/esquema.txt"</p>
 
 <h2>Observação:</h2>
