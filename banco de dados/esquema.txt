@@ -64,9 +64,9 @@ CONSTRAINT fk_contribuicaoSubcategorias FOREIGN KEY (idSubcategorias) REFERENCES
 PRIMARY KEY (idContribuicao)
 );
 
-INSERT INTO usuario VALUES ('1', 'admin', 'admin', 'admin@admin', 'admin', '', 'root');
+INSERT INTO usuario VALUES ('1', 'admin', 'admin', 'admin@admin', '$2b$10$gQRnUm5mIPzDR9iPfqmgTe4QyBE1Ogi7p51FbbzCxX5xls/Sjo4FS', '', 'root');
 INSERT INTO usuario VALUES ('2', 'anonimo', 'anonimo', 'anonimo@anonimo', '', '', 'anonimo');
-INSERT INTO configuracaoinicial VALUES ('1', '', '', '', '', '');
+INSERT INTO configuracaoinicial VALUES ('1', '', '0', '0', '0', '');
 
 
 
